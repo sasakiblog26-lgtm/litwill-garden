@@ -1,0 +1,22 @@
+# 記事フロントマターテンプレート
+# 全記事のMarkdownファイル先頭に含めること
+---
+title: ""
+description: ""
+keyword: ""
+category: ""
+tags: []
+author: "リトウィルガーデン"
+date: ""
+updated: ""
+status: "draft"          # draft | review | published
+quality_score: null      # 品質チェック後に自動設定 (0-100)
+word_count: null         # 自動計算
+seo:
+  meta_title: ""
+  meta_description: ""
+  canonical_url: ""
+monetization:
+  affiliate_links: []
+  ad_placement: true
+---

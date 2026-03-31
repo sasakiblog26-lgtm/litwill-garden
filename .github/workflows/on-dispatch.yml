@@ -1,0 +1,76 @@
+name: On Hub Dispatch
+
+on:
+  repository_dispatch:
+    types:
+      - generate-article
+      - seo-audit
+      - health-check
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ========================================
+  # 記事生成パイプライン
+  # ========================================
+  generate-article:
+    if: github.event.action == 'generate-article'
+    uses: sasakiblog26-lgtm/litwill-produce/.github/reusable-workflows/content-pipeline.yml@main
+    with:
+      brand_id: ${{ github.event.client_payload.brand_id }}
+      keyword: ${{ github.event.client_payload.keyword }}
+      content_type: ${{ github.event.client_payload.content_type }}
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      BRAND_REPOS_PAT: ${{ secrets.BRAND_REPOS_PAT }}
+      DISCORD_WEBHOOK_CONTENT: ${{ secrets.DISCORD_WEBHOOK_CONTENT }}
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+
+  # ========================================
+  # SEO監査
+  # ========================================
+  seo-audit:
+    if: github.event.action == 'seo-audit'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run SEO audit
+        run: |
+          echo "SEO audit for ${{ github.event.client_payload.brand_id }}"
+          # TODO: Integrate with SEO audit tools
+          # - Lighthouse CI
+          # - Search Console API
+          # - Content SEO score check
+
+      - name: Notify result
+        run: |
+          if [ -n "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" ]; then
+            curl -H "Content-Type: application/json" \
+              -d "{\"content\": \"🔍 **SEO Audit** - ${{ github.event.client_payload.brand_id }} 完了\"}" \
+              "${{ secrets.DISCORD_WEBHOOK_CONTENT }}"
+          fi
+
+  # ========================================
+  # ヘルスチェック応答
+  # ========================================
+  health-check:
+    if: github.event.action == 'health-check'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run health check
+        run: |
+          echo "Health check for ${{ github.event.client_payload.brand_id }}"
+
+          # コンテンツ数カウント
+          ARTICLE_COUNT=$(find content/articles -name "*.md" 2>/dev/null | wc -l || echo "0")
+          DRAFT_COUNT=$(find content/drafts -name "*.md" 2>/dev/null | wc -l || echo "0")
+
+          echo "Articles: $ARTICLE_COUNT"
+          echo "Drafts: $DRAFT_COUNT"

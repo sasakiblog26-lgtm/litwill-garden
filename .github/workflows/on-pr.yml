@@ -1,0 +1,52 @@
+name: On Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "content/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  content-review:
+    name: "Content Review"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check content structure
+        run: |
+          # フロントマターの存在確認
+          for file in $(git diff --name-only origin/main -- 'content/articles/*.md'); do
+            if [ -f "$file" ]; then
+              # YAMLフロントマターがあるか
+              if ! head -1 "$file" | grep -q '^---'; then
+                echo "::warning file=$file::Missing YAML frontmatter"
+              fi
+
+              # 最低文字数チェック (1000文字)
+              CHAR_COUNT=$(wc -m < "$file")
+              if [ "$CHAR_COUNT" -lt 1000 ]; then
+                echo "::warning file=$file::Article is too short ($CHAR_COUNT chars, minimum 1000)"
+              fi
+            fi
+          done
+
+      - name: Label PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # コンテンツタイプに応じたラベル付け
+          FILES_CHANGED=$(git diff --name-only origin/main)
+
+          if echo "$FILES_CHANGED" | grep -q "content/articles/"; then
+            gh pr edit ${{ github.event.pull_request.number }} --add-label "content:article" 2>/dev/null || true
+          fi
+
+          if echo "$FILES_CHANGED" | grep -q "content/lp/"; then
+            gh pr edit ${{ github.event.pull_request.number }} --add-label "content:lp" 2>/dev/null || true
+          fi

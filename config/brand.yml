@@ -1,0 +1,36 @@
+brand:
+  id: "litwill-garden"
+  name: "リトウィルガーデン"
+  display_name: "リトウィルガーデン"
+  repo: "sasakiblog26-lgtm/litwill-garden"
+  category: "general"
+  language: "ja"
+
+content:
+  target_audience: "暮らしを豊かにしたい全世代"
+  tone: "friendly-expert"
+  primary_keywords:
+    - "暮らし"
+    - "ライフハック"
+    - "おすすめ"
+    - "レビュー"
+    - "生活改善"
+  posting_frequency: "2_per_week"
+  content_types:
+    - "blog_article"
+    - "review"
+    - "how_to"
+
+seo:
+  domain: ""
+  search_console_property: ""
+
+monetization:
+  model: "adsense"
+  primary_asp:
+    - "Google AdSense"
+    - "A8.net"
+
+notifications:
+  discord_channel: "litwill-garden"
+  slack_channel: ""
