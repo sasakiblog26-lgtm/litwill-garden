@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Host
+Host: https://litwill-garden.com
+
+# Sitemaps
+Sitemap: https://litwill-garden.com/sitemap.xml
