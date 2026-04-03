@@ -1,0 +1,24 @@
+name: Daily SEO & Analytics
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 毎日UTC 0:00 (JST 9:00)
+  workflow_dispatch:
+
+jobs:
+  seo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: SEO順位チェック & アナリティクス取得
+        run: echo "TODO - SEO rank check and analytics collection"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
