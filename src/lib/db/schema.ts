@@ -63,9 +63,14 @@ export const patchNotes = pgTable("patch_notes", {
   id: serial("id").primaryKey(),
   version: varchar("version", { length: 50 }).notNull(),
   date: timestamp("date").notNull(),
+  rawContent: text("raw_content"),
   changesJson: jsonb("changes_json").notNull(),
+  buffsJson: jsonb("buffs_json"),
+  nerfsJson: jsonb("nerfs_json"),
   metaImpact: text("meta_impact"),
   analysis: text("analysis"),
+  tierListChangesJson: jsonb("tier_list_changes_json"),
+  articleDraftId: integer("article_draft_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -76,6 +81,7 @@ export const tierLists = pgTable("tier_lists", {
   season: varchar("season", { length: 50 }).notNull(),
   tiersJson: jsonb("tiers_json").notNull(),
   rationale: text("rationale"),
+  patchVersion: varchar("patch_version", { length: 50 }),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
@@ -89,15 +95,26 @@ export const articles = pgTable("articles", {
   content: text("content").notNull(),
   excerpt: text("excerpt"),
   category: varchar("category", { length: 50 }).notNull(),
-  templateType: varchar("template_type", { length: 30 }),
+  /** 記事タイプ: guide / character / weapon / ranking / patch-analysis */
+  articleType: varchar("article_type", { length: 50 }),
   gameTitle: varchar("game_title", { length: 50 }).default("apex-legends"),
+  /** ステータス: draft → review → scheduled → published */
   status: varchar("status", { length: 20 }).default("draft").notNull(),
   seoMeta: jsonb("seo_meta"),
-  targetKeyword: varchar("target_keyword", { length: 200 }),
+  /** 関連キーワードID */
+  keywordId: integer("keyword_id"),
+  /** 関連レジェンド名 */
   relatedLegend: varchar("related_legend", { length: 100 }),
+  /** 関連武器名 */
   relatedWeapon: varchar("related_weapon", { length: 100 }),
-  scheduledAt: timestamp("scheduled_at"),
+  /** 自動挿入された内部リンクJSON */
+  internalLinksJson: jsonb("internal_links_json"),
+  /** CTA設定JSON */
+  ctaConfigJson: jsonb("cta_config_json"),
+  /** note記事IDとの紐付け */
+  noteArticleId: integer("note_article_id"),
   publishedAt: timestamp("published_at"),
+  scheduledAt: timestamp("scheduled_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -109,7 +126,10 @@ export const keywords = pgTable("keywords", {
   volume: integer("volume"),
   difficulty: integer("difficulty"),
   currentRank: integer("current_rank"),
+  targetRank: integer("target_rank"),
   gameTitle: varchar("game_title", { length: 50 }).default("apex-legends"),
+  /** 記事が生成済みか */
+  articleGenerated: boolean("article_generated").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -120,15 +140,38 @@ export const keywords = pgTable("keywords", {
 export const snsPosts = pgTable("sns_posts", {
   id: serial("id").primaryKey(),
   platform: varchar("platform", { length: 30 }).notNull(),
-  content: text("content").notNull(),
+  /** 投稿テンプレートタイプ: patch-news / meta-analysis / tips / match-result / article-promo */
   templateType: varchar("template_type", { length: 50 }),
-  articleId: integer("article_id"),
-  externalPostId: varchar("external_post_id", { length: 100 }),
+  content: text("content").notNull(),
+  hashtags: jsonb("hashtags"),
   mediaUrl: text("media_url"),
-  status: varchar("status", { length: 20 }).default("pending").notNull(),
+  /** 関連記事ID */
+  articleId: integer("article_id"),
   scheduledAt: timestamp("scheduled_at"),
   postedAt: timestamp("posted_at"),
+  /** 外部投稿ID（X post ID等） */
+  externalId: varchar("external_id", { length: 100 }),
   engagement: jsonb("engagement"),
+  /** impressions, likes, retweets, replies, clicks */
+  impressions: integer("impressions").default(0),
+  likes: integer("likes").default(0),
+  retweets: integer("retweets").default(0),
+  replies: integer("replies").default(0),
+  clicks: integer("clicks").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/** SNSパフォーマンス週次レポートテーブル */
+export const snsWeeklyReports = pgTable("sns_weekly_reports", {
+  id: serial("id").primaryKey(),
+  platform: varchar("platform", { length: 30 }).notNull(),
+  weekStart: timestamp("week_start").notNull(),
+  weekEnd: timestamp("week_end").notNull(),
+  totalPosts: integer("total_posts").default(0),
+  totalImpressions: integer("total_impressions").default(0),
+  totalEngagement: integer("total_engagement").default(0),
+  topPostId: integer("top_post_id"),
+  reportJson: jsonb("report_json"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -136,29 +179,76 @@ export const snsPosts = pgTable("sns_posts", {
 export const lineSubscribers = pgTable("line_subscribers", {
   id: serial("id").primaryKey(),
   userId: varchar("user_id", { length: 100 }).notNull().unique(),
+  displayName: varchar("display_name", { length: 200 }),
+  /** セグメント: beginner / silver-gold / platinum-above */
   segment: varchar("segment", { length: 30 }).default("beginner"),
   rankTier: varchar("rank_tier", { length: 30 }),
+  /** 現在のステップ配信Day */
   step: integer("step").default(0),
-  isActive: boolean("is_active").default(true).notNull(),
-  lastDeliveredAt: timestamp("last_delivered_at"),
+  /** 次回配信予定日時 */
+  nextDeliveryAt: timestamp("next_delivery_at"),
+  /** リッチメニュー表示状態 */
+  richMenuId: varchar("rich_menu_id", { length: 100 }),
+  /** 特商法同意 */
+  tokushohoAcknowledged: boolean("tokushoho_acknowledged").default(false),
   subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
+  unsubscribedAt: timestamp("unsubscribed_at"),
+});
+
+/** LINE配信ログテーブル */
+export const lineDeliveryLogs = pgTable("line_delivery_logs", {
+  id: serial("id").primaryKey(),
+  subscriberId: integer("subscriber_id").notNull(),
+  /** 配信タイプ: step / weekly / broadcast */
+  deliveryType: varchar("delivery_type", { length: 30 }).notNull(),
+  /** ステップ番号（ステップ配信の場合） */
+  stepDay: integer("step_day"),
+  segment: varchar("segment", { length: 30 }),
+  messageJson: jsonb("message_json").notNull(),
+  deliveredAt: timestamp("delivered_at").defaultNow().notNull(),
+  /** 開封・クリック等のトラッキング */
+  opened: boolean("opened").default(false),
+  clicked: boolean("clicked").default(false),
 });
 
 /** note記事テーブル */
 export const noteArticles = pgTable("note_articles", {
   id: serial("id").primaryKey(),
-  noteId: varchar("note_id", { length: 100 }),
-  noteUrl: varchar("note_url", { length: 500 }),
   title: varchar("title", { length: 200 }).notNull(),
+  /** note上のURL slug */
+  noteSlug: varchar("note_slug", { length: 200 }),
+  /** note上の記事ID */
+  noteExternalId: varchar("note_external_id", { length: 100 }),
+  /** 価格: 0=無料, 980, 2980, 4980 */
   price: integer("price").default(0),
-  priceType: varchar("price_type", { length: 30 }),
+  /** カテゴリ: free / paid-980 / paid-2980 / paid-4980 / magazine */
   category: varchar("category", { length: 50 }),
-  articleId: integer("article_id"),
-  status: varchar("status", { length: 20 }).default("draft").notNull(),
+  /** 記事タイプ: character-guide / weapon-guide / rank-guide / vod-review / meta-report / beginner-guide */
+  articleType: varchar("article_type", { length: 50 }),
+  content: text("content"),
+  /** 元記事のID（サイト記事からの変換の場合） */
+  sourceArticleId: integer("source_article_id"),
+  /** 公開ステータス: draft / published */
+  status: varchar("status", { length: 20 }).default("draft"),
+  /** マガジンID（月額マガジンの場合） */
+  magazineId: varchar("magazine_id", { length: 100 }),
   salesCount: integer("sales_count").default(0),
   revenue: integer("revenue").default(0),
-  lastSyncedAt: timestamp("last_synced_at"),
+  publishedAt: timestamp("published_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+/** note売上ログテーブル */
+export const noteSalesLogs = pgTable("note_sales_logs", {
+  id: serial("id").primaryKey(),
+  noteArticleId: integer("note_article_id").notNull(),
+  /** 売上タイプ: single / magazine-subscription */
+  saleType: varchar("sale_type", { length: 30 }).notNull(),
+  amount: integer("amount").notNull(),
+  /** noteからの手数料控除後金額 */
+  netAmount: integer("net_amount"),
+  purchasedAt: timestamp("purchased_at").defaultNow().notNull(),
 });
 
 /** YouTube動画テーブル */
@@ -166,13 +256,18 @@ export const youtubeVideos = pgTable("youtube_videos", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 200 }).notNull(),
   videoId: varchar("video_id", { length: 20 }).notNull().unique(),
+  /** カテゴリ: beginner-guide / character-guide / vod-review / patch-note / shorts */
   category: varchar("category", { length: 50 }),
-  articleId: integer("article_id"),
   description: text("description"),
   tags: jsonb("tags"),
-  thumbnailTitles: jsonb("thumbnail_titles"),
+  thumbnailTitle: varchar("thumbnail_title", { length: 200 }),
+  /** 関連記事ID */
+  relatedArticleId: integer("related_article_id"),
   views: integer("views").default(0),
   likes: integer("likes").default(0),
+  comments: integer("comments").default(0),
+  /** ショート動画フラグ */
+  isShort: boolean("is_short").default(false),
   publishedAt: timestamp("published_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -199,7 +294,11 @@ export const affiliateLinks = pgTable("affiliate_links", {
   price: integer("price"),
   commission: integer("commission"),
   url: text("url").notNull(),
+  /** 自動挿入用キーワード（この文字列が記事に含まれていたら自動リンク） */
+  matchKeywords: jsonb("match_keywords"),
   status: varchar("status", { length: 20 }).default("active"),
+  clicks: integer("clicks").default(0),
+  conversions: integer("conversions").default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -213,37 +312,4 @@ export const deviceReviews = pgTable("device_reviews", {
   affiliateLinkId: integer("affiliate_link_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
-
-// ===== LINE配信ログ系 =====
-
-/** LINEステップ配信ログテーブル */
-export const lineDeliveryLogs = pgTable("line_delivery_logs", {
-  id: serial("id").primaryKey(),
-  subscriberId: integer("subscriber_id").notNull(),
-  stepDay: integer("step_day").notNull(),
-  messageTitle: varchar("message_title", { length: 200 }).notNull(),
-  deliveredAt: timestamp("delivered_at").defaultNow().notNull(),
-  status: varchar("status", { length: 20 }).default("sent").notNull(),
-});
-
-// ===== レポート系 =====
-
-/** SNS週次レポートテーブル */
-export const snsWeeklyReports = pgTable("sns_weekly_reports", {
-  id: serial("id").primaryKey(),
-  weekStart: timestamp("week_start").notNull(),
-  weekEnd: timestamp("week_end").notNull(),
-  reportData: jsonb("report_data").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-/** note売上スナップショットテーブル */
-export const noteSalesSnapshots = pgTable("note_sales_snapshots", {
-  id: serial("id").primaryKey(),
-  noteArticleId: integer("note_article_id").notNull(),
-  salesCount: integer("sales_count").default(0),
-  revenue: integer("revenue").default(0),
-  snapshotDate: timestamp("snapshot_date").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
