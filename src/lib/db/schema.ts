@@ -89,9 +89,14 @@ export const articles = pgTable("articles", {
   content: text("content").notNull(),
   excerpt: text("excerpt"),
   category: varchar("category", { length: 50 }).notNull(),
+  templateType: varchar("template_type", { length: 30 }),
   gameTitle: varchar("game_title", { length: 50 }).default("apex-legends"),
   status: varchar("status", { length: 20 }).default("draft").notNull(),
   seoMeta: jsonb("seo_meta"),
+  targetKeyword: varchar("target_keyword", { length: 200 }),
+  relatedLegend: varchar("related_legend", { length: 100 }),
+  relatedWeapon: varchar("related_weapon", { length: 100 }),
+  scheduledAt: timestamp("scheduled_at"),
   publishedAt: timestamp("published_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -116,7 +121,11 @@ export const snsPosts = pgTable("sns_posts", {
   id: serial("id").primaryKey(),
   platform: varchar("platform", { length: 30 }).notNull(),
   content: text("content").notNull(),
+  templateType: varchar("template_type", { length: 50 }),
+  articleId: integer("article_id"),
+  externalPostId: varchar("external_post_id", { length: 100 }),
   mediaUrl: text("media_url"),
+  status: varchar("status", { length: 20 }).default("pending").notNull(),
   scheduledAt: timestamp("scheduled_at"),
   postedAt: timestamp("posted_at"),
   engagement: jsonb("engagement"),
@@ -130,17 +139,25 @@ export const lineSubscribers = pgTable("line_subscribers", {
   segment: varchar("segment", { length: 30 }).default("beginner"),
   rankTier: varchar("rank_tier", { length: 30 }),
   step: integer("step").default(0),
+  isActive: boolean("is_active").default(true).notNull(),
+  lastDeliveredAt: timestamp("last_delivered_at"),
   subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
 });
 
 /** note記事テーブル */
 export const noteArticles = pgTable("note_articles", {
   id: serial("id").primaryKey(),
+  noteId: varchar("note_id", { length: 100 }),
+  noteUrl: varchar("note_url", { length: 500 }),
   title: varchar("title", { length: 200 }).notNull(),
   price: integer("price").default(0),
+  priceType: varchar("price_type", { length: 30 }),
   category: varchar("category", { length: 50 }),
+  articleId: integer("article_id"),
+  status: varchar("status", { length: 20 }).default("draft").notNull(),
   salesCount: integer("sales_count").default(0),
   revenue: integer("revenue").default(0),
+  lastSyncedAt: timestamp("last_synced_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -150,6 +167,10 @@ export const youtubeVideos = pgTable("youtube_videos", {
   title: varchar("title", { length: 200 }).notNull(),
   videoId: varchar("video_id", { length: 20 }).notNull().unique(),
   category: varchar("category", { length: 50 }),
+  articleId: integer("article_id"),
+  description: text("description"),
+  tags: jsonb("tags"),
+  thumbnailTitles: jsonb("thumbnail_titles"),
   views: integer("views").default(0),
   likes: integer("likes").default(0),
   publishedAt: timestamp("published_at"),
@@ -192,4 +213,37 @@ export const deviceReviews = pgTable("device_reviews", {
   affiliateLinkId: integer("affiliate_link_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// ===== LINE配信ログ系 =====
+
+/** LINEステップ配信ログテーブル */
+export const lineDeliveryLogs = pgTable("line_delivery_logs", {
+  id: serial("id").primaryKey(),
+  subscriberId: integer("subscriber_id").notNull(),
+  stepDay: integer("step_day").notNull(),
+  messageTitle: varchar("message_title", { length: 200 }).notNull(),
+  deliveredAt: timestamp("delivered_at").defaultNow().notNull(),
+  status: varchar("status", { length: 20 }).default("sent").notNull(),
+});
+
+// ===== レポート系 =====
+
+/** SNS週次レポートテーブル */
+export const snsWeeklyReports = pgTable("sns_weekly_reports", {
+  id: serial("id").primaryKey(),
+  weekStart: timestamp("week_start").notNull(),
+  weekEnd: timestamp("week_end").notNull(),
+  reportData: jsonb("report_data").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/** note売上スナップショットテーブル */
+export const noteSalesSnapshots = pgTable("note_sales_snapshots", {
+  id: serial("id").primaryKey(),
+  noteArticleId: integer("note_article_id").notNull(),
+  salesCount: integer("sales_count").default(0),
+  revenue: integer("revenue").default(0),
+  snapshotDate: timestamp("snapshot_date").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
