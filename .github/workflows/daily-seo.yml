@@ -4,10 +4,25 @@ on:
   schedule:
     - cron: "0 0 * * *" # 毎日UTC 0:00 (JST 9:00)
   workflow_dispatch:
+    inputs:
+      keyword:
+        description: "記事のメインキーワード"
+        required: false
+        default: "Apex Legends 初心者 始め方"
+      category:
+        description: "カテゴリ (beginner/aim/positioning/ranking/character/weapon)"
+        required: false
+        default: "beginner"
+      rank:
+        description: "ターゲットランク帯（任意）"
+        required: false
+        default: ""
 
 jobs:
-  seo-check:
+  generate-article:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +33,18 @@ jobs:
 
       - run: npm ci
 
-      - name: SEO順位チェック & アナリティクス取得
-        run: echo "TODO - SEO rank check and analytics collection"
+      - name: 攻略記事を自動生成
+        run: npx tsx src/agents/content-writer/run.ts
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ARTICLE_KEYWORD: ${{ github.event.inputs.keyword || 'Apex Legends 初心者 始め方' }}
+          ARTICLE_CATEGORY: ${{ github.event.inputs.category || 'beginner' }}
+          ARTICLE_RANK: ${{ github.event.inputs.rank || '' }}
+
+      - name: 生成記事をコミット & プッシュ
+        run: |
+          git config user.name "litwill-garden[bot]"
+          git config user.email "bot@litwill-garden.com"
+          git add src/content/articles/
+          git diff --staged --quiet || git commit -m "feat: AI記事自動生成 - $(date +'%Y-%m-%d')"
+          git push
