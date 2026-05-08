@@ -1,124 +1,139 @@
 import type { Metadata } from "next";
-import { createMetadata } from "@/lib/seo/metadata";
 import { brand } from "@/config/brand";
-import { Breadcrumb } from "@/components/seo/breadcrumb";
 
-export const metadata: Metadata = createMetadata({
+export const metadata: Metadata = {
   title: "チーム紹介",
-  description: `${brand.name} 編集部のチーム紹介。Apex Legends 攻略メディアの運営チームをご紹介します。`,
-  path: "/team",
-});
+  description: `${brand.name} 編集部のチーム紹介。心理テスト・占い・運命鑑定メディアの運営チームをご紹介します。`,
+};
 
 export default function TeamPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <Breadcrumb items={[{ label: "チーム紹介" }]} />
+    <div
+      style={{ background: "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)", minHeight: "100vh" }}
+      className="py-16 px-4"
+    >
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-purple-300 text-xs tracking-[0.4em] uppercase mb-4">✦ TEAM ✦</p>
+          <h1 className="text-3xl md:text-4xl font-black text-white mb-4">チーム紹介</h1>
+        </div>
 
-      <header className="mb-10">
-        <h1 className="font-heading text-3xl font-black md:text-4xl">
-          チーム紹介
-        </h1>
-      </header>
-
-      {/* チーム概要 */}
-      <section className="mb-12">
-        <div className="rounded-xl border border-bg-elevated bg-bg-card p-6 md:p-8">
-          <h2 className="mb-4 font-heading text-2xl font-black text-primary">
-            {brand.name} について
-          </h2>
-          <div className="space-y-4 text-text-muted">
+        {/* About */}
+        <div
+          style={{
+            background: "rgba(91,33,182,0.12)",
+            border: "1px solid rgba(167,139,250,0.2)",
+            borderRadius: "1.5rem",
+            padding: "2rem",
+            marginBottom: "2rem",
+          }}
+        >
+          <h2 className="text-purple-200 font-bold mb-4">✦ {brand.name} について</h2>
+          <div className="space-y-4 text-purple-100 text-sm leading-relaxed">
             <p>
-              {brand.name}{" "}
-              は、Apex Legends の初心者から中級者を対象とした上達メディアです。
-              エイム練習・立ち回り・キャラ選び・ランク攻略を、
-              データと実践に基づいて体系的に解説しています。
+              {brand.name} は、心理テスト・性格診断・占いを通じて、
+              あなたが「本当の自分」に出会えるメディアです。
             </p>
             <p>
-              私たちのコンテンツは、実際のランクマッチ経験とプロシーンの分析をもとに作成されています。
-              「読んで、練習して、ランクが上がる」をモットーに、
-              あなたのApexライフをサポートします。
+              数字（数秘術）・星（星座・月星座）・タロット・心理学の4つの視点から、
+              あなたの内側に眠る可能性を照らし出します。
+              自己理解を深め、恋愛・仕事・人生においてより自分らしく輝けるようサポートします。
             </p>
             <p>
-              運営は <strong className="text-text">{brand.operator}</strong>{" "}
-              が担当しています。
+              運営は <strong className="text-purple-200">{brand.operator}</strong> が担当しています。
               ご質問やフィードバックがございましたら、お気軽にお問い合わせください。
             </p>
           </div>
         </div>
-      </section>
 
-      {/* 運営者情報 */}
-      <section id="operator" className="mb-12">
-        <h2 className="mb-4 font-heading text-xl font-black">運営者情報</h2>
-        <div className="rounded-xl border border-primary/30 bg-bg-card p-6 md:p-8">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary/20">
-              <span className="font-heading text-2xl font-black text-primary">
+        {/* Operator */}
+        <div
+          id="operator"
+          style={{
+            background: "rgba(91,33,182,0.12)",
+            border: "1px solid rgba(167,139,250,0.2)",
+            borderRadius: "1.5rem",
+            padding: "2rem",
+            marginBottom: "2rem",
+          }}
+        >
+          <h2 className="text-purple-200 font-bold mb-6">✦ 運営者情報</h2>
+          <div className="flex flex-col sm:flex-row gap-5 sm:items-start">
+            <div
+              style={{
+                width: "5rem",
+                height: "5rem",
+                borderRadius: "9999px",
+                background: "linear-gradient(135deg, rgba(109,40,217,0.4), rgba(79,70,229,0.4))",
+                border: "1px solid rgba(167,139,250,0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "1.75rem",
+                  fontWeight: "900",
+                  background: "linear-gradient(135deg, #c084fc, #818cf8)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
                 {brand.owner.name.charAt(0)}
               </span>
             </div>
             <div>
-              <h3 className="font-heading text-xl font-bold text-text">
-                {brand.owner.name}
-              </h3>
-              <p className="mb-3 text-sm text-text-muted">
-                {brand.owner.role}
-              </p>
-              <div className="space-y-2 text-sm text-text-muted">
+              <h3 className="text-white font-black text-lg mb-1">{brand.owner.name}</h3>
+              <p className="text-purple-300 text-sm mb-3">{brand.owner.role}</p>
+              <div className="space-y-2 text-purple-100 text-sm leading-relaxed">
                 <p>
-                  {brand.name}{" "}
-                  の企画・運営を統括しています。
-                  Webメディアの立ち上げからコンテンツ制作、
-                  SEO戦略までトータルにプロデュースしています。
+                  {brand.name} の企画・運営を統括しています。
+                  Webメディアの立ち上げからコンテンツ制作、SEO戦略までトータルにプロデュースしています。
                 </p>
                 <p>
-                  ゲーム攻略コンテンツを通じて、プレイヤーの上達をサポートし、
-                  eスポーツコミュニティの発展に貢献することを目指しています。
+                  心理学・スピリチュアル・自己啓発の分野に深い関心を持ち、
+                  「自己理解が人生を豊かにする」という信念のもとサービスを運営しています。
                 </p>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* 編集方針 */}
-      <section className="mb-12">
-        <h2 className="mb-4 font-heading text-xl font-black">編集方針</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-bg-elevated bg-bg-card p-5">
-            <h3 className="mb-2 font-heading font-bold text-primary">
-              データに基づく解説
-            </h3>
-            <p className="text-sm text-text-muted">
-              感覚的なアドバイスではなく、ピック率・勝率・DPSなどの客観的データに基づいて攻略情報を提供します。
-            </p>
-          </div>
-          <div className="rounded-xl border border-bg-elevated bg-bg-card p-5">
-            <h3 className="mb-2 font-heading font-bold text-secondary">
-              初心者にもわかりやすく
-            </h3>
-            <p className="text-sm text-text-muted">
-              専門用語には解説を添え、段階的に学べるコンテンツ構成を心がけています。
-            </p>
-          </div>
-          <div className="rounded-xl border border-bg-elevated bg-bg-card p-5">
-            <h3 className="mb-2 font-heading font-bold text-accent">
-              最新メタへの対応
-            </h3>
-            <p className="text-sm text-text-muted">
-              パッチノートやプロシーンの動向を追い、ティアリストや攻略情報を迅速に更新します。
-            </p>
-          </div>
-          <div className="rounded-xl border border-bg-elevated bg-bg-card p-5">
-            <h3 className="mb-2 font-heading font-bold">
-              実践重視のアドバイス
-            </h3>
-            <p className="text-sm text-text-muted">
-              理論だけでなく、実際のランクマッチで使えるテクニックとTipsを重視しています。
-            </p>
+        {/* Editorial policy */}
+        <div
+          style={{
+            background: "rgba(91,33,182,0.12)",
+            border: "1px solid rgba(167,139,250,0.2)",
+            borderRadius: "1.5rem",
+            padding: "2rem",
+          }}
+        >
+          <h2 className="text-purple-200 font-bold mb-5">✦ 編集方針</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              { label: "心理学ベースの分析", desc: "感覚的なアドバイスではなく、心理学の知見をベースに分析します。" },
+              { label: "温かく寄り添う言葉", desc: "読者が自分を責めるのではなく、自分を好きになれる表現を心がけます。" },
+              { label: "エンタメとして明示", desc: "占い・スピリチュアル系コンテンツはエンターテインメントとして明記します。" },
+              { label: "継続的なアップデート", desc: "コンテンツを定期的に見直し、最新の知見を反映します。" },
+            ].map((policy, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "rgba(109,40,217,0.15)",
+                  border: "1px solid rgba(167,139,250,0.2)",
+                  borderRadius: "0.75rem",
+                  padding: "1.25rem",
+                }}
+              >
+                <h3 className="text-purple-200 font-bold text-sm mb-2">{policy.label}</h3>
+                <p className="text-purple-300 text-xs leading-relaxed">{policy.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
