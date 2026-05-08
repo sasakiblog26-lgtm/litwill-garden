@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
-import { categorySeo } from "@/config/seo";
 import { weaponCategories } from "@/config/game";
 import { Breadcrumb } from "@/components/seo/breadcrumb";
 import { WeaponCard } from "@/components/game/weapon-card";
@@ -8,8 +7,8 @@ import { LineCta } from "@/components/cta/line-cta";
 import { weapons } from "@/content/game-data/weapons";
 
 export const metadata: Metadata = createMetadata({
-  title: categorySeo.weapons.title,
-  description: categorySeo.weapons.description,
+  title: "武器攻略",
+  description: "全武器のダメージ・リコイル・おすすめアタッチメントを詳細解説",
   path: "/weapons",
 });
 

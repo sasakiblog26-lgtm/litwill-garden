@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
-import { categorySeo } from "@/config/seo";
 import { Breadcrumb } from "@/components/seo/breadcrumb";
 import { Badge } from "@/components/ui/badge";
 import { LineCta } from "@/components/cta/line-cta";
 
 export const metadata: Metadata = createMetadata({
-  title: categorySeo.ranking.title,
-  description: categorySeo.ranking.description,
+  title: "ランク攻略",
+  description: "ランク別の立ち回りと上達のコツ",
   path: "/ranking",
 });
 

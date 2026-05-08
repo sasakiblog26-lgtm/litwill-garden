@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
-import { categorySeo } from "@/config/seo";
 import { legendClasses, tiers, difficulties } from "@/config/game";
 import { Breadcrumb } from "@/components/seo/breadcrumb";
 import { CharacterCard } from "@/components/game/character-card";
@@ -9,8 +8,8 @@ import { LineCta } from "@/components/cta/line-cta";
 import { legends } from "@/content/game-data/legends";
 
 export const metadata: Metadata = createMetadata({
-  title: categorySeo.characters.title,
-  description: categorySeo.characters.description,
+  title: "キャラクター攻略",
+  description: "全レジェンドのアビリティ解説・立ち回り・おすすめ武器を徹底攻略",
   path: "/characters",
 });
 

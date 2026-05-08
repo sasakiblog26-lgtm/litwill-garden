@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
-import { categorySeo } from "@/config/seo";
 import { Breadcrumb } from "@/components/seo/breadcrumb";
 import { Badge } from "@/components/ui/badge";
 import { LineCta } from "@/components/cta/line-cta";
 import { proSettings } from "@/content/game-data/pro-settings";
 
 export const metadata: Metadata = createMetadata({
-  title: categorySeo.settings.title,
-  description: categorySeo.settings.description,
+  title: "設定・デバイス",
+  description: "プレイヤーの設定・デバイス環境を徹底調査",
   path: "/settings",
 });
 

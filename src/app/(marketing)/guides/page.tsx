@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
-import { categorySeo } from "@/config/seo";
 import { Breadcrumb } from "@/components/seo/breadcrumb";
 import { ArticleCard } from "@/components/article/article-card";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = createMetadata({
-  title: categorySeo.guides.title,
-  description: categorySeo.guides.description,
+  title: "記事・コラム",
+  description: "心理学・自己理解・人間関係に関する読み応えあるコラム記事",
   path: "/guides",
 });
 
