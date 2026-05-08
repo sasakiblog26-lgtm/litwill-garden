@@ -12,7 +12,7 @@
     },
     {
       "path": "/api/cron/weekly-broadcast",
-      "schedule": "0 10 * 0"
+      "schedule": "0 10 * * 0"
     }
   ],
   "headers": [
