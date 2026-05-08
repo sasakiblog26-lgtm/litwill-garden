@@ -5,23 +5,23 @@ export const brand = {
   url: "https://litwill-garden.com",
   operator: "Litwill Garden 編集部",
   description:
-    "心理テスト・性格診断・占いを通じて、自分らしさを発見するメディア。科学的な心理学をベースに、あなたの内面を楽しく、深く掘り下げます。",
-  tagline: "心理×占いで、自分をもっと深く知る",
-  target: "10〜30代女性中心。自己理解・恋愛・人間関係に関心のある方",
+    "心理学をベースに、性格診断・恋愛分析・占いを通じて自分らしさを発見する自己理解メディア。",
+  tagline: "心理学と占いで、自分をもっと深く知る",
+  target: "自己理解・恋愛・人間関係・占いに関心のある10〜30代を中心とした読者",
   owner: {
     name: "佐々木弘雅",
     role: "Webプロデューサー",
   },
   colors: {
-    primary: "#84CC16",
-    secondary: "#22D3EE",
-    accent: "#F97316",
-    background: "#18181B",
-    text: "#FAFAFA",
+    primary: "#7C6BA8",
+    secondary: "#86A8D8",
+    accent: "#C99AC1",
+    background: "#F5F0FA",
+    text: "#3D3158",
   },
   fonts: {
-    heading: "Rajdhani",
+    display: "Cormorant Garamond",
+    heading: "Shippori Mincho",
     body: "Noto Sans JP",
-    mono: "JetBrains Mono",
   },
 } as const;

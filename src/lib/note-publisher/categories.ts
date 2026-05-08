@@ -18,6 +18,7 @@ export interface NoteCategory {
  * Price tier constants for note.com articles.
  *
  * - `free` — 無料記事（集客用）
+ * - `starter` — 入門有料記事 500円（0→1達成用エントリー価格）
  * - `standard` — 有料記事 980円
  * - `premium` — 有料記事 2,980円
  * - `highEnd` — 高単価記事 4,980円
@@ -25,6 +26,7 @@ export interface NoteCategory {
  */
 export const NOTE_PRICE_TIERS = {
   free: 0,
+  starter: 500,
   standard: 980,
   premium: 2980,
   highEnd: 4980,
@@ -61,6 +63,24 @@ export const NOTE_ARTICLE_CATEGORIES: NoteCategory[] = [
     price: NOTE_PRICE_TIERS.free,
     description:
       "射撃訓練場を最大限活用するための練習メニューを紹介。エイム力を効率的に向上させましょう。",
+    isMagazine: false,
+  },
+
+  // ===== 入門有料記事 500円（0→1達成用エントリー）=====
+  {
+    title: "【保存版】Apex初心者がブロンズ脱出するための最速ロードマップ",
+    type: "rank-guide",
+    price: NOTE_PRICE_TIERS.starter,
+    description:
+      "ダイヤ到達プレイヤーが教える、ブロンズからシルバー・ゴールドまで最短で駆け上がるための実践ロードマップ。最初の1ランクアップに必要な全知識をこの1冊に凝縮。",
+    isMagazine: false,
+  },
+  {
+    title: "Apex初心者が最初の1週間でやるべきこと完全ガイド",
+    type: "beginner-guide",
+    price: NOTE_PRICE_TIERS.starter,
+    description:
+      "ゲームを始めたばかりの初心者が、最初の1週間でやるべきことを日別に解説。キャラ選び・操作設定・練習方法まで全て網羅。",
     isMagazine: false,
   },
 

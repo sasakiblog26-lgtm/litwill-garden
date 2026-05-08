@@ -10,6 +10,7 @@
 import { isNull } from "drizzle-orm";
 
 import { lineSubscribers, articles } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import { sendMulticast, createFlexMessage } from "./client";
 import type { Subscriber } from "./segments";
 
@@ -42,7 +43,7 @@ export type WeeklyDigest = {
  * @param db - Drizzle ORM database instance.
  * @returns A `WeeklyDigest` object.
  */
-export async function generateWeeklyDigest(db: any): Promise<WeeklyDigest> {
+export async function generateWeeklyDigest(db: AppDb): Promise<WeeklyDigest> {
   const { gte, desc } = await import("drizzle-orm");
 
   const now = new Date();
@@ -70,7 +71,10 @@ export async function generateWeeklyDigest(db: any): Promise<WeeklyDigest> {
   return {
     weekStart,
     weekEnd,
-    topArticles: recentArticles,
+    topArticles: recentArticles.map((article) => ({
+      ...article,
+      excerpt: article.excerpt ?? "",
+    })),
     subscriberCount: activeSubscribers.length,
   };
 }
@@ -83,7 +87,7 @@ export async function generateWeeklyDigest(db: any): Promise<WeeklyDigest> {
  * @returns The number of subscribers the digest was sent to.
  */
 export async function sendWeeklyBroadcast(
-  db: any,
+  db: AppDb,
   digest: WeeklyDigest,
 ): Promise<number> {
   if (digest.topArticles.length === 0) {

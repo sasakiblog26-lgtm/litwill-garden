@@ -8,6 +8,7 @@
 
 import { eq, gte, lte, and, desc, sql } from "drizzle-orm";
 import { noteArticles, noteSalesLogs } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import { fetchAllSalesData } from "./client";
 
 // ---------------------------------------------------------------------------
@@ -45,7 +46,7 @@ export interface TopArticle {
  * @returns The number of articles synced and the total revenue across all articles.
  */
 export async function syncSalesData(
-  db: any,
+  db: AppDb,
 ): Promise<{ synced: number; totalRevenue: number }> {
   const allSales = await fetchAllSalesData();
 
@@ -113,7 +114,7 @@ export async function syncSalesData(
  * @returns A complete revenue report with totals and breakdowns.
  */
 export async function getRevenueReport(
-  db: any,
+  db: AppDb,
   startDate: Date,
   endDate: Date,
 ): Promise<RevenueReport> {
@@ -184,7 +185,7 @@ export async function getRevenueReport(
  * @returns An array of top-selling article records.
  */
 export async function getTopSellingArticles(
-  db: any,
+  db: AppDb,
   limit: number = 10,
 ): Promise<TopArticle[]> {
   const rows = await db
@@ -200,7 +201,7 @@ export async function getTopSellingArticles(
     .orderBy(desc(noteArticles.salesCount))
     .limit(limit);
 
-  return rows.map((row: any) => ({
+  return rows.map((row) => ({
     noteArticleId: row.noteArticleId,
     title: row.title,
     price: row.price ?? 0,
@@ -218,7 +219,7 @@ export async function getTopSellingArticles(
  * @param db - Drizzle ORM database instance.
  * @returns The number of current magazine subscribers.
  */
-export async function getMagazineSubscriberCount(db: any): Promise<number> {
+export async function getMagazineSubscriberCount(db: AppDb): Promise<number> {
   const [result] = await db
     .select({
       count: sql<number>`coalesce(sum(${noteArticles.salesCount}), 0)`,

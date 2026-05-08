@@ -10,6 +10,7 @@
 import { eq, and, lte, isNull } from "drizzle-orm";
 
 import { lineSubscribers } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import { sendPushMessage, createTextMessage, createFlexMessage } from "./client";
 import type { Segment, Subscriber } from "./segments";
 
@@ -231,7 +232,7 @@ export function getNextStepMessage(
  * @param db - Drizzle ORM database instance.
  * @returns The number of messages successfully sent.
  */
-export async function executeStepDelivery(db: any): Promise<number> {
+export async function executeStepDelivery(db: AppDb): Promise<number> {
   const now = new Date();
   const nextInterval = 24 * 60 * 60 * 1000; // 1 day
   let sentCount = 0;

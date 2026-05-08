@@ -11,6 +11,16 @@ import {
   handleWebhookEvent,
   type LineWebhookBody,
 } from "@/lib/line/webhook";
+import { getDb } from "@/lib/db";
+import { lineSubscribers } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
+import type { LineSegment } from "@/lib/line/segments";
+
+const segmentMap: Record<LineSegment, "beginner" | "silver-gold" | "platinum-above"> = {
+  beginner: "beginner",
+  intermediate: "silver-gold",
+  advanced: "platinum-above",
+};
 
 /**
  * POST /api/line/webhook
@@ -38,16 +48,38 @@ export async function POST(request: Request) {
       webhookBody.events.map((event) =>
         handleWebhookEvent(event, {
           onNewSubscriber: async (userId) => {
-            // TODO: DBにLINE登録者を保存
-            console.log(`[LINE] New subscriber: ${userId}`);
+            await getDb()
+              .insert(lineSubscribers)
+              .values({
+                userId,
+                segment: "beginner",
+                step: 0,
+                unsubscribedAt: null,
+              })
+              .onConflictDoUpdate({
+                target: lineSubscribers.userId,
+                set: {
+                  unsubscribedAt: null,
+                  nextDeliveryAt: null,
+                },
+              });
           },
           onSegmentSelected: async (userId, segment) => {
-            // TODO: DBのセグメントを更新
-            console.log(`[LINE] Segment selected: ${userId} -> ${segment}`);
+            await getDb()
+              .update(lineSubscribers)
+              .set({
+                segment: segmentMap[segment],
+                rankTier: segment,
+                step: 0,
+                nextDeliveryAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+              })
+              .where(eq(lineSubscribers.userId, userId));
           },
           onUnsubscribe: async (userId) => {
-            // TODO: DBのisActiveをfalseに更新
-            console.log(`[LINE] Unsubscribed: ${userId}`);
+            await getDb()
+              .update(lineSubscribers)
+              .set({ unsubscribedAt: new Date(), nextDeliveryAt: null })
+              .where(eq(lineSubscribers.userId, userId));
           },
         })
       )

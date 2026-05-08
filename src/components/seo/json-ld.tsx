@@ -49,7 +49,7 @@ export function articleJsonLd({
     "@type": "Article",
     headline: title,
     description,
-    url: `${brand.url}/guides/${slug}`,
+    url: `${brand.url}/articles/${slug}`,
     datePublished: publishedAt,
     dateModified: updatedAt ?? publishedAt,
     author: {

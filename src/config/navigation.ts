@@ -7,41 +7,44 @@ export type NavItem = {
 
 export const mainNavigation: NavItem[] = [
   {
-    label: "心理テスト",
-    href: "/tests",
+    label: "心理診断",
+    href: "/tools",
     children: [
-      { label: "性格診断", href: "/tests?category=personality" },
-      { label: "恋愛診断", href: "/tests?category=love" },
-      { label: "強み診断", href: "/tests?category=strengths" },
+      { label: "MBTI診断", href: "/tools/mbti" },
+      { label: "相性診断", href: "/tools/compatibility" },
+      { label: "数秘術", href: "/tools/numerology" },
     ],
   },
   {
     label: "占い",
     href: "/fortune",
     children: [
-      { label: "星座占い", href: "/fortune?category=horoscope" },
-      { label: "数秘術", href: "/fortune?category=numerology" },
-      { label: "タロット", href: "/fortune?category=tarot" },
+      { label: "占いトップ", href: "/fortune" },
+      { label: "鑑定を受ける", href: "/fortune/reading" },
+      { label: "診断結果", href: "/fortune/result" },
     ],
   },
   {
-    label: "記事・コラム",
-    href: "/articles",
+    label: "読みもの",
+    href: "/articles/self-understanding-guide",
   },
   {
-    label: "ツール",
-    href: "/tools",
+    label: "お問い合わせ",
+    href: "/contact",
   },
 ];
 
 export const footerNavigation = {
   content: [
-    { label: "心理テスト", href: "/tests" },
+    { label: "心理診断", href: "/tools" },
     { label: "占い", href: "/fortune" },
-    { label: "記事・コラム", href: "/articles" },
+    { label: "読みもの", href: "/articles/self-understanding-guide" },
   ],
   tools: [
-    { label: "診断ツール", href: "/tools" },
+    { label: "MBTI診断", href: "/tools/mbti" },
+    { label: "相性診断", href: "/tools/compatibility" },
+    { label: "数秘術", href: "/tools/numerology" },
+    { label: "星座占い", href: "/tools/zodiac" },
   ],
   about: [
     { label: "チーム紹介", href: "/team" },

@@ -11,6 +11,7 @@ import { eq } from "drizzle-orm";
 import { createHmac } from "crypto";
 
 import { lineSubscribers } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import { replyMessage, createTextMessage } from "./client";
 import { SEGMENT_CONFIG, assignSegment, createRankQuestionMessage } from "./segments";
 
@@ -76,7 +77,7 @@ export function verifySignature(
  * @param event - The webhook event to process.
  */
 export async function handleWebhookEvent(
-  db: any,
+  db: AppDb,
   event: LineWebhookEvent,
 ): Promise<void> {
   const userId = event.source.userId;
@@ -111,7 +112,7 @@ export async function handleWebhookEvent(
  * Handles a follow event — registers the new subscriber and asks for rank.
  */
 async function handleFollow(
-  db: any,
+  db: AppDb,
   userId: string,
   replyToken?: string,
 ): Promise<void> {
@@ -148,7 +149,7 @@ async function handleFollow(
 /**
  * Handles an unfollow event — marks the subscriber as unsubscribed.
  */
-async function handleUnfollow(db: any, userId: string): Promise<void> {
+async function handleUnfollow(db: AppDb, userId: string): Promise<void> {
   await db
     .update(lineSubscribers)
     .set({ unsubscribedAt: new Date() })
@@ -162,7 +163,7 @@ async function handleUnfollow(db: any, userId: string): Promise<void> {
  * Otherwise, replies with a default help message.
  */
 async function handleTextMessage(
-  db: any,
+  db: AppDb,
   userId: string,
   text: string,
   replyToken?: string,

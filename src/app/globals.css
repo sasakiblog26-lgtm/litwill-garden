@@ -1,96 +1,95 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand Colors */
-  --color-primary: #84CC16;
-  --color-primary-dark: #65A30D;
-  --color-primary-light: #A3E635;
-  --color-secondary: #22D3EE;
-  --color-secondary-dark: #0891B2;
-  --color-secondary-light: #67E8F9;
-  --color-accent: #F97316;
-  --color-accent-dark: #EA580C;
-  --color-accent-light: #FB923C;
+  /* Brand Colors — Lavender × Crystal × Moonstone */
+  --color-primary:        #9B8BBF;
+  --color-primary-light:  #C0B3DC;
+  --color-primary-dark:   #7B6AA8;
+  --color-secondary:      #C8D8F0;
+  --color-secondary-dark: #8EB0D8;
+  --color-secondary-light:#E8F0FA;
+  --color-accent:         #E8D0E0;
+  --color-accent-dark:    #C8A0C0;
+  --color-accent-light:   #F5E8F0;
+  --color-gold:           #D4C090;
 
-  /* Background */
-  --color-bg: #18181B;
-  --color-bg-card: #27272A;
-  --color-bg-elevated: #3F3F46;
+  /* Surfaces */
+  --color-bg:             #FFFFFF;
+  --color-bg-soft:        #F8F5FC;
+  --color-bg-card:        #F0EAF8;
+  --color-bg-elevated:    #E4DAF2;
+  --color-bg-deep:        #2D2448;
+  --color-bg-night:       #1A1430;
 
   /* Text */
-  --color-text: #FAFAFA;
-  --color-text-muted: #A1A1AA;
-  --color-text-dim: #71717A;
-
-  /* Tier Colors */
-  --color-tier-s: #F59E0B;
-  --color-tier-a: #EF4444;
-  --color-tier-b: #8B5CF6;
-  --color-tier-c: #3B82F6;
-  --color-tier-d: #6B7280;
+  --color-text:           #2D2448;
+  --color-text-muted:     #5E4D8A;
+  --color-text-dim:       #9A95B4;
+  --color-text-on-dark:   #F0EAF8;
 
   /* Fonts */
-  --font-sans: "Noto Sans JP", sans-serif;
-  --font-heading: "Rajdhani", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  --font-heading: 'Shippori Mincho', serif;
+  --font-sans:    'Noto Sans JP', sans-serif;
+  --font-accent:  'Cormorant Garamond', serif;
 
-  /* Spacing */
-  --radius-card: 0.75rem;
-  --radius-button: 0.5rem;
+  /* Border Radius */
+  --radius-sm:     6px;
+  --radius-md:     12px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
+  --radius-full:   9999px;
+  --radius-card:   20px;
+  --radius-button: 28px;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+
+  --lg-glow-lavender: 0 0 20px rgba(155, 139, 191, 0.25);
+  --lg-glow-crystal:  0 0 20px rgba(200, 184, 224, 0.35);
+  --lg-glow-moon:     0 0 24px rgba(200, 216, 240, 0.30);
+  --lg-glow-rose:     0 0 20px rgba(232, 208, 224, 0.35);
+  --lg-glow-gold:     0 0 16px rgba(212, 192, 144, 0.30);
+
+  --lg-border:        rgba(155, 139, 191, 0.12);
+  --lg-border-hover:  rgba(155, 139, 191, 0.30);
 }
 
 body {
-  background-color: #18181B;
-  color: #FAFAFA;
-  font-family: "Noto Sans JP", sans-serif;
-  font-weight: 500;
+  background: linear-gradient(170deg, #ffffff 0%, #F0EAF8 100%);
+  color: #2D2448;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Rajdhani", "Noto Sans JP", sans-serif;
-  font-weight: 900;
+  font-family: 'Shippori Mincho', serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
-/* Gaming glow effects */
-.glow-primary {
-  box-shadow: 0 0 20px rgba(132, 204, 22, 0.3);
+::selection {
+  background: rgba(155, 139, 191, 0.25);
+  color: #2D2448;
 }
 
-.glow-secondary {
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+.glow-primary   { box-shadow: var(--lg-glow-lavender); }
+.glow-secondary { box-shadow: var(--lg-glow-moon); }
+.glow-accent    { box-shadow: var(--lg-glow-rose); }
+.glow-gold      { box-shadow: var(--lg-glow-gold); }
+
+.celestial-panel {
+  border: 1px solid var(--lg-border);
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,234,248,0.70));
+  box-shadow: 0 8px 32px rgba(155, 139, 191, 0.12);
+  backdrop-filter: blur(16px);
 }
 
-.glow-accent {
-  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
-}
-
-/* Tier badge styles */
-.tier-s { background-color: #F59E0B; color: #18181B; }
-.tier-a { background-color: #EF4444; color: #FAFAFA; }
-.tier-b { background-color: #8B5CF6; color: #FAFAFA; }
-.tier-c { background-color: #3B82F6; color: #FAFAFA; }
-.tier-d { background-color: #6B7280; color: #FAFAFA; }
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #18181B;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #3F3F46;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #52525B;
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #F8F5FC; }
+::-webkit-scrollbar-thumb { background: #C0B3DC; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #9B8BBF; }

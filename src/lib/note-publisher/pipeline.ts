@@ -8,6 +8,7 @@
 
 import { eq } from "drizzle-orm";
 import { articles, noteArticles } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import { publishToNote } from "./client";
 import { NOTE_ARTICLE_CATEGORIES, NOTE_PRICE_TIERS } from "./categories";
 import type { NoteCategory } from "./categories";
@@ -76,7 +77,7 @@ function findNoteCategory(
  * @throws {Error} If the article is not found in the database.
  */
 export async function publishArticleToNote(
-  db: any,
+  db: AppDb,
   articleId: number,
   priceCategory: string,
 ): Promise<{ noteArticleId: number; url: string }> {
@@ -151,7 +152,7 @@ export async function publishArticleToNote(
  * @returns The new `noteArticleId` and the public note.com `url`.
  */
 export async function publishMagazineEntry(
-  db: any,
+  db: AppDb,
   content: string,
   title: string,
 ): Promise<{ noteArticleId: number; url: string }> {
@@ -212,7 +213,7 @@ export async function publishMagazineEntry(
  * @param db - Drizzle ORM database instance.
  * @returns A revenue report covering the current month to date.
  */
-export async function syncAndReport(db: any): Promise<RevenueReport> {
+export async function syncAndReport(db: AppDb): Promise<RevenueReport> {
   // Sync latest sales data
   await syncSalesData(db);
 

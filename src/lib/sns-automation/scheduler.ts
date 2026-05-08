@@ -8,6 +8,7 @@
 
 import { eq, and, lte, gte, isNull } from "drizzle-orm";
 import { snsPosts } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import { postToTwitter, generateArticlePromoPost, HASHTAG_SET } from "./twitter";
 import { postToTikTok } from "./tiktok";
 import type { TikTokPostData } from "./tiktok";
@@ -73,7 +74,7 @@ export interface ScheduledPost {
  * @returns The ID of the newly created post record
  */
 export async function schedulePost(
-  db: any,
+  db: AppDb,
   post: SchedulePostInput
 ): Promise<number> {
   const result = await db
@@ -104,7 +105,7 @@ export async function schedulePost(
  * @returns Array of scheduled posts matching the criteria
  */
 export async function getScheduledPosts(
-  db: any,
+  db: AppDb,
   platform: string,
   from: Date,
   to: Date
@@ -135,7 +136,7 @@ export async function getScheduledPosts(
  * @returns Summary of how many posts succeeded and failed
  */
 export async function executeScheduledPosts(
-  db: any
+  db: AppDb
 ): Promise<{ posted: number; failed: number }> {
   const now = new Date();
 
@@ -216,7 +217,7 @@ export async function executeScheduledPosts(
  * @param article.excerpt - Short excerpt/summary of the article
  */
 export async function scheduleArticlePromo(
-  db: any,
+  db: AppDb,
   article: { id: number; title: string; url: string; excerpt: string }
 ): Promise<void> {
   const promoContent = generateArticlePromoPost({

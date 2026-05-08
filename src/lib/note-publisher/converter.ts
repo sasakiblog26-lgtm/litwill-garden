@@ -124,7 +124,7 @@ export function generateNotePreview(
 
   // Try to split at a paragraph boundary (double newline)
   const paragraphs = content.split(/\n\n+/);
-  let previewParts: string[] = [];
+  const previewParts: string[] = [];
   let currentLength = 0;
 
   for (const paragraph of paragraphs) {

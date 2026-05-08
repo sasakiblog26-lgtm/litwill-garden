@@ -7,6 +7,7 @@
 
 import { eq, and, gte, lte, isNotNull } from "drizzle-orm";
 import { snsPosts, snsWeeklyReports } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -116,7 +117,7 @@ export async function fetchTwitterEngagement(
  *
  * @param db - Drizzle ORM database instance
  */
-export async function fetchAllPlatformEngagement(db: any): Promise<void> {
+export async function fetchAllPlatformEngagement(db: AppDb): Promise<void> {
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -180,7 +181,7 @@ export async function fetchAllPlatformEngagement(db: any): Promise<void> {
  * @returns The weekly report with aggregated metrics and summary
  */
 export async function generateWeeklyReport(
-  db: any,
+  db: AppDb,
   platform: string
 ): Promise<WeeklyReport> {
   const weekEnd = new Date();
@@ -258,7 +259,7 @@ export async function generateWeeklyReport(
  * @param report - The weekly report to persist
  */
 export async function saveWeeklyReport(
-  db: any,
+  db: AppDb,
   report: WeeklyReport
 ): Promise<void> {
   await db.insert(snsWeeklyReports).values({

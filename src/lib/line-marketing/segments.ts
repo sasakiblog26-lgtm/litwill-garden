@@ -10,6 +10,7 @@
 import { eq } from "drizzle-orm";
 
 import { lineSubscribers } from "@/lib/db/schema";
+import type { AppDb } from "@/lib/db";
 import type { LineMessage } from "./client";
 
 // ---------------------------------------------------------------------------
@@ -70,7 +71,7 @@ export const SEGMENT_CONFIG: Record<string, Segment> = {
  * @throws If `rankChoice` does not match any known segment.
  */
 export async function assignSegment(
-  db: any,
+  db: AppDb,
   userId: string,
   rankChoice: string,
 ): Promise<Segment> {
@@ -103,7 +104,7 @@ export async function assignSegment(
  * @returns Array of `Subscriber` records.
  */
 export async function getSubscribersBySegment(
-  db: any,
+  db: AppDb,
   segment: Segment,
 ): Promise<Subscriber[]> {
   const { and, isNull } = await import("drizzle-orm");
@@ -136,7 +137,7 @@ export function createRankQuestionMessage(): LineMessage {
     // NOTE: The quick-reply payload is attached as a top-level property.
     // LINE SDK expects `quickReply` alongside `type`/`text`, which is
     // compatible with our `LineMessage` type via structural typing.
-    ...(({
+    ...({
       quickReply: {
         items: Object.keys(SEGMENT_CONFIG).map((label) => ({
           type: "action",
@@ -147,6 +148,6 @@ export function createRankQuestionMessage(): LineMessage {
           },
         })),
       },
-    }) as any),
+    }),
   };
 }

@@ -32,6 +32,7 @@ export type LineMessage = {
   template?: object;
   altText?: string;
   contents?: object;
+  quickReply?: object;
 };
 
 // ---------------------------------------------------------------------------

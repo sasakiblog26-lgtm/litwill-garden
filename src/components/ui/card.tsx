@@ -2,7 +2,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Card container with a dark background, subtle border, and hover glow.
+ * Card container with a translucent celestial background and soft border.
  *
  * Compose with {@link CardHeader}, {@link CardTitle}, {@link CardDescription},
  * {@link CardContent}, and {@link CardFooter} for consistent structure.
@@ -24,9 +24,9 @@ const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     <div
       ref={ref}
       className={cn(
-        "rounded-xl border border-[#3F3F46] bg-[#27272A] text-[#FAFAFA]",
+        "celestial-panel rounded-xl text-[#3D3158]",
         "transition-all duration-200 ease-out",
-        "hover:border-[#84CC16]/40 hover:shadow-[0_0_20px_rgba(132,204,22,0.15)]",
+        "hover:border-[#7C6BA8]/45 hover:shadow-[0_20px_55px_rgba(80,64,120,0.16)]",
         className,
       )}
       {...props}
@@ -57,7 +57,7 @@ const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingEleme
     <h3
       ref={ref}
       className={cn(
-        "text-lg font-bold uppercase tracking-wide text-[#FAFAFA]",
+        "text-lg font-bold tracking-wide text-[#3D3158]",
         className,
       )}
       {...props}
@@ -73,7 +73,7 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-[#A1A1AA]", className)}
+      className={cn("text-sm text-[#6E6385]", className)}
       {...props}
     />
   ),
