@@ -2,48 +2,65 @@ import Link from "next/link";
 import { brand } from "@/config/brand";
 import { Button } from "@/components/ui/button";
 import { ArticleCard } from "@/components/article/article-card";
-import { TierList } from "@/components/game/tier-list";
 import { LineCta } from "@/components/cta/line-cta";
 import { YoutubeCta } from "@/components/cta/youtube-cta";
 import { JsonLd, websiteJsonLd } from "@/components/seo/json-ld";
-import { legendTierList } from "@/content/game-data/tier-list";
-import type { Tier } from "@/config/game";
 
-/** サンプル記事データ（プレースホルダー） */
-const sampleArticles = [
+const featuredTests = [
   {
-    title: "【初心者必見】Apex Legends を始めたらまずやるべき10のこと",
-    slug: "beginner-guide-top10",
+    title: "【5分でわかる】あなたの本当の性格タイプ診断",
+    slug: "personality-type-test",
     excerpt:
-      "Apexを始めたばかりの方向けに、設定・立ち回り・練習方法を体系的に解説します。",
-    category: "初心者ガイド",
-    publishedAt: "2026-03-25",
+      "16タイプの性格分類をもとに、あなたの思考パターン・行動傾向・強みを分析します。",
+    category: "性格診断",
+    publishedAt: "2026-04-20",
   },
   {
-    title: "シーズン22 最強キャラランキング｜メタ環境を徹底解説",
-    slug: "season22-meta-characters",
+    title: "恋愛スタイル診断｜あなたはどのタイプ？",
+    slug: "love-style-test",
     excerpt:
-      "最新シーズンのメタ環境を分析し、ランクマッチで勝てるキャラクターを紹介。",
-    category: "メタ分析",
-    publishedAt: "2026-03-20",
+      "心理学の愛着理論をベースに、あなたの恋愛パターンと相性のいい相手の特徴を診断。",
+    category: "恋愛診断",
+    publishedAt: "2026-04-15",
   },
   {
-    title: "エイム練習の完全ガイド｜毎日15分で劇的に上達する方法",
-    slug: "aim-training-complete-guide",
+    title: "強み診断｜才能を言語化して仕事・人生に活かす",
+    slug: "strengths-test",
     excerpt:
-      "Aim Lab・Kovaak'sを使った効率的な練習メニューと、意識すべきポイントを解説。",
-    category: "エイム練習",
-    publishedAt: "2026-03-15",
+      "あなたが自然と発揮できる強みを可視化。キャリアや人間関係への活かし方まで解説。",
+    category: "強み診断",
+    publishedAt: "2026-04-10",
+  },
+];
+
+const featuredFortune = [
+  {
+    title: "今月の星座占い｜12星座の運勢まとめ",
+    slug: "monthly-horoscope",
+    excerpt:
+      "5月の総合運・恋愛運・仕事運を星座別に詳しく読み解きます。",
+    category: "星座占い",
+    publishedAt: "2026-05-01",
+  },
+  {
+    title: "数秘術で知る｜あなたの本質数と人生テーマ",
+    slug: "numerology-life-path",
+    excerpt:
+      "生年月日から導き出す「ライフパスナンバー」で、あなたの本質と使命を読み解きます。",
+    category: "数秘術",
+    publishedAt: "2026-04-25",
+  },
+  {
+    title: "タロット占い入門｜カードが語るあなたへのメッセージ",
+    slug: "tarot-introduction",
+    excerpt:
+      "大アルカナ22枚の意味と読み方を解説。日常の選択や迷いへのヒントを見つけましょう。",
+    category: "タロット",
+    publishedAt: "2026-04-18",
   },
 ];
 
 export default function Home() {
-  // ティアリストデータをTierListコンポーネント用に変換
-  const tierListItems = Object.entries(legendTierList.tiers).flatMap(
-    ([tier, names]) =>
-      names.map((name) => ({ name, tier: tier as Tier }))
-  );
-
   return (
     <>
       <JsonLd data={websiteJsonLd()} />
@@ -56,64 +73,63 @@ export default function Home() {
             <span className="text-primary">{brand.tagline}</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-text-muted md:text-xl">
-            エイム練習・立ち回り・キャラ選び・ランク攻略をデータと実践に基づいて体系的に解説。
+            心理テスト・性格診断・占いを通じて、自分らしさを発見するメディア。
             <br className="hidden sm:block" />
-            初心者からダイヤを目指す中級者まで、あなたのランクアップを全力サポート。
+            科学的な心理学をベースに、あなたの内面を楽しく、深く掘り下げます。
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/guides">
+            <Link href="/tests">
               <Button variant="default" size="lg">
-                攻略ガイドを読む
+                心理テストを受ける
               </Button>
             </Link>
-            <Link href="/characters">
+            <Link href="/fortune">
               <Button variant="outline" size="lg">
-                キャラクター攻略
+                占いを見る
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 最新記事セクション */}
+      {/* 人気の心理テスト */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-8 flex items-end justify-between">
           <h2 className="font-heading text-2xl font-black md:text-3xl">
-            最新の攻略記事
+            人気の心理テスト
           </h2>
           <Link
-            href="/guides"
+            href="/tests"
             className="text-sm font-semibold text-primary hover:underline"
           >
             すべて見る &rarr;
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sampleArticles.map((article) => (
-            <ArticleCard key={article.slug} {...article} />
+          {featuredTests.map((item) => (
+            <ArticleCard key={item.slug} {...item} />
           ))}
         </div>
       </section>
 
-      {/* キャラティアリストプレビュー */}
+      {/* 占いコンテンツ */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-8 flex items-end justify-between">
-          <div>
-            <h2 className="font-heading text-2xl font-black md:text-3xl">
-              キャラクターティアリスト
-            </h2>
-            <p className="mt-1 text-sm text-text-muted">
-              {legendTierList.season} | 更新日: {legendTierList.lastUpdated}
-            </p>
-          </div>
+          <h2 className="font-heading text-2xl font-black md:text-3xl">
+            占い・スピリチュアル
+          </h2>
           <Link
-            href="/tier-list"
+            href="/fortune"
             className="text-sm font-semibold text-primary hover:underline"
           >
-            詳しく見る &rarr;
+            すべて見る &rarr;
           </Link>
         </div>
-        <TierList items={tierListItems} type="legend" />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featuredFortune.map((item) => (
+            <ArticleCard key={item.slug} {...item} />
+          ))}
+        </div>
       </section>
 
       {/* CTA セクション */}

@@ -5,9 +5,9 @@ export const brand = {
   url: "https://litwill-garden.com",
   operator: "Litwill Garden 編集部",
   description:
-    "eスポーツチーム「Litwill Garden」が運営する Apex Legends 初心者〜中級者向け上達メディア。エイム練習、立ち回り、キャラ選び、ランク攻略をデータと実践に基づいて体系的に解説。",
-  tagline: "Apexで勝てるようになる",
-  target: "15〜30歳男性中心。Apex Legends でランクが上がらない初心者〜中級者",
+    "心理テスト・性格診断・占いを通じて、自分らしさを発見するメディア。科学的な心理学をベースに、あなたの内面を楽しく、深く掘り下げます。",
+  tagline: "心理×占いで、自分をもっと深く知る",
+  target: "10〜30代女性中心。自己理解・恋愛・人間関係に関心のある方",
   owner: {
     name: "佐々木弘雅",
     role: "Webプロデューサー",
