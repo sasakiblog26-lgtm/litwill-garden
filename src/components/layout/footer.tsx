@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { brand } from "@/config/brand";
 import { footerNavigation } from "@/config/navigation";
@@ -6,73 +8,179 @@ import { snsAccounts } from "@/config/sns";
 /** サイトフッター */
 export function Footer() {
   return (
-    <footer className="border-t border-bg-elevated bg-bg">
-      <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-4">
-          {/* Brand */}
-          <div>
-            <Link href="/" className="inline-block">
-              <span className="font-heading text-xl font-black text-primary">
-                LITWILL
-              </span>{" "}
-              <span className="font-heading text-xl font-black text-text">
-                GARDEN
+    <footer
+      style={{
+        background: "#2D2448",
+        color: "#F0EAF8",
+        padding: "64px 24px 32px",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+
+        {/* 上部スター装飾 */}
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "40px",
+            opacity: 0.45,
+            letterSpacing: "16px",
+            fontSize: "14px",
+            color: "#C0B3DC",
+          }}
+        >
+          ✦ ✦ ✦
+        </div>
+
+        {/* 上部: ブランドエリア */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr",
+            gap: "40px",
+            marginBottom: "48px",
+          }}
+          className="footer-grid"
+        >
+          {/* ブランド情報 */}
+          <div style={{ gridColumn: "span 1" }}>
+            <Link
+              href="/"
+              style={{
+                textDecoration: "none",
+                display: "inline-block",
+                marginBottom: "12px",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "\"Cormorant Garamond\", serif",
+                  fontWeight: 600,
+                  fontSize: "20px",
+                  color: "#C0B3DC",
+                  letterSpacing: "0.03em",
+                }}
+              >
+                Litwill Garden
               </span>
             </Link>
-            <p className="mt-3 text-sm text-text-muted">
+            <p
+              style={{
+                fontFamily: "\"Noto Sans JP\", sans-serif",
+                fontWeight: 300,
+                fontSize: "12px",
+                lineHeight: 1.8,
+                color: "#9A95B4",
+                margin: "0 0 20px 0",
+              }}
+            >
               {brand.description}
             </p>
-            {/* SNS Links */}
-            <div className="mt-4 flex gap-3">
+
+            {/* SNSアイコン */}
+            <div style={{ display: "flex", gap: "16px" }}>
+              {/* X (Twitter) */}
               <a
                 href={snsAccounts.twitter.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-dim hover:text-text transition-colors"
                 aria-label="X (Twitter)"
+                style={{
+                  color: "#9A95B4",
+                  transition: "color 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#C0B3DC";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#9A95B4";
+                }}
               >
-                <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
+
+              {/* YouTube */}
               <a
                 href={snsAccounts.youtube.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-dim hover:text-text transition-colors"
                 aria-label="YouTube"
+                style={{
+                  color: "#9A95B4",
+                  transition: "color 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#C0B3DC";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#9A95B4";
+                }}
               >
-                <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z" />
-                  <path d="M9.545 15.568V8.432L15.818 12z" fill="#18181B" />
+                  <path d="M9.545 15.568V8.432L15.818 12z" fill="#2D2448" />
                 </svg>
               </a>
+
+              {/* note */}
               <a
                 href={snsAccounts.note.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-dim hover:text-text transition-colors"
                 aria-label="note"
+                style={{
+                  color: "#9A95B4",
+                  transition: "color 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#C0B3DC";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#9A95B4";
+                }}
               >
-                <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M22.904 6.075c-.296-.427-1.629-1.702-5.078-1.411-3.449.29-5.322 1.294-5.659 1.502-.337.207-.577.483-.577.483l-.03.03c-.2.203-.324.483-.324.793v10.86c0 .617.5 1.117 1.117 1.117.287 0 .55-.108.748-.286l.016.017s2.218-2.1 4.834-2.363c2.616-.263 4.324.37 4.633.498.31.128.7.07.96-.167.26-.236.383-.567.383-.916V7.024c0-.384-.13-.706-.38-.95h-.643z" />
-                  <path d="M8.27 8.912c-.296-.427-1.629-1.702-5.078-1.412C-.258 7.792-2.13 8.795-2.468 9.003c-.337.208-.577.483-.577.483l-.03.03c-.2.204-.324.484-.324.794v10.86c0 .617.5 1.117 1.117 1.117.287 0 .55-.109.748-.287l.016.017s2.218-2.1 4.834-2.363c2.616-.264 4.324.37 4.633.498.31.128.7.07.96-.167.26-.236.383-.567.383-.916V9.862c0-.384-.13-.706-.38-.95H8.27z" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.75 13.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z" />
                 </svg>
               </a>
             </div>
           </div>
 
-          {/* Content Links */}
+          {/* サービス */}
           <div>
-            <h4 className="mb-3 font-heading text-sm font-black uppercase tracking-wider text-text-muted">
-              コンテンツ
+            <h4
+              style={{
+                fontFamily: "\"Shippori Mincho\", serif",
+                fontWeight: 600,
+                fontSize: "12px",
+                letterSpacing: "0.12em",
+                color: "#C0B3DC",
+                marginBottom: "16px",
+                textTransform: "uppercase",
+              }}
+            >
+              サービス
             </h4>
-            <ul className="space-y-2">
-              {footerNavigation.content.map((item) => (
-                <li key={item.href}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {footerNavigation.service.map((item) => (
+                <li key={item.href} style={{ marginBottom: "10px" }}>
                   <Link
                     href={item.href}
-                    className="text-sm text-text-dim hover:text-text transition-colors"
+                    style={{
+                      fontFamily: "\"Noto Sans JP\", sans-serif",
+                      fontWeight: 300,
+                      fontSize: "13px",
+                      color: "#9A95B4",
+                      textDecoration: "none",
+                      transition: "color 0.2s ease",
+                    }}
                   >
                     {item.label}
                   </Link>
@@ -81,36 +189,70 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Tools Links */}
+          {/* ブランドについて */}
           <div>
-            <h4 className="mb-3 font-heading text-sm font-black uppercase tracking-wider text-text-muted">
-              ツール
+            <h4
+              style={{
+                fontFamily: "\"Shippori Mincho\", serif",
+                fontWeight: 600,
+                fontSize: "12px",
+                letterSpacing: "0.12em",
+                color: "#C0B3DC",
+                marginBottom: "16px",
+                textTransform: "uppercase",
+              }}
+            >
+              ブランドについて
             </h4>
-            <ul className="space-y-2">
-              {footerNavigation.tools.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-sm text-text-dim hover:text-text transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* About Links */}
-          <div>
-            <h4 className="mb-3 font-heading text-sm font-black uppercase tracking-wider text-text-muted">
-              サイトについて
-            </h4>
-            <ul className="space-y-2">
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {footerNavigation.about.map((item) => (
-                <li key={item.href}>
+                <li key={item.href} style={{ marginBottom: "10px" }}>
                   <Link
                     href={item.href}
-                    className="text-sm text-text-dim hover:text-text transition-colors"
+                    style={{
+                      fontFamily: "\"Noto Sans JP\", sans-serif",
+                      fontWeight: 300,
+                      fontSize: "13px",
+                      color: "#9A95B4",
+                      textDecoration: "none",
+                      transition: "color 0.2s ease",
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 法的情報 */}
+          <div>
+            <h4
+              style={{
+                fontFamily: "\"Shippori Mincho\", serif",
+                fontWeight: 600,
+                fontSize: "12px",
+                letterSpacing: "0.12em",
+                color: "#C0B3DC",
+                marginBottom: "16px",
+                textTransform: "uppercase",
+              }}
+            >
+              法的情報
+            </h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {footerNavigation.legal.map((item) => (
+                <li key={item.href} style={{ marginBottom: "10px" }}>
+                  <Link
+                    href={item.href}
+                    style={{
+                      fontFamily: "\"Noto Sans JP\", sans-serif",
+                      fontWeight: 300,
+                      fontSize: "13px",
+                      color: "#9A95B4",
+                      textDecoration: "none",
+                      transition: "color 0.2s ease",
+                    }}
                   >
                     {item.label}
                   </Link>
@@ -120,15 +262,54 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="mt-10 border-t border-bg-elevated pt-6 text-center text-xs text-text-dim">
-          <p>&copy; {new Date().getFullYear()} {brand.operator}. All rights reserved.</p>
-          <p className="mt-1">
-            Apex Legends は Electronic Arts Inc. の登録商標です。当サイトは EA
-            とは無関係の非公式ファンサイトです。
+        {/* 区切り線 */}
+        <div
+          style={{
+            borderTop: "1px solid rgba(155,139,191,0.2)",
+            paddingTop: "28px",
+            textAlign: "center",
+          }}
+        >
+          {/* 下部スター装飾 */}
+          <div
+            style={{
+              fontSize: "12px",
+              color: "#9A95B4",
+              letterSpacing: "8px",
+              marginBottom: "16px",
+              opacity: 0.5,
+            }}
+          >
+            ✦
+          </div>
+          <p
+            style={{
+              fontFamily: "\"Noto Sans JP\", sans-serif",
+              fontWeight: 300,
+              fontSize: "12px",
+              color: "#9A95B4",
+              margin: 0,
+              letterSpacing: "0.04em",
+            }}
+          >
+            © 2026 Litwill Garden. All rights reserved. ✦
           </p>
         </div>
       </div>
+
+      {/* レスポンシブ */}
+      <style>{`
+        @media (max-width: 900px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

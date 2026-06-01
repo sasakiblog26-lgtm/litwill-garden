@@ -1,126 +1,165 @@
 import Link from "next/link";
-import { brand } from "@/config/brand";
-import { Button } from "@/components/ui/button";
-import { ArticleCard } from "@/components/article/article-card";
-import { TierList } from "@/components/game/tier-list";
-import { LineCta } from "@/components/cta/line-cta";
-import { YoutubeCta } from "@/components/cta/youtube-cta";
-import { JsonLd, websiteJsonLd } from "@/components/seo/json-ld";
-import { legendTierList } from "@/content/game-data/tier-list";
-import type { Tier } from "@/config/game";
+import Hero from "@/components/sections/hero";
+import SectionHeader from "@/components/sections/section-header";
+import ArticleCard from "@/components/sections/article-card";
+import ReadingCard from "@/components/sections/reading-card";
+import CtaSection from "@/components/sections/cta-section";
+import ConstellationField from "@/components/visual/constellation-field";
+import { GarlandDivider, OrnamentDivider } from "@/components/visual/ornaments";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
-/** サンプル記事データ（プレースホルダー） */
-const sampleArticles = [
+// ---------------------------------------------------------------------------
+// Data
+// ---------------------------------------------------------------------------
+
+const ARTICLES = [
   {
-    title: "【初心者必見】Apex Legends を始めたらまずやるべき10のこと",
-    slug: "beginner-guide-top10",
-    excerpt:
-      "Apexを始めたばかりの方向けに、設定・立ち回り・練習方法を体系的に解説します。",
-    category: "初心者ガイド",
+    title: "満月の夜に行うセルフリーディング — 月のエネルギーを味方にする方法",
+    category: "占星術",
     publishedAt: "2026-03-25",
+    excerpt:
+      "満月は「手放し」と「完了」のエネルギー。この特別な夜にできるセルフリーディングの方法を解説します。",
+    thumbPosition: "0% 0%",
+    href: "/articles/full-moon-reading",
   },
   {
-    title: "シーズン22 最強キャラランキング｜メタ環境を徹底解説",
-    slug: "season22-meta-characters",
-    excerpt:
-      "最新シーズンのメタ環境を分析し、ランクマッチで勝てるキャラクターを紹介。",
-    category: "メタ分析",
+    title: "ユング心理学から読み解くタロットカードの象徴 — 無意識の声を聴く",
+    category: "心理学",
     publishedAt: "2026-03-20",
+    excerpt:
+      "タロットの大アルカナとユングの元型理論の共通点を、わかりやすく解説。",
+    thumbPosition: "100% 0%",
+    href: "/articles/tarot-jung",
   },
   {
-    title: "エイム練習の完全ガイド｜毎日15分で劇的に上達する方法",
-    slug: "aim-training-complete-guide",
-    excerpt:
-      "Aim Lab・Kovaak'sを使った効率的な練習メニューと、意識すべきポイントを解説。",
-    category: "エイム練習",
+    title: "あなたの月星座が教える「本当の感情パターン」",
+    category: "占星術",
     publishedAt: "2026-03-15",
+    excerpt:
+      "太陽星座だけでは見えない、月星座が示す感情の深層を探ります。",
+    thumbPosition: "0% 50%",
+    href: "/articles/moon-sign",
   },
 ];
 
-export default function Home() {
-  // ティアリストデータをTierListコンポーネント用に変換
-  const tierListItems = Object.entries(legendTierList.tiers).flatMap(
-    ([tier, names]) =>
-      names.map((name) => ({ name, tier: tier as Tier }))
-  );
+const READINGS = [
+  {
+    eyebrow: "Soul Reading",
+    title: "魂のテーマリーディング",
+    description:
+      "あなたが今世で体験したいテーマ、魂レベルの強み・課題を総合的にリーディング。",
+    tags: ["占星術", "数秘術"],
+    price: "¥3,300",
+    href: "/readings",
+  },
+  {
+    eyebrow: "Love Reading",
+    title: "恋愛リーディング",
+    description:
+      "恋愛パターン、理想のパートナー像、今の恋の流れを読み解きます。",
+    tags: ["タロット", "恋愛"],
+    price: "¥3,300",
+    href: "/readings",
+  },
+  {
+    eyebrow: "Premium Reading",
+    title: "✦ 人生の星図 フル鑑定",
+    description:
+      "魂のテーマ、恋愛、仕事、人間関係、運気サイクルまで — 美しい星図にまとめてお届け。",
+    tags: ["占星術", "タロット", "心理学", "クリスタル"],
+    price: "¥11,000",
+    gold: true,
+    href: "/readings",
+  },
+];
 
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
+export default function Home() {
   return (
     <>
-      <JsonLd data={websiteJsonLd()} />
+      {/* 1. Hero */}
+      <Hero />
 
-      {/* ヒーローセクション */}
-      <section className="relative overflow-hidden py-20 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center">
-          <h1 className="font-heading text-4xl font-black leading-tight tracking-tight md:text-6xl">
-            <span className="text-primary">{brand.tagline}</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-text-muted md:text-xl">
-            エイム練習・立ち回り・キャラ選び・ランク攻略をデータと実践に基づいて体系的に解説。
-            <br className="hidden sm:block" />
-            初心者からダイヤを目指す中級者まで、あなたのランクアップを全力サポート。
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/guides">
-              <Button variant="default" size="lg">
-                攻略ガイドを読む
-              </Button>
-            </Link>
-            <Link href="/characters">
-              <Button variant="outline" size="lg">
-                キャラクター攻略
-              </Button>
-            </Link>
+      {/* 2. GarlandDivider */}
+      <GarlandDivider />
+
+      {/* 3. 占いコラム セクション */}
+      <section style={{ background: "var(--bg-main)" }}>
+        <ConstellationField density="sparse">
+          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px" }}>
+            <SectionHeader
+              eyebrow="Columns"
+              title="占いコラム"
+              sub="占星術・タロット・心理学の知恵で、日々をもっと豊かに。"
+            />
+
+            <div
+              className="resp-grid-3"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 16,
+                marginTop: 40,
+              }}
+            >
+              {ARTICLES.map((article, i) => (
+                <ScrollReveal key={article.href} delay={(i % 3) as 0 | 1 | 2 | 3}>
+                  <ArticleCard {...article} />
+                </ScrollReveal>
+              ))}
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: 32 }}>
+              <Link
+                href="/articles"
+                style={{ color: "#9B8BBF", fontSize: 14, textDecoration: "none" }}
+              >
+                すべてのコラムを見る →
+              </Link>
+            </div>
           </div>
-        </div>
+        </ConstellationField>
       </section>
 
-      {/* 最新記事セクション */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="mb-8 flex items-end justify-between">
-          <h2 className="font-heading text-2xl font-black md:text-3xl">
-            最新の攻略記事
-          </h2>
-          <Link
-            href="/guides"
-            className="text-sm font-semibold text-primary hover:underline"
-          >
-            すべて見る &rarr;
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sampleArticles.map((article) => (
-            <ArticleCard key={article.slug} {...article} />
-          ))}
-        </div>
-      </section>
+      {/* 4. OrnamentDivider */}
+      <div style={{ padding: "0 24px" }}>
+        <OrnamentDivider />
+      </div>
 
-      {/* キャラティアリストプレビュー */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="mb-8 flex items-end justify-between">
-          <div>
-            <h2 className="font-heading text-2xl font-black md:text-3xl">
-              キャラクターティアリスト
-            </h2>
-            <p className="mt-1 text-sm text-text-muted">
-              {legendTierList.season} | 更新日: {legendTierList.lastUpdated}
-            </p>
+      {/* 5. 鑑定メニュー セクション */}
+      <section style={{ background: "var(--bg-cream-band)" }}>
+        <ConstellationField density="sparse">
+          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px" }}>
+            <SectionHeader
+              eyebrow="Readings"
+              title="鑑定メニュー"
+              sub="あなたの魂が求める答えを、プロの占い師がリーディングします。"
+            />
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 16,
+                marginTop: 40,
+              }}
+            >
+              {READINGS.map((reading) => (
+                <ReadingCard key={reading.eyebrow} {...reading} />
+              ))}
+            </div>
           </div>
-          <Link
-            href="/tier-list"
-            className="text-sm font-semibold text-primary hover:underline"
-          >
-            詳しく見る &rarr;
-          </Link>
-        </div>
-        <TierList items={tierListItems} type="legend" />
+        </ConstellationField>
       </section>
 
-      {/* CTA セクション */}
-      <section className="mx-auto max-w-6xl space-y-6 px-4 py-16">
-        <LineCta />
-        <YoutubeCta />
-      </section>
+      {/* 6. CTA セクション */}
+      <div style={{ background: "var(--bg-lavender-band)" }}>
+        <CtaSection />
+        <CtaSection night />
+      </div>
     </>
   );
 }
