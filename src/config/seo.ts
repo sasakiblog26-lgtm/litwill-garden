@@ -30,32 +30,20 @@ export const defaultSeo = {
 
 /** カテゴリ別SEO設定 */
 export const categorySeo = {
-  guides: {
-    title: "攻略ガイド",
-    description: "Apex Legends の立ち回り・エイム・戦術を体系的に解説する攻略ガイド集",
+  tests: {
+    title: "心理テスト・性格診断",
+    description: "性格診断・恋愛診断・強み診断など、科学的根拠に基づいた心理テスト集",
   },
-  characters: {
-    title: "キャラクター攻略",
-    description: "全レジェンドのアビリティ解説・立ち回り・おすすめ武器を徹底攻略",
+  fortune: {
+    title: "占い",
+    description: "星座占い・数秘術・タロットなど、あなたの運勢や本質を読み解く占いコンテンツ",
   },
-  weapons: {
-    title: "武器攻略",
-    description: "全武器のダメージ・リコイル・おすすめアタッチメントを詳細解説",
-  },
-  ranking: {
-    title: "ランク攻略",
-    description: "ブロンズからプレデターまで。ランク別の立ち回りと上達のコツ",
-  },
-  settings: {
-    title: "設定・デバイス",
-    description: "プロゲーマーの感度設定・デバイス環境を徹底調査。最適な設定を見つけよう",
-  },
-  tierList: {
-    title: "ティアリスト",
-    description: "最新シーズンのキャラ・武器ティアリスト。メタ環境を一目で把握",
+  articles: {
+    title: "記事・コラム",
+    description: "心理学・自己理解・人間関係に関する読み応えあるコラム記事",
   },
   tools: {
-    title: "ツール",
-    description: "感度計算機などApexプレイヤー向けの便利ツール集",
+    title: "診断ツール",
+    description: "自己分析・相性診断など、インタラクティブに楽しめる診断ツール集",
   },
 } as const;

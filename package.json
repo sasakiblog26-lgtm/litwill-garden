@@ -13,7 +13,11 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@anthropic-ai/sdk": "^0.87.0",
+=======
+    "@anthropic-ai/sdk": "^0.82.0",
+>>>>>>> origin/main
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.1",

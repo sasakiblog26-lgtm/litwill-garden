@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<<<<<<< HEAD
 <url><loc>https://litwill-garden.com</loc><lastmod>2026-06-01T13:55:17.847Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://litwill-garden.com/contact</loc><lastmod>2026-06-01T13:55:17.848Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://litwill-garden.com/crystals</loc><lastmod>2026-06-01T13:55:17.848Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -10,4 +11,22 @@
 <url><loc>https://litwill-garden.com/readers</loc><lastmod>2026-06-01T13:55:17.848Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://litwill-garden.com/readings</loc><lastmod>2026-06-01T13:55:17.848Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://litwill-garden.com/team</loc><lastmod>2026-06-01T13:55:17.848Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+=======
+<url><loc>https://litwill-garden.com</loc><lastmod>2026-05-08T13:09:32.933Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/about</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/contact</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/faq</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/fortune</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/fortune/reading</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/fortune/result</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/legal/privacy</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/legal/terms</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/legal/tokushoho</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/team</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/tools</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/tools/compatibility</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/tools/mbti</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/tools/numerology</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://litwill-garden.com/tools/zodiac</loc><lastmod>2026-05-08T13:09:32.934Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+>>>>>>> origin/main
 </urlset>

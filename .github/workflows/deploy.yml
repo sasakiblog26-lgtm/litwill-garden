@@ -1,0 +1,48 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Production
+        id: deploy
+        run: |
+          URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Notify Discord
+        if: always()
+        run: |
+          if [ -n "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" ]; then
+            STATUS="${{ job.status }}"
+            if [ "$STATUS" = "success" ]; then
+              EMOJI="✅"
+              MSG="デプロイ成功"
+            else
+              EMOJI="❌"
+              MSG="デプロイ失敗"
+            fi
+            curl -s -H "Content-Type: application/json" \
+              -d "{\"content\": \"${EMOJI} **litwill-garden** ${MSG}\nURL: ${{ steps.deploy.outputs.url }}\"}" \
+              "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" || true
+          fi

@@ -1,0 +1,44 @@
+brand:
+  id: "litwill-garden"
+  name: "リトウィルガーデン"
+  display_name: "Litwill Garden"
+  repo: "sasakiblog26-lgtm/litwill-garden"
+  category: "psychology-fortune"
+  language: "ja"
+
+content:
+  target_audience: "自己理解・恋愛・人間関係・占いに関心のある10〜30代"
+  tone: "warm-psychology-guide"
+  primary_keywords:
+    - "心理学 自己理解"
+    - "性格診断"
+    - "恋愛心理学"
+    - "相性診断"
+    - "MBTI 診断"
+    - "数秘術"
+    - "星座占い"
+    - "タロット 占い"
+    - "人間関係 悩み"
+    - "自分らしさ 見つけ方"
+  posting_frequency: "5_per_week"
+  content_types:
+    - "psychology_article"
+    - "personality_test"
+    - "love_analysis"
+    - "fortune_reading"
+    - "self_understanding"
+
+seo:
+  domain: "litwill-garden.com"
+  search_console_property: "https://litwill-garden.com"
+
+monetization:
+  model: "note_paid_article"
+  primary_channels:
+    - "note.com（¥500〜有料記事）"
+    - "LINE公式（ステップ配信）"
+  entry_price: 500
+
+notifications:
+  slack_channel: "litwill-garden"
+  notion_page: "0→1スプリントログ"

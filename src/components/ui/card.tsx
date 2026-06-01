@@ -1,5 +1,6 @@
 import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 
+<<<<<<< HEAD
 // ---------------------------------------------------------------------------
 // Variant definitions
 // ---------------------------------------------------------------------------
@@ -59,6 +60,39 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       />
     );
   },
+=======
+/**
+ * Card container with a translucent celestial background and soft border.
+ *
+ * Compose with {@link CardHeader}, {@link CardTitle}, {@link CardDescription},
+ * {@link CardContent}, and {@link CardFooter} for consistent structure.
+ *
+ * @example
+ * ```tsx
+ * <Card>
+ *   <CardHeader>
+ *     <CardTitle>Wingman</CardTitle>
+ *     <CardDescription>Heavy pistol</CardDescription>
+ *   </CardHeader>
+ *   <CardContent>Stats and details here.</CardContent>
+ *   <CardFooter>Actions here.</CardFooter>
+ * </Card>
+ * ```
+ */
+const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "celestial-panel rounded-xl text-[#3D3158]",
+        "transition-all duration-200 ease-out",
+        "hover:border-[#7C6BA8]/45 hover:shadow-[0_20px_55px_rgba(80,64,120,0.16)]",
+        className,
+      )}
+      {...props}
+    />
+  ),
+>>>>>>> origin/main
 );
 
 Card.displayName = "Card";
@@ -82,6 +116,7 @@ const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingEleme
   ({ style, ...props }, ref) => (
     <h3
       ref={ref}
+<<<<<<< HEAD
       style={{
         margin: 0,
         fontFamily: "var(--lg-font-heading)",
@@ -90,6 +125,12 @@ const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingEleme
         color: "var(--text-primary)",
         ...style,
       }}
+=======
+      className={cn(
+        "text-lg font-bold tracking-wide text-[#3D3158]",
+        className,
+      )}
+>>>>>>> origin/main
       {...props}
     />
   ),
@@ -100,6 +141,7 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
   ({ style, ...props }, ref) => (
     <p
       ref={ref}
+<<<<<<< HEAD
       style={{
         margin: 0,
         fontFamily: "var(--lg-font-body)",
@@ -107,6 +149,9 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
         color: "var(--text-muted)",
         ...style,
       }}
+=======
+      className={cn("text-sm text-[#6E6385]", className)}
+>>>>>>> origin/main
       {...props}
     />
   ),

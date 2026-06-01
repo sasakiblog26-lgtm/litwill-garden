@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
+<<<<<<< HEAD
   /* Lavender — Primary */
   --color-lg-lavender-50: #F8F5FC;
   --color-lg-lavender-100: #F0EAF8;
@@ -23,10 +24,53 @@
   --font-display: "Cormorant Garamond", serif;
   --font-heading: "Shippori Mincho", serif;
   --font-body: "Noto Sans JP", sans-serif;
+=======
+  /* Brand Colors — Lavender × Crystal × Moonstone */
+  --color-primary:        #9B8BBF;
+  --color-primary-light:  #C0B3DC;
+  --color-primary-dark:   #7B6AA8;
+  --color-secondary:      #C8D8F0;
+  --color-secondary-dark: #8EB0D8;
+  --color-secondary-light:#E8F0FA;
+  --color-accent:         #E8D0E0;
+  --color-accent-dark:    #C8A0C0;
+  --color-accent-light:   #F5E8F0;
+  --color-gold:           #D4C090;
+
+  /* Surfaces */
+  --color-bg:             #FFFFFF;
+  --color-bg-soft:        #F8F5FC;
+  --color-bg-card:        #F0EAF8;
+  --color-bg-elevated:    #E4DAF2;
+  --color-bg-deep:        #2D2448;
+  --color-bg-night:       #1A1430;
+
+  /* Text */
+  --color-text:           #2D2448;
+  --color-text-muted:     #5E4D8A;
+  --color-text-dim:       #9A95B4;
+  --color-text-on-dark:   #F0EAF8;
+
+  /* Fonts */
+  --font-display: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  --font-heading: 'Shippori Mincho', serif;
+  --font-sans:    'Noto Sans JP', sans-serif;
+  --font-accent:  'Cormorant Garamond', serif;
+
+  /* Border Radius */
+  --radius-sm:     6px;
+  --radius-md:     12px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
+  --radius-full:   9999px;
+  --radius-card:   20px;
+  --radius-button: 28px;
+>>>>>>> origin/main
 }
 
 /* CSS Design Tokens */
 :root {
+<<<<<<< HEAD
   --lg-primary: #9B8BBF;
   --lg-secondary: #C8D8F0;
   --lg-accent: #E8D0E0;
@@ -107,11 +151,32 @@ body {
   background-color: var(--bg-main);
   color: var(--text-primary);
   font-family: var(--lg-font-body);
+=======
+  color-scheme: light;
+
+  --lg-glow-lavender: 0 0 20px rgba(155, 139, 191, 0.25);
+  --lg-glow-crystal:  0 0 20px rgba(200, 184, 224, 0.35);
+  --lg-glow-moon:     0 0 24px rgba(200, 216, 240, 0.30);
+  --lg-glow-rose:     0 0 20px rgba(232, 208, 224, 0.35);
+  --lg-glow-gold:     0 0 16px rgba(212, 192, 144, 0.30);
+
+  --lg-border:        rgba(155, 139, 191, 0.12);
+  --lg-border-hover:  rgba(155, 139, 191, 0.30);
+}
+
+body {
+  background: linear-gradient(170deg, #ffffff 0%, #F0EAF8 100%);
+  color: #2D2448;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+>>>>>>> origin/main
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.5s ease, color 0.5s ease;
 }
 
+<<<<<<< HEAD
 ::selection {
   background: rgba(155, 139, 191, 0.3);
   color: #2D2448;
@@ -203,3 +268,32 @@ a {
   .resp-grid-3 { grid-template-columns: 1fr !important; }
   .resp-hero-title { font-size: 30px !important; }
 }
+=======
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Shippori Mincho', serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+::selection {
+  background: rgba(155, 139, 191, 0.25);
+  color: #2D2448;
+}
+
+.glow-primary   { box-shadow: var(--lg-glow-lavender); }
+.glow-secondary { box-shadow: var(--lg-glow-moon); }
+.glow-accent    { box-shadow: var(--lg-glow-rose); }
+.glow-gold      { box-shadow: var(--lg-glow-gold); }
+
+.celestial-panel {
+  border: 1px solid var(--lg-border);
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,234,248,0.70));
+  box-shadow: 0 8px 32px rgba(155, 139, 191, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #F8F5FC; }
+::-webkit-scrollbar-thumb { background: #C0B3DC; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #9B8BBF; }
+>>>>>>> origin/main

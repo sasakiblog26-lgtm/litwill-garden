@@ -1,9 +1,8 @@
-/** SNSアカウント情報 */
 export const snsAccounts = {
   twitter: {
     url: "https://twitter.com/litwill_garden",
     handle: "@litwill_garden",
-    label: "X (Twitter)",
+    label: "X",
   },
   youtube: {
     url: "https://www.youtube.com/@litwill-garden",
