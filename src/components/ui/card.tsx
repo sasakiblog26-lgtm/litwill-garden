@@ -1,6 +1,66 @@
-import { forwardRef, type HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 
+<<<<<<< HEAD
+// ---------------------------------------------------------------------------
+// Variant definitions
+// ---------------------------------------------------------------------------
+
+type Variant = "default" | "gold";
+
+// ---------------------------------------------------------------------------
+// Props
+// ---------------------------------------------------------------------------
+
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  /** Visual style variant. @default "default" */
+  variant?: Variant;
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
+const Card = forwardRef<HTMLDivElement, CardProps>(
+  ({ variant = "default", style, onMouseEnter, onMouseLeave, ...props }, ref) => {
+    const border =
+      variant === "gold"
+        ? "1px solid rgba(212,192,144,0.25)"
+        : "1px solid var(--border-card)";
+
+    const baseStyle: CSSProperties = {
+      background: "var(--bg-card)",
+      borderRadius: "20px",
+      border,
+      padding: "24px",
+      transition: "all 300ms cubic-bezier(.4,0,.2,1)",
+      ...style,
+    };
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = e.currentTarget;
+      el.style.transform = "translateY(-2px)";
+      el.style.boxShadow = "var(--shadow-glow-lavender)";
+      onMouseEnter?.(e);
+    };
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = e.currentTarget;
+      el.style.transform = "";
+      el.style.boxShadow = "";
+      onMouseLeave?.(e);
+    };
+
+    return (
+      <div
+        ref={ref}
+        style={baseStyle}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        {...props}
+      />
+    );
+  },
+=======
 /**
  * Card container with a translucent celestial background and soft border.
  *
@@ -32,72 +92,84 @@ const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       {...props}
     />
   ),
+>>>>>>> origin/main
 );
+
 Card.displayName = "Card";
 
-/**
- * Top section of a {@link Card}, typically containing the title and description.
- */
+// ---------------------------------------------------------------------------
+// Sub-components (structural helpers)
+// ---------------------------------------------------------------------------
+
 const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+  ({ style, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col gap-1.5 p-6", className)}
+      style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px", ...style }}
       {...props}
     />
   ),
 );
 CardHeader.displayName = "CardHeader";
 
-/**
- * Heading element rendered inside a {@link CardHeader}.
- */
 const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => (
+  ({ style, ...props }, ref) => (
     <h3
       ref={ref}
+<<<<<<< HEAD
+      style={{
+        margin: 0,
+        fontFamily: "var(--lg-font-heading)",
+        fontSize: "18px",
+        fontWeight: 700,
+        color: "var(--text-primary)",
+        ...style,
+      }}
+=======
       className={cn(
         "text-lg font-bold tracking-wide text-[#3D3158]",
         className,
       )}
+>>>>>>> origin/main
       {...props}
     />
   ),
 );
 CardTitle.displayName = "CardTitle";
 
-/**
- * Secondary text rendered below the {@link CardTitle}.
- */
 const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
+  ({ style, ...props }, ref) => (
     <p
       ref={ref}
+<<<<<<< HEAD
+      style={{
+        margin: 0,
+        fontFamily: "var(--lg-font-body)",
+        fontSize: "14px",
+        color: "var(--text-muted)",
+        ...style,
+      }}
+=======
       className={cn("text-sm text-[#6E6385]", className)}
+>>>>>>> origin/main
       {...props}
     />
   ),
 );
 CardDescription.displayName = "CardDescription";
 
-/**
- * Main body of a {@link Card}.
- */
 const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  ({ style, ...props }, ref) => (
+    <div ref={ref} style={{ ...style }} {...props} />
   ),
 );
 CardContent.displayName = "CardContent";
 
-/**
- * Bottom section of a {@link Card}, often used for action buttons.
- */
 const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+  ({ style, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex items-center p-6 pt-0", className)}
+      style={{ display: "flex", alignItems: "center", marginTop: "16px", ...style }}
       {...props}
     />
   ),

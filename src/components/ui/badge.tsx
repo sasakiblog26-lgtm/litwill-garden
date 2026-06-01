@@ -1,71 +1,87 @@
-import { forwardRef, type HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 
-/**
- * Tier-specific and general-purpose badge colour variants.
- *
- * Tier colours follow common community conventions:
- * - **S** - Gold / legendary
- * - **A** - Red / high-tier
- * - **B** - Cyan / mid-tier
- * - **C** - Lime green / serviceable
- * - **D** - Zinc / low-tier
- */
-const variants = {
-  /** General-purpose badge using the primary lime-green. */
-  default: "border-[#84CC16]/40 bg-[#84CC16]/15 text-[#84CC16]",
-  /** Secondary cyan badge. */
-  secondary: "border-[#22D3EE]/40 bg-[#22D3EE]/15 text-[#22D3EE]",
-  /** Accent orange badge for CTAs or warnings. */
-  accent: "border-[#F97316]/40 bg-[#F97316]/15 text-[#F97316]",
-  /** Outline-only badge. */
-  outline: "border-[#3F3F46] bg-transparent text-[#A1A1AA]",
-  /** S-tier: gold / legendary. */
-  "tier-s": "border-[#FACC15]/40 bg-[#FACC15]/15 text-[#FACC15]",
-  /** A-tier: red / high-tier. */
-  "tier-a": "border-[#EF4444]/40 bg-[#EF4444]/15 text-[#EF4444]",
-  /** B-tier: cyan / mid-tier. */
-  "tier-b": "border-[#22D3EE]/40 bg-[#22D3EE]/15 text-[#22D3EE]",
-  /** C-tier: lime green / serviceable. */
-  "tier-c": "border-[#84CC16]/40 bg-[#84CC16]/15 text-[#84CC16]",
-  /** D-tier: zinc / low-tier. */
-  "tier-d": "border-[#71717A]/40 bg-[#71717A]/15 text-[#A1A1AA]",
-} as const;
+// ---------------------------------------------------------------------------
+// Variant definitions
+// ---------------------------------------------------------------------------
 
-/** Props accepted by the {@link Badge} component. */
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Visual style variant. @default "default" */
-  variant?: keyof typeof variants;
+type Variant = "lavender" | "crystal" | "moonstone" | "rose" | "gold" | "outline";
+
+interface VariantStyle {
+  background: string;
+  color: string;
+  border: string;
 }
 
-/**
- * Small label badge for tier rankings (S/A/B/C/D) and general tags.
- *
- * Renders a styled `<span>` with a tinted background, matching border,
- * and coloured text based on the chosen variant.
- *
- * @example
- * ```tsx
- * <Badge variant="tier-s">S</Badge>
- * <Badge variant="accent">NEW</Badge>
- * <Badge>SMG</Badge>
- * ```
- */
+const variantStyles: Record<Variant, VariantStyle> = {
+  lavender: {
+    background: "rgba(155,139,191,0.12)",
+    color: "#7B6AA8",
+    border: "1px solid rgba(155,139,191,0.25)",
+  },
+  crystal: {
+    background: "rgba(200,184,224,0.12)",
+    color: "#574882",
+    border: "1px solid rgba(200,184,224,0.25)",
+  },
+  moonstone: {
+    background: "rgba(200,216,240,0.15)",
+    color: "#2D2448",
+    border: "1px solid rgba(200,216,240,0.30)",
+  },
+  rose: {
+    background: "rgba(232,208,224,0.15)",
+    color: "#5E4D8A",
+    border: "1px solid rgba(232,208,224,0.30)",
+  },
+  gold: {
+    background: "rgba(212,192,144,0.15)",
+    color: "#7B6040",
+    border: "1px solid rgba(212,192,144,0.30)",
+  },
+  outline: {
+    background: "transparent",
+    color: "#9B8BBF",
+    border: "1px solid #C0B3DC",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Props
+// ---------------------------------------------------------------------------
+
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  /** Visual style variant. @default "lavender" */
+  variant?: Variant;
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant = "default", ...props }, ref) => (
-    <span
-      ref={ref}
-      className={cn(
-        "inline-flex items-center rounded-md border px-2.5 py-0.5",
-        "text-xs font-semibold uppercase tracking-wider",
-        "transition-colors duration-150",
-        variants[variant],
-        className,
-      )}
-      {...props}
-    />
-  ),
+  ({ variant = "lavender", style, ...props }, ref) => {
+    const vs = variantStyles[variant];
+
+    const baseStyle: CSSProperties = {
+      display: "inline-flex",
+      alignItems: "center",
+      borderRadius: "9999px",
+      padding: "4px 12px",
+      fontSize: "11px",
+      fontWeight: 600,
+      letterSpacing: "0.04em",
+      fontFamily: "var(--lg-font-body)",
+      background: vs.background,
+      color: vs.color,
+      border: vs.border,
+      transition: "opacity 150ms ease",
+      ...style,
+    };
+
+    return <span ref={ref} style={baseStyle} {...props} />;
+  },
 );
+
 Badge.displayName = "Badge";
 
 export { Badge };

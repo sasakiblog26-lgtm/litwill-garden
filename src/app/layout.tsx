@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { AmbientMotifs } from "@/components/visual/ambient-motifs";
 import { brand } from "@/config/brand";
 import { JsonLd, websiteJsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: `${brand.name} - ${brand.tagline}`,
+    default: `${brand.name} — ${brand.tagline}`,
     template: `%s | ${brand.name}`,
   },
   description: brand.description,
@@ -34,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className="theme-dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -43,14 +44,19 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
+<<<<<<< HEAD
+          href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+=======
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap"
+>>>>>>> origin/main
           rel="stylesheet"
         />
       </head>
-      <body className="flex min-h-screen flex-col bg-bg text-text antialiased">
+      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }}>
         <JsonLd data={websiteJsonLd()} />
+        <AmbientMotifs />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main style={{ flex: 1 }}>{children}</main>
         <Footer />
       </body>
     </html>
