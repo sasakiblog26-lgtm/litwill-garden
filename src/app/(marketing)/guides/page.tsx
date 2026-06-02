@@ -92,7 +92,7 @@ export default function GuidesPage() {
         {categories.map((cat) => (
           <Badge
             key={cat}
-            variant={cat === "すべて" ? "default" : "outline"}
+            variant={cat === "すべて" ? "lavender" : "outline"}
             className="cursor-pointer"
           >
             {cat}
