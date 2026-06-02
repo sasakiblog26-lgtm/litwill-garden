@@ -13,18 +13,17 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@anthropic-ai/sdk": "^0.87.0",
-=======
-    "@anthropic-ai/sdk": "^0.82.0",
->>>>>>> origin/main
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
+    "gray-matter": "^4.0.3",
     "next": "16.2.1",
     "next-sitemap": "^4.2.3",
     "postgres": "^3.4.8",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

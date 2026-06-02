@@ -1,17 +1,40 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
+import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getArticleBySlug, getAllArticleSlugs } from "@/lib/markdown";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const metadata: Metadata = { title: "占いコラム" };
+export async function generateStaticParams() {
+  return getAllArticleSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const article = await getArticleBySlug(slug);
+    return {
+      title: article.title,
+      description: article.excerpt,
+    };
+  } catch {
+    return { title: "記事が見つかりません" };
+  }
+}
 
 export default async function ArticleDetailPage({ params }: PageProps) {
-  await params;
+  const { slug } = await params;
+
+  let article;
+  try {
+    article = await getArticleBySlug(slug);
+  } catch {
+    notFound();
+  }
 
   // ── Layout ──────────────────────────────────────────────────────────────
   const outerStyle: CSSProperties = {
@@ -20,7 +43,6 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     padding: "48px 24px",
   };
 
-  // ── Typography ───────────────────────────────────────────────────────────
   const h1Style: CSSProperties = {
     fontFamily: "var(--lg-font-heading)",
     fontWeight: 700,
@@ -42,25 +64,6 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     color: "var(--text-secondary)",
   };
 
-  const h2Style: CSSProperties = {
-    fontFamily: "var(--lg-font-heading)",
-    fontWeight: 600,
-    fontSize: "22px",
-    color: "var(--text-primary)",
-    margin: "36px 0 12px",
-  };
-
-  const blockquoteStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-heading)",
-    fontStyle: "italic",
-    fontSize: "17px",
-    color: "#7B6AA8",
-    borderLeft: "2px solid #D6CFEA",
-    padding: "16px 0 16px 20px",
-    margin: "24px 0",
-  };
-
-  // ── Inline CTA ───────────────────────────────────────────────────────────
   const ctaStyle: CSSProperties = {
     background: "var(--bg-lavender-band)",
     textAlign: "center",
@@ -81,67 +84,38 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     margin: 0,
   };
 
+  const formattedDate = new Date(article.date).toLocaleDateString("ja-JP", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div style={outerStyle}>
       {/* Meta row */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
-        <Badge variant="lavender">占星術</Badge>
-        <span style={{ fontSize: "13px", color: "#9A95B4" }}>2026年5月15日</span>
+        <Badge variant="lavender">{article.category}</Badge>
+        <span style={{ fontSize: "13px", color: "#9A95B4" }}>{formattedDate}</span>
       </div>
 
       {/* Title */}
-      <h1 style={h1Style}>満月の夜のセルフリーディング — 月のエネルギーを使った直感の磨き方</h1>
+      <h1 style={h1Style}>{article.title}</h1>
 
       {/* Byline */}
       <p style={bylineStyle}>by Litwill Garden 編集部</p>
 
-      {/* Eye-catch image */}
-      <div
-        style={{
-          height: "320px",
-          borderRadius: "20px",
-          overflow: "hidden",
-          position: "relative",
-          marginBottom: "36px",
-        }}
-      >
-        <Image
-          src="/images/backgrounds.jpg"
-          alt="満月の夜のセルフリーディング"
-          fill
-          style={{ objectFit: "cover", objectPosition: "100% 0%" }}
-          priority
-        />
-      </div>
-
       {/* Body */}
-      <div style={bodyStyle}>
-        <p>
-          満月は「手放し」と「完了」のエネルギーに満ちた特別な夜です。この夜に行うセルフリーディングは、普段より深い洞察を得られるとされています。
-        </p>
+      <div
+        style={bodyStyle}
+        className="article-body"
+        dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+      />
 
-        <h2 style={h2Style}>なぜ満月の夜にリーディングを行うのか</h2>
-
-        <p>
-          月は私たちの無意識に深く影響を与えています。ユング心理学では、月は「影（シャドウ）」や「アニマ」の象徴とされ、普段意識しない感情や欲求が表面化しやすい時期だと考えられています。
-        </p>
-
-        <blockquote style={blockquoteStyle}>
-          「月の光は、太陽が照らさない心の奥底を静かに映し出す。」
-        </blockquote>
-
-        <h2 style={h2Style}>セルフリーディングの手順</h2>
-
-        <p>
-          静かな環境を整え、深呼吸を3回。クリスタル（ムーンストーンやセレナイトがおすすめ）を手に持ち、今気になっていることをカードに問いかけましょう。
-        </p>
-      </div>
-
-      {/* Inline CTA */}
+      {/* CTA */}
       <div style={ctaStyle}>
-        <p style={ctaTextStyle}>あなたも月のエネルギーを味方にしませんか？</p>
+        <p style={ctaTextStyle}>あなたの星座が映し出すメッセージを受け取りませんか？</p>
         <Button variant="primary" href="/diagnosis">
-          ✦ 無料で月星座を診断する
+          ✦ 無料で星座診断する
         </Button>
       </div>
     </div>

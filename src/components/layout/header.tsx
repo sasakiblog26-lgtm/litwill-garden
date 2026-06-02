@@ -8,7 +8,6 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-<<<<<<< HEAD
     <header
       style={{
         position: "sticky",
@@ -72,28 +71,10 @@ export function Header() {
 
         {/* デスクトップナビゲーション */}
         <nav className="resp-nav" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-=======
-    <header className="sticky top-0 z-50 border-b border-primary/10 bg-white/88 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-[1100px] items-center justify-between px-5 py-3.5 md:px-6">
-        <Link href="/" className="flex flex-col leading-none">
-          <span
-            className="text-[22px] font-semibold tracking-[0.06em] text-text"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            <span className="text-primary">Litwill</span> Garden
-          </span>
-          <span className="mt-1 text-[10px] font-medium tracking-[0.16em] text-text-dim">
-            占いと心理学のメディア
-          </span>
-        </Link>
-
-        <nav className="hidden items-center gap-1 lg:flex">
->>>>>>> origin/main
           {mainNavigation.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-<<<<<<< HEAD
               style={{
                 fontFamily: "\"Noto Sans JP\", sans-serif",
                 fontWeight: 500,
@@ -106,27 +87,19 @@ export function Header() {
                 whiteSpace: "nowrap",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background =
-                  "rgba(155,139,191,0.1)";
-                (e.currentTarget as HTMLAnchorElement).style.color =
-                  "var(--text-primary)";
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(155,139,191,0.1)";
+                (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background =
-                  "transparent";
-                (e.currentTarget as HTMLAnchorElement).style.color =
-                  "var(--text-secondary)";
+                (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-secondary)";
               }}
-=======
-              className="rounded-full px-3.5 py-2 text-[13px] font-semibold text-text-muted transition-all hover:bg-primary/10 hover:text-text"
->>>>>>> origin/main
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-<<<<<<< HEAD
         {/* モバイルハンバーガーボタン */}
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -180,34 +153,11 @@ export function Header() {
             padding: "12px 24px 20px",
           }}
         >
-=======
-        <button
-          onClick={() => setIsOpen((open) => !open)}
-          className="rounded-lg p-2 text-text-muted hover:bg-primary/10 lg:hidden"
-          aria-label={isOpen ? "メニューを閉じる" : "メニューを開く"}
-          aria-expanded={isOpen}
-        >
-          {isOpen ? (
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-          )}
-        </button>
-      </div>
-
-      <nav className={cn("border-t border-primary/10 bg-white/95 lg:hidden", isOpen ? "block" : "hidden")}>
-        <div className="space-y-1 px-5 py-3">
->>>>>>> origin/main
           {mainNavigation.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setIsOpen(false)}
-<<<<<<< HEAD
               style={{
                 display: "block",
                 fontFamily: "\"Noto Sans JP\", sans-serif",
@@ -221,16 +171,11 @@ export function Header() {
                 transition: "background 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background =
-                  "rgba(155,139,191,0.1)";
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(155,139,191,0.1)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background =
-                  "transparent";
+                (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
               }}
-=======
-              className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-text-muted transition-colors hover:bg-primary/10 hover:text-text"
->>>>>>> origin/main
             >
               {item.label}
             </Link>
@@ -238,7 +183,6 @@ export function Header() {
         </nav>
       )}
 
-      {/* レスポンシブ用スタイル（JSX内インライン） */}
       <style>{`
         @media (max-width: 900px) {
           .resp-hamburger { display: flex !important; }
