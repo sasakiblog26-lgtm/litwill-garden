@@ -7,33 +7,9 @@ import CtaSection from "@/components/sections/cta-section";
 import ConstellationField from "@/components/visual/constellation-field";
 import { GarlandDivider, OrnamentDivider } from "@/components/visual/ornaments";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { getAllArticles } from "@/lib/markdown";
 
-const ARTICLES = [
-  {
-    title: "占いはなぜ当たるの？心理学×占星術が教える「共鳴」のしくみ",
-    category: "占星術",
-    publishedAt: "2026-06-02",
-    excerpt: "「占いって本当に当たるの？」という疑問に、心理学と占星術の視点から丁寧に答えます。",
-    thumbPosition: "0% 0%",
-    href: "/articles/uranai-ataru",
-  },
-  {
-    title: "満月の夜に行うセルフリーディング — 月のエネルギーを味方にする方法",
-    category: "占星術",
-    publishedAt: "2026-03-25",
-    excerpt: "満月は「手放し」と「完了」のエネルギー。この特別な夜にできるセルフリーディングの方法を解説します。",
-    thumbPosition: "100% 0%",
-    href: "/articles/uranai-ataru",
-  },
-  {
-    title: "ユング心理学から読み解くタロットカードの象徴 — 無意識の声を聴く",
-    category: "心理学",
-    publishedAt: "2026-03-20",
-    excerpt: "タロットの大アルカナとユングの元型理論の共通点を、わかりやすく解説。",
-    thumbPosition: "0% 50%",
-    href: "/articles/uranai-ataru",
-  },
-];
+const THUMB_POSITIONS = ["0% 0%", "100% 0%", "0% 50%"];
 
 const READINGS = [
   {
@@ -64,6 +40,18 @@ const READINGS = [
 ];
 
 export default function Home() {
+  const articles = getAllArticles()
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .slice(0, 3)
+    .map((article, i) => ({
+      title: article.title,
+      category: article.category,
+      publishedAt: article.date,
+      excerpt: article.excerpt,
+      thumbPosition: THUMB_POSITIONS[i % THUMB_POSITIONS.length],
+      href: `/articles/${article.slug}`,
+    }));
+
   return (
     <>
       <Hero />
@@ -82,8 +70,8 @@ export default function Home() {
               className="resp-grid-3"
               style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 40 }}
             >
-              {ARTICLES.map((article, i) => (
-                <ScrollReveal key={article.href + i} delay={(i % 3) as 0 | 1 | 2 | 3}>
+              {articles.map((article, i) => (
+                <ScrollReveal key={article.href} delay={(i % 3) as 0 | 1 | 2 | 3}>
                   <ArticleCard {...article} />
                 </ScrollReveal>
               ))}
