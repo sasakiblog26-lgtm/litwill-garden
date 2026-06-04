@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AdSlot } from "@/components/ads/ad-slot";
+import { JsonLd, articleJsonLd } from "@/components/seo/json-ld";
 import { getArticleBySlug, getAllArticleSlugs } from "@/lib/markdown";
 
 type PageProps = {
@@ -92,6 +94,15 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
   return (
     <div style={outerStyle}>
+      <JsonLd
+        data={articleJsonLd({
+          title: article.title,
+          description: article.excerpt,
+          slug,
+          publishedAt: article.date,
+        })}
+      />
+
       {/* Meta row */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
         <Badge variant="lavender">{article.category}</Badge>
@@ -109,6 +120,12 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         style={bodyStyle}
         className="article-body"
         dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+      />
+
+      {/* 記事内広告（NEXT_PUBLIC_ADSENSE_CLIENT / SLOT 設定時のみ表示） */}
+      <AdSlot
+        slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE}
+        style={{ margin: "32px 0" }}
       />
 
       {/* CTA */}

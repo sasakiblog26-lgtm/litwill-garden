@@ -1,19 +1,14 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://litwill-garden.com",
+  siteUrl: "https://www.litwillgarden.com",
   generateRobotsTxt: false,
   sitemapSize: 7000,
   changefreq: "daily",
   priority: 0.7,
   exclude: [
-    "/characters",
-    "/characters/*",
-    "/weapons",
-    "/weapons/*",
-    "/tier-list",
-    "/ranking",
-    "/settings",
-    "/guides",
+    "/admin",
+    "/admin/*",
+    "/readings/success",
   ],
   robotsTxtOptions: {
     additionalSitemaps: [],
