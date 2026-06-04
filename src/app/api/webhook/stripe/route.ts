@@ -41,7 +41,8 @@ export async function POST(req: NextRequest) {
     const { plan, name, birthdate, birthtime, birthplace, concern } = session.metadata ?? {};
     const email = session.customer_email ?? "";
     const planLabel = PLAN_LABELS[plan ?? ""] ?? plan;
-    const amount = ((session.amount_total ?? 0) / 100).toLocaleString("ja-JP");
+    // JPY はゼロ十進通貨なので amount_total は既に「円」単位（/100 不要）
+    const amount = (session.amount_total ?? 0).toLocaleString("ja-JP");
 
     const resend = getResend();
     await Promise.all([
