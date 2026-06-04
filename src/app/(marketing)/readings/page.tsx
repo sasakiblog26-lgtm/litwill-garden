@@ -23,7 +23,7 @@ const READINGS = [
     tags: ["占星術", "数秘術"],
     price: "¥3,300",
     gold: false,
-    href: "/readings",
+    href: "/readings/apply?plan=soul",
   },
   {
     eyebrow: "Love Reading",
@@ -33,7 +33,7 @@ const READINGS = [
     tags: ["タロット", "恋愛"],
     price: "¥3,300",
     gold: false,
-    href: "/readings",
+    href: "/readings/apply?plan=love",
   },
   {
     eyebrow: "Premium Reading",
@@ -43,7 +43,7 @@ const READINGS = [
     tags: ["占星術", "タロット", "心理学", "クリスタル"],
     price: "¥11,000",
     gold: true,
-    href: "/readings",
+    href: "/readings/apply?plan=premium",
   },
 ];
 
