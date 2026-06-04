@@ -2,10 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { Resend } from "resend";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-05-27.dahlia",
-});
-const resend = new Resend(process.env.RESEND_API_KEY!);
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-05-27.dahlia",
+  });
+}
+
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY!);
+}
 
 const PLAN_LABELS: Record<string, string> = {
   soul: "魂のテーマリーディング",
@@ -19,7 +27,7 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       body,
       sig!,
       process.env.STRIPE_WEBHOOK_SECRET!
@@ -35,6 +43,7 @@ export async function POST(req: NextRequest) {
     const planLabel = PLAN_LABELS[plan ?? ""] ?? plan;
     const amount = ((session.amount_total ?? 0) / 100).toLocaleString("ja-JP");
 
+    const resend = getResend();
     await Promise.all([
       // オーナーへの通知
       resend.emails.send({
