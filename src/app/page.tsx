@@ -97,7 +97,7 @@ export default function Home() {
               title="鑑定メニュー"
               sub="あなたの魂が求める答えを、プロの占い師がリーディングします。"
             />
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 40 }}>
+            <div className="resp-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 40 }}>
               {READINGS.map((reading) => (
                 <ReadingCard key={reading.eyebrow} {...reading} />
               ))}

@@ -312,7 +312,7 @@ function Result({ year, month, day, onReset }: ResultProps) {
         </div>
       </CornerFrame>
 
-      <div style={resultGridStyle}>
+      <div style={resultGridStyle} className="resp-grid-2">
         {RESULT_SECTIONS.map((section) => (
           <div key={section.label} style={resultCardStyle}>
             <p style={resultLabelStyle}>{section.label}</p>

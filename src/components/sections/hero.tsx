@@ -85,11 +85,11 @@ export default function Hero() {
   };
 
   return (
-    <section style={sectionStyle}>
+    <section style={sectionStyle} className="resp-hero">
       {/* 背景画像オーバーレイ */}
       <div style={bgImageStyle} aria-hidden="true" />
 
-      <div style={innerStyle}>
+      <div style={innerStyle} className="resp-hero-inner">
         {/* 左: テキストコンテンツ */}
         <div style={textColStyle}>
           <span style={eyebrowStyle}>ASTROLOGY × PSYCHOLOGY</span>
@@ -102,7 +102,7 @@ export default function Hero() {
             西洋占星術・インド占星術・四柱推命を融合した独自メソッドで、あなたの悩みを深く読み解きます。
           </p>
 
-          <div style={buttonRowStyle}>
+          <div style={buttonRowStyle} className="resp-hero-buttons">
             <Button variant="primary" size="lg" href="/diagnosis">
               ✦ 無料で魂のテーマを診断する
             </Button>

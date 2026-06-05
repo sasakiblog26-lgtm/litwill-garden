@@ -117,7 +117,7 @@ export default function CelestialVisual() {
       width="300"
       height="300"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ opacity: 0.6, overflow: "visible" }}
+      style={{ opacity: 0.6, overflow: "visible", maxWidth: "100%", height: "auto" }}
       aria-label="天体図"
     >
       {/* 最内オービット（装飾のみ・静止） */}

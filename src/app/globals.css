@@ -278,8 +278,27 @@ a {
 @media (max-width: 900px) {
   .resp-nav { display: none !important; }
   .resp-grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  .resp-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Hero: 横並び → 縦積み・中央寄せ */
+  .resp-hero-inner {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 36px !important;
+  }
+  .resp-hero-inner p { margin-left: auto !important; margin-right: auto !important; }
+  .resp-hero-buttons { justify-content: center !important; }
+  .resp-hero-title { font-size: 36px !important; }
 }
 @media (max-width: 600px) {
-  .resp-grid-3 { grid-template-columns: 1fr !important; }
+  .resp-grid-2,
+  .resp-grid-3,
+  .resp-grid-4 { grid-template-columns: 1fr !important; }
+
+  .resp-hero {
+    padding-top: 88px !important;
+    padding-bottom: 56px !important;
+    min-height: auto !important;
+  }
   .resp-hero-title { font-size: 30px !important; }
 }
