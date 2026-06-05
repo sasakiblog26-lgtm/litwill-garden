@@ -26,7 +26,7 @@ const itemStyle: CSSProperties = {
 };
 
 function rankStyle(rank: number): CSSProperties {
-  const colors = ["#D4AF37", "#A9A9B5", "#C08552"]; // 金・銀・銅
+  const colors = ["#C99A2E", "#9A9AA8", "#B06E3E"]; // 金・銀・銅
   return {
     flexShrink: 0,
     width: 28,
@@ -37,8 +37,8 @@ function rankStyle(rank: number): CSSProperties {
     justifyContent: "center",
     fontWeight: 700,
     fontSize: 14,
-    color: rank <= 3 ? "#fff" : "var(--text-secondary)",
-    background: rank <= 3 ? colors[rank - 1] : "var(--lg-lavender-100)",
+    color: "#fff",
+    background: rank <= 3 ? colors[rank - 1] : "#B7AECB",
   };
 }
 
@@ -62,7 +62,8 @@ export function PopularArticles({
             style={{
               fontFamily: "var(--lg-font-heading)",
               fontSize: 15,
-              color: "var(--text-primary)",
+              fontWeight: 600,
+              color: "#1A1A1A",
               lineHeight: 1.5,
             }}
           >

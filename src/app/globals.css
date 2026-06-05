@@ -180,6 +180,7 @@ a {
   margin: 48px 0 16px;
   padding-bottom: 10px;
   border-bottom: 2px solid var(--lg-gold);
+  scroll-margin-top: 80px;
 }
 
 .article-body h3 {
@@ -191,6 +192,7 @@ a {
   margin: 32px 0 12px;
   padding-left: 12px;
   border-left: 3px solid var(--lg-gold);
+  scroll-margin-top: 80px;
 }
 
 .article-body h2:first-child,

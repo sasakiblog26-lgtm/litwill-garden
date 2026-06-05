@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { AdSlot } from "@/components/ads/ad-slot";
 import { JsonLd, articleJsonLd, faqJsonLd } from "@/components/seo/json-ld";
 import { ArticleGrid } from "@/components/article/article-grid";
+import { ArticleToc } from "@/components/article/article-toc";
 import { PopularArticles } from "@/components/article/popular-articles";
 import {
   getArticleBySlug,
@@ -98,11 +99,15 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     margin: 0,
   };
 
-  const formattedDate = new Date(article.date).toLocaleDateString("ja-JP", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const fmtDate = (d: string) =>
+    new Date(d).toLocaleDateString("ja-JP", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  const formattedDate = fmtDate(article.date);
+  const hasUpdate = !!article.updatedAt && article.updatedAt !== article.date;
+  const formattedUpdated = article.updatedAt ? fmtDate(article.updatedAt) : "";
 
   const related = getRelatedArticles(slug, 3);
   const popular = getPopularArticles(5).filter((a) => a.slug !== slug);
@@ -116,6 +121,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           description: article.excerpt,
           slug,
           publishedAt: article.date,
+          updatedAt: article.updatedAt,
         })}
       />
       {faqs.length > 0 && (
@@ -134,7 +140,12 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         >
           <Badge variant="lavender">{article.category}</Badge>
         </Link>
-        <span style={{ fontSize: "13px", color: "#9A95B4" }}>{formattedDate}</span>
+        <span style={{ fontSize: "13px", color: "#9A95B4" }}>
+          公開 {formattedDate}
+          {hasUpdate && (
+            <span style={{ marginLeft: 8 }}>／更新 {formattedUpdated}</span>
+          )}
+        </span>
       </div>
 
       {/* Title */}
@@ -164,6 +175,9 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           ))}
         </div>
       )}
+
+      {/* 目次（全記事・自動生成） */}
+      <ArticleToc toc={article.toc} />
 
       {/* Body */}
       <div

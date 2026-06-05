@@ -8,12 +8,16 @@ const articlesDir = path.join(process.cwd(), "content/articles");
 
 export type FaqItem = { q: string; a: string };
 
+export type TocItem = { id: string; text: string; level: 2 | 3 };
+
 export type ArticleMeta = {
   title: string;
   date: string;
   category: string;
   excerpt: string;
   tags?: string[];
+  /** 更新日（投稿後に内容を更新したら設定。表示＆構造化データに反映） */
+  updatedAt?: string;
   /** FAQブロック（指定するとFAQ表示＋FAQ構造化データを自動生成） */
   faq?: FaqItem[];
 };
@@ -21,7 +25,25 @@ export type ArticleMeta = {
 export type Article = ArticleMeta & {
   slug: string;
   contentHtml: string;
+  toc: TocItem[];
 };
+
+/** 見出し(h2/h3)に id を付与し、目次データを抽出する */
+function addHeadingIdsAndToc(htmlStr: string): { html: string; toc: TocItem[] } {
+  const toc: TocItem[] = [];
+  let i = 0;
+  const html = htmlStr.replace(
+    /<h([23])>([\s\S]*?)<\/h\1>/g,
+    (_m, lvl: string, inner: string) => {
+      i += 1;
+      const id = `sec-${i}`;
+      const text = inner.replace(/<[^>]+>/g, "").trim();
+      toc.push({ id, text, level: Number(lvl) as 2 | 3 });
+      return `<h${lvl} id="${id}">${inner}</h${lvl}>`;
+    }
+  );
+  return { html, toc };
+}
 
 export type ArticleListItem = ArticleMeta & { slug: string };
 
@@ -36,9 +58,11 @@ export async function getArticleBySlug(slug: string): Promise<Article> {
   const processed = await remark()
     .use(html, { sanitize: false })
     .process(content);
+  const { html: contentHtml, toc } = addHeadingIdsAndToc(processed.toString());
   return {
     slug,
-    contentHtml: processed.toString(),
+    contentHtml,
+    toc,
     ...(data as ArticleMeta),
   };
 }
