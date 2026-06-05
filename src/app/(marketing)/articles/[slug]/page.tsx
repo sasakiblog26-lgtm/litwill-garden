@@ -61,9 +61,10 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   };
 
   const bodyStyle: CSSProperties = {
-    fontSize: "15px",
-    lineHeight: 2.0,
-    color: "var(--text-secondary)",
+    fontSize: "16px",
+    lineHeight: 1.95,
+    letterSpacing: "0.02em",
+    color: "#3D3262",
   };
 
   const ctaStyle: CSSProperties = {
