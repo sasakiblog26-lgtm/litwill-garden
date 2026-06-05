@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Google Search Console「HTMLタグ」認証。環境変数 GOOGLE_SITE_VERIFICATION
+  // にトークンを設定すると <meta name="google-site-verification"> が出力される。
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 export default function RootLayout({
