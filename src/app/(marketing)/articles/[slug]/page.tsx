@@ -40,9 +40,12 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
   // ── Layout ──────────────────────────────────────────────────────────────
   const outerStyle: CSSProperties = {
-    maxWidth: "720px",
-    margin: "0 auto",
-    padding: "48px 24px",
+    maxWidth: "760px",
+    margin: "40px auto",
+    padding: "56px",
+    background: "#ffffff",
+    borderRadius: "16px",
+    boxShadow: "0 4px 28px rgba(45,36,72,0.08)",
   };
 
   const h1Style: CSSProperties = {
@@ -50,13 +53,13 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     fontWeight: 700,
     fontSize: "28px",
     lineHeight: 1.4,
-    color: "var(--text-primary)",
+    color: "#1A1A1A",
     margin: "16px 0 8px",
   };
 
   const bylineStyle: CSSProperties = {
     fontSize: "14px",
-    color: "#9A95B4",
+    color: "#888",
     marginBottom: "28px",
   };
 
@@ -64,7 +67,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     fontSize: "16px",
     lineHeight: 1.95,
     letterSpacing: "0.02em",
-    color: "#3D3262",
+    color: "#2A2A2A",
   };
 
   const ctaStyle: CSSProperties = {
@@ -94,7 +97,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   });
 
   return (
-    <div style={outerStyle}>
+    <div style={outerStyle} className="article-paper">
       <JsonLd
         data={articleJsonLd({
           title: article.title,
