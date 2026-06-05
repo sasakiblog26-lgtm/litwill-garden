@@ -4,6 +4,11 @@ date: "2026-06-05"
 category: "診断"
 excerpt: "相性占いには占星術・四柱推命・数秘術・タロットなどさまざまな種類があります。それぞれが得意とすることを知れば、目的に合った占いを選べます。恋愛で役立つ使い分けをやさしく解説します。"
 tags: ["相性", "恋愛", "占い", "自己理解"]
+faq:
+  - q: "相性占いはどれが一番当たりますか？"
+    a: "占いごとに得意分野が違うため、「一番」は目的によって変わります。長期的な相性は占星術や四柱推命、今の二人の気持ちや流れはタロットが向いています。"
+  - q: "相性が悪いと出たら別れたほうがいいですか？"
+    a: "いいえ。相性占いは二人を理解するきっかけであり、関係を決めるものではありません。「合わない」と出ても、伝え方を工夫することで関係は育てられます。"
 ---
 
 「彼との相性が知りたい」と思ったとき、相性占いにはたくさんの種類があって迷いますよね。実は、占いごとに“得意分野”が違います。
@@ -26,6 +31,22 @@ tags: ["相性", "恋愛", "占い", "自己理解"]
 ### タロット
 「今この瞬間」を映すのが得意。**今の二人の気持ちや、これからの流れ**を知りたいときに向いています。
 
+### 相性占いタイプ別 早見表
+
+<div class="lg-table-scroll">
+<table>
+<thead><tr><th>占い</th><th>長期の相性</th><th>今の気持ち</th><th>手軽さ</th></tr></thead>
+<tbody>
+<tr><td>占星術</td><td class="lg-ox-good">◎</td><td class="lg-ox-mid">△</td><td class="lg-ox-mid">△</td></tr>
+<tr><td>四柱推命</td><td class="lg-ox-good">◎</td><td class="lg-ox-bad">×</td><td class="lg-ox-bad">×</td></tr>
+<tr><td>数秘術</td><td class="lg-ox-mid">○</td><td class="lg-ox-mid">△</td><td class="lg-ox-good">◎</td></tr>
+<tr><td>タロット</td><td class="lg-ox-bad">×</td><td class="lg-ox-good">◎</td><td class="lg-ox-mid">○</td></tr>
+</tbody>
+</table>
+</div>
+
+<p style="text-align:center;margin:8px 0 0"><span class="lg-stars">★★★★<span class="off">★</span></span><br><span style="font-size:12px;color:#888">編集部の使いやすさ評価（タロットは結果がすぐ出て手軽）</span></p>
+
 ## 目的別・相性占いの選び方
 
 迷ったときは、知りたいことで選びましょう。
@@ -46,3 +67,5 @@ tags: ["相性", "恋愛", "占い", "自己理解"]
 相性占いは種類によって得意分野が異なります。知りたいことに合わせて選べば、より納得感のあるヒントが得られます。
 
 まずは二人の基本的な相性を、無料診断で気軽にのぞいてみませんか。
+
+<p style="text-align:center"><a class="lg-btn lg-btn-gold" href="/diagnosis">✦ 無料で相性のヒントを見る</a></p>

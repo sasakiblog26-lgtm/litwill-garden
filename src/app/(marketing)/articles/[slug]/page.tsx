@@ -5,12 +5,14 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AdSlot } from "@/components/ads/ad-slot";
-import { JsonLd, articleJsonLd } from "@/components/seo/json-ld";
+import { JsonLd, articleJsonLd, faqJsonLd } from "@/components/seo/json-ld";
 import { ArticleGrid } from "@/components/article/article-grid";
+import { PopularArticles } from "@/components/article/popular-articles";
 import {
   getArticleBySlug,
   getAllArticleSlugs,
   getRelatedArticles,
+  getPopularArticles,
 } from "@/lib/markdown";
 
 type PageProps = {
@@ -103,6 +105,8 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   });
 
   const related = getRelatedArticles(slug, 3);
+  const popular = getPopularArticles(5).filter((a) => a.slug !== slug);
+  const faqs = article.faq ?? [];
 
   return (
     <div style={outerStyle} className="article-paper">
@@ -114,6 +118,13 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           publishedAt: article.date,
         })}
       />
+      {faqs.length > 0 && (
+        <JsonLd
+          data={faqJsonLd(
+            faqs.map((f) => ({ question: f.q, answer: f.a }))
+          )}
+        />
+      )}
 
       {/* Meta row */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
@@ -161,6 +172,31 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: article.contentHtml }}
       />
 
+      {/* FAQ（frontmatter の faq があれば表示＋FAQ構造化データ） */}
+      {faqs.length > 0 && (
+        <div className="lg-faq">
+          <h2
+            style={{
+              fontFamily: "var(--lg-font-heading)",
+              fontWeight: 700,
+              fontSize: "22px",
+              color: "#1A1A1A",
+              margin: "0 0 16px",
+              paddingBottom: "10px",
+              borderBottom: "2px solid var(--lg-gold)",
+            }}
+          >
+            よくある質問
+          </h2>
+          {faqs.map((f, i) => (
+            <div key={i} className="lg-faq-item">
+              <p className="lg-faq-q">{f.q}</p>
+              <p className="lg-faq-a">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* 記事内広告（NEXT_PUBLIC_ADSENSE_CLIENT / SLOT 設定時のみ表示） */}
       <AdSlot
         slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE}
@@ -194,6 +230,9 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           <ArticleGrid articles={related} />
         </div>
       )}
+
+      {/* 人気のコラム（キュレーション型ランキング） */}
+      <PopularArticles articles={popular.slice(0, 5)} />
     </div>
   );
 }

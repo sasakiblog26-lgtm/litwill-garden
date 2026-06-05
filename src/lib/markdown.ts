@@ -6,12 +6,16 @@ import html from "remark-html";
 
 const articlesDir = path.join(process.cwd(), "content/articles");
 
+export type FaqItem = { q: string; a: string };
+
 export type ArticleMeta = {
   title: string;
   date: string;
   category: string;
   excerpt: string;
   tags?: string[];
+  /** FAQブロック（指定するとFAQ表示＋FAQ構造化データを自動生成） */
+  faq?: FaqItem[];
 };
 
 export type Article = ArticleMeta & {
@@ -27,7 +31,11 @@ export async function getArticleBySlug(slug: string): Promise<Article> {
   const fullPath = path.join(articlesDir, `${slug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
-  const processed = await remark().use(html).process(content);
+  // sanitize: false で記事内の装飾ブロック（囲み枠・吹き出し・ステップ等のHTML）を通す。
+  // content/articles は first-party のため許容する。
+  const processed = await remark()
+    .use(html, { sanitize: false })
+    .process(content);
   return {
     slug,
     contentHtml: processed.toString(),
@@ -111,4 +119,42 @@ export function getRelatedArticles(slug: string, limit = 3): ArticleListItem[] {
     .sort((x, y) => y.score - x.score);
 
   return scored.slice(0, limit).map((s) => s.article);
+}
+
+/**
+ * 人気記事ランキング。
+ * アクセス解析が未連携のため、集客の柱となるピラー記事を優先し、
+ * 足りない分は新着で補う「キュレーション型ランキング」。
+ */
+const PILLAR_SLUGS = [
+  "uranai-ataru",
+  "taiyou-seiza-kihon",
+  "mbti-16-ichiran",
+  "tarot-yarikata",
+  "suchijutsu-life-path",
+  "seiza-aishou",
+  "horoscope-yomikata",
+];
+
+export function getPopularArticles(limit = 5): ArticleListItem[] {
+  const all = getAllArticles();
+  const bySlug = new Map(all.map((a) => [a.slug, a]));
+
+  const ranked: ArticleListItem[] = [];
+  for (const slug of PILLAR_SLUGS) {
+    const a = bySlug.get(slug);
+    if (a) ranked.push(a);
+    if (ranked.length >= limit) break;
+  }
+
+  if (ranked.length < limit) {
+    const seen = new Set(ranked.map((a) => a.slug));
+    for (const a of getSortedArticles()) {
+      if (seen.has(a.slug)) continue;
+      ranked.push(a);
+      if (ranked.length >= limit) break;
+    }
+  }
+
+  return ranked.slice(0, limit);
 }
