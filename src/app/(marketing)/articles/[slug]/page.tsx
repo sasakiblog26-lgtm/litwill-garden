@@ -1,11 +1,17 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AdSlot } from "@/components/ads/ad-slot";
 import { JsonLd, articleJsonLd } from "@/components/seo/json-ld";
-import { getArticleBySlug, getAllArticleSlugs } from "@/lib/markdown";
+import { ArticleGrid } from "@/components/article/article-grid";
+import {
+  getArticleBySlug,
+  getAllArticleSlugs,
+  getRelatedArticles,
+} from "@/lib/markdown";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -96,6 +102,8 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     day: "numeric",
   });
 
+  const related = getRelatedArticles(slug, 3);
+
   return (
     <div style={outerStyle} className="article-paper">
       <JsonLd
@@ -109,7 +117,12 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
       {/* Meta row */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
-        <Badge variant="lavender">{article.category}</Badge>
+        <Link
+          href={`/articles/category/${encodeURIComponent(article.category)}`}
+          style={{ textDecoration: "none" }}
+        >
+          <Badge variant="lavender">{article.category}</Badge>
+        </Link>
         <span style={{ fontSize: "13px", color: "#9A95B4" }}>{formattedDate}</span>
       </div>
 
@@ -118,6 +131,28 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
       {/* Byline */}
       <p style={bylineStyle}>by Litwill Garden 編集部</p>
+
+      {/* Tags */}
+      {article.tags && article.tags.length > 0 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "0 0 28px" }}>
+          {article.tags.map((tag) => (
+            <Link
+              key={tag}
+              href={`/articles/tag/${encodeURIComponent(tag)}`}
+              style={{
+                fontSize: 12,
+                color: "var(--lg-lavender-700)",
+                background: "var(--lg-lavender-100)",
+                padding: "4px 12px",
+                borderRadius: 999,
+                textDecoration: "none",
+              }}
+            >
+              #{tag}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Body */}
       <div
@@ -139,6 +174,26 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           ✦ 無料で星座診断する
         </Button>
       </div>
+
+      {/* 関連記事 */}
+      {related.length > 0 && (
+        <div style={{ marginTop: "48px" }}>
+          <h2
+            style={{
+              fontFamily: "var(--lg-font-heading)",
+              fontWeight: 700,
+              fontSize: "20px",
+              color: "#1A1A1A",
+              margin: "0 0 4px",
+              paddingBottom: "10px",
+              borderBottom: "2px solid var(--lg-gold)",
+            }}
+          >
+            あわせて読みたい
+          </h2>
+          <ArticleGrid articles={related} />
+        </div>
+      )}
     </div>
   );
 }
