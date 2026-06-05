@@ -15,6 +15,10 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY!);
 }
 
+// 差出アドレス。ドメイン未認証のテスト時は MAIL_FROM=onboarding@resend.dev を使う。
+// 本番（litwillgarden.com 認証済み）では未設定でOK＝従来どおり。
+const MAIL_FROM = process.env.MAIL_FROM ?? "Litwill Garden <noreply@litwillgarden.com>";
+
 const PLAN_LABELS: Record<string, string> = {
   soul: "魂のテーマリーディング",
   love: "恋愛リーディング",
@@ -48,7 +52,7 @@ export async function POST(req: NextRequest) {
     await Promise.all([
       // オーナーへの通知
       resend.emails.send({
-        from: "Litwill Garden <noreply@litwillgarden.com>",
+        from: MAIL_FROM,
         to: process.env.OWNER_EMAIL!,
         subject: `【新規申し込み】${planLabel} — ${name} 様`,
         html: `
@@ -67,7 +71,7 @@ export async function POST(req: NextRequest) {
       }),
       // 顧客への受付確認
       resend.emails.send({
-        from: "Litwill Garden <noreply@litwillgarden.com>",
+        from: MAIL_FROM,
         to: email,
         subject: "【Litwill Garden】鑑定お申し込みを受け付けました",
         html: `
