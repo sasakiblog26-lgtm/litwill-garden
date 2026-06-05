@@ -8,6 +8,7 @@ import { AdSlot } from "@/components/ads/ad-slot";
 import { JsonLd, articleJsonLd, faqJsonLd } from "@/components/seo/json-ld";
 import { ArticleGrid } from "@/components/article/article-grid";
 import { ArticleToc } from "@/components/article/article-toc";
+import { AuthorBox } from "@/components/article/author-box";
 import { PopularArticles } from "@/components/article/popular-articles";
 import {
   getArticleBySlug,
@@ -224,6 +225,9 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           ✦ 無料で星座診断する
         </Button>
       </div>
+
+      {/* この記事を書いた人（信頼性・E-E-A-T） */}
+      <AuthorBox />
 
       {/* 関連記事 */}
       {related.length > 0 && (
