@@ -15,9 +15,8 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return getAllCategories().map((c) => ({
-    category: encodeURIComponent(c.name),
-  }));
+  // Next.js が自動でURLエンコードするため、生の文字列を渡す（encodeすると二重エンコードになる）
+  return getAllCategories().map((c) => ({ category: c.name }));
 }
 
 export async function generateMetadata({

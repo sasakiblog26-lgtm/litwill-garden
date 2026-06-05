@@ -15,7 +15,8 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return getAllTags().map((t) => ({ tag: encodeURIComponent(t.name) }));
+  // Next.js が自動でURLエンコードするため、生の文字列を渡す（encodeすると二重エンコードになる）
+  return getAllTags().map((t) => ({ tag: t.name }));
 }
 
 export async function generateMetadata({
