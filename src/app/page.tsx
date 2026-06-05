@@ -9,8 +9,6 @@ import { GarlandDivider, OrnamentDivider } from "@/components/visual/ornaments";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { getAllArticles } from "@/lib/markdown";
 
-const THUMB_POSITIONS = ["0% 0%", "100% 0%", "0% 50%"];
-
 const READINGS = [
   {
     eyebrow: "Soul Reading",
@@ -43,12 +41,13 @@ export default function Home() {
   const articles = getAllArticles()
     .sort((a, b) => (a.date < b.date ? 1 : -1))
     .slice(0, 3)
-    .map((article, i) => ({
+    .map((article) => ({
       title: article.title,
       category: article.category,
       publishedAt: article.date,
       excerpt: article.excerpt,
-      thumbPosition: THUMB_POSITIONS[i % THUMB_POSITIONS.length],
+      thumbnail: article.thumbnail,
+      seed: article.slug,
       href: `/articles/${article.slug}`,
     }));
 

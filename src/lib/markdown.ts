@@ -16,6 +16,8 @@ export type ArticleMeta = {
   category: string;
   excerpt: string;
   tags?: string[];
+  /** 個別サムネ画像URL（任意）。未指定ならカテゴリ＋slugから自動生成 */
+  thumbnail?: string;
   /** 更新日（投稿後に内容を更新したら設定。表示＆構造化データに反映） */
   updatedAt?: string;
   /** FAQブロック（指定するとFAQ表示＋FAQ構造化データを自動生成） */

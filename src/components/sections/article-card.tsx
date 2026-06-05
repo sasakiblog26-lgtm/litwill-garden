@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Badge } from "@/components/ui/badge";
+import { ArticleThumb } from "@/components/article/article-thumb";
 
 // ---------------------------------------------------------------------------
 // Props
@@ -15,6 +16,10 @@ export interface ArticleCardProps {
   /** CSS object-position value for thumbnail cropping. @default "center" */
   thumbPosition?: string;
   href?: string;
+  /** frontmatter で個別サムネ画像を指定した場合のURL。未指定なら自動生成 */
+  thumbnail?: string;
+  /** 自動サムネ生成のシード（slug推奨）。未指定なら title を使う */
+  seed?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -28,6 +33,8 @@ export default function ArticleCard({
   excerpt,
   thumbPosition = "center",
   href = "#",
+  thumbnail,
+  seed,
 }: ArticleCardProps) {
   const cardStyle: CSSProperties = {
     borderRadius: "16px",
@@ -96,15 +103,19 @@ export default function ArticleCard({
   return (
     <Link href={href} style={{ textDecoration: "none" }}>
       <article style={cardStyle}>
-        {/* サムネイル */}
+        {/* サムネイル（thumbnail 指定があれば画像、無ければ自動生成SVG） */}
         <div style={thumbWrapStyle}>
-          <Image
-            src="/images/backgrounds.jpg"
-            alt={title}
-            fill
-            style={{ objectFit: "cover", objectPosition: thumbPosition }}
-            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
-          />
+          {thumbnail ? (
+            <Image
+              src={thumbnail}
+              alt={title}
+              fill
+              style={{ objectFit: "cover", objectPosition: thumbPosition }}
+              sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+            />
+          ) : (
+            <ArticleThumb category={category} seed={seed ?? title} />
+          )}
         </div>
 
         {/* カード本体 */}

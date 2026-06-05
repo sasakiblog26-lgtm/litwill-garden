@@ -3,8 +3,6 @@ import ArticleCard from "@/components/sections/article-card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import type { ArticleListItem } from "@/lib/markdown";
 
-const THUMB_POSITIONS = ["0% 0%", "100% 0%", "0% 50%"];
-
 const gridStyle: CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
@@ -23,7 +21,8 @@ export function ArticleGrid({ articles }: { articles: ArticleListItem[] }) {
             category={article.category}
             publishedAt={article.date}
             excerpt={article.excerpt}
-            thumbPosition={THUMB_POSITIONS[i % THUMB_POSITIONS.length]}
+            thumbnail={article.thumbnail}
+            seed={article.slug}
             href={`/articles/${article.slug}`}
           />
         </ScrollReveal>
