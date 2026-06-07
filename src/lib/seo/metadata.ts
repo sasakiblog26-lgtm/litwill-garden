@@ -14,8 +14,9 @@ export function createMetadata({
   ogImage?: string;
 }): Metadata {
   const url = `${brand.url}${path}`;
-  const image = ogImage ?? `${brand.url}/og-default.png`;
 
+  // ogImage を明示しない場合は openGraph.images を設定しない。
+  // 各ルートに置いた opengraph-image.tsx（ファイル規約）が自動で og:image を補う。
   return {
     title: `${title} | ${brand.name}`,
     description,
@@ -26,13 +27,13 @@ export function createMetadata({
       siteName: brand.name,
       locale: "ja_JP",
       type: "website",
-      images: [{ url: image, width: 1200, height: 630 }],
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | ${brand.name}`,
       description,
-      images: [image],
+      ...(ogImage ? { images: [ogImage] } : {}),
     },
     alternates: {
       canonical: url,
