@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AmbientMotifs } from "@/components/visual/ambient-motifs";
 import { brand } from "@/config/brand";
-import { JsonLd, websiteJsonLd } from "@/components/seo/json-ld";
+import { JsonLd, websiteJsonLd, organizationJsonLd } from "@/components/seo/json-ld";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { AdSenseScript } from "@/components/ads/adsense-script";
 import "./globals.css";
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: brand.url,
     siteName: brand.name,
-    images: [{ url: "/og-default.png", width: 1200, height: 630 }],
+    // og:image は app/opengraph-image.tsx（自動生成）が供給するため指定しない
   },
   twitter: {
     card: "summary_large_image",
@@ -58,6 +58,7 @@ export default function RootLayout({
         <AdSenseScript />
       </head>
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }}>
+        <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
         <AmbientMotifs />
         <Header />

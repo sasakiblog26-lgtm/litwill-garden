@@ -11,6 +11,20 @@ export const brand = {
     name: "佐々木弘雅",
     role: "占いブランドオーナー",
   },
+  // 公式SNS等の URL。構造化データ(Organization.sameAs)に反映され、Googleの
+  // エンティティ認識（ナレッジグラフ／AIオーバービュー）を強化する。
+  // アカウント開設後にURLを追加する（未開設プロフィールは載せない＝死リンクは
+  // 信頼シグナルを下げる）。例: "https://x.com/litwill_garden"
+  socials: [] as string[],
+  // サイトが扱う専門領域。Organization.knowsAbout に反映しトピック関連性を示す。
+  expertise: [
+    "西洋占星術",
+    "インド占星術",
+    "四柱推命",
+    "タロット",
+    "数秘術",
+    "心理学",
+  ] as string[],
   colors: {
     primary: "#9B8BBF",
     secondary: "#C8D8F0",
