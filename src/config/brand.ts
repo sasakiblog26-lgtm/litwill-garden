@@ -15,7 +15,10 @@ export const brand = {
   // エンティティ認識（ナレッジグラフ／AIオーバービュー）を強化する。
   // アカウント開設後にURLを追加する（未開設プロフィールは載せない＝死リンクは
   // 信頼シグナルを下げる）。例: "https://x.com/litwill_garden"
-  socials: ["https://x.com/litwillgarden"] as string[],
+  socials: [
+    "https://x.com/litwillgarden",
+    "https://www.threads.net/@litwillgarden",
+  ] as string[],
   // サイトが扱う専門領域。Organization.knowsAbout に反映しトピック関連性を示す。
   expertise: [
     "西洋占星術",

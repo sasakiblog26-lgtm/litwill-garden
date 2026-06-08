@@ -4,6 +4,11 @@ export const snsAccounts = {
     handle: "@litwillgarden",
     label: "X",
   },
+  threads: {
+    url: "https://www.threads.net/@litwillgarden",
+    handle: "@litwillgarden",
+    label: "Threads",
+  },
   youtube: {
     url: "https://www.youtube.com/@litwill-garden",
     channelId: "",
