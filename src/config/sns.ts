@@ -9,6 +9,11 @@ export const snsAccounts = {
     handle: "@litwillgarden",
     label: "Threads",
   },
+  instagram: {
+    url: "https://www.instagram.com/litwillgarden",
+    handle: "@litwillgarden",
+    label: "Instagram",
+  },
   youtube: {
     url: "https://www.youtube.com/@litwill-garden",
     channelId: "",
