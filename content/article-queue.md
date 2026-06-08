@@ -11,7 +11,7 @@
 
 ## キュー（上から順に）
 
-- [ ] インド占星術のやり方・始め方（入門） | slug: indo-astrology-yarikata | カテゴリ: 占星術 | 段階: S2
+- [x] インド占星術のやり方・始め方（入門） | slug: indo-astrology-yarikata | カテゴリ: 占星術 | 段階: S2
 - [ ] 四柱推命 命式の出し方（無料） | slug: shichu-meishiki | カテゴリ: 四柱推命 | 段階: S2
 - [ ] タロット「相手の気持ち」スプレッドの読み方 | slug: tarot-aite-kimochi | カテゴリ: タロット | 段階: S3
 - [ ] ナクシャトラ27宿とは・自分の宿の調べ方 | slug: nakshatra-27 | カテゴリ: 占星術 | 段階: S2
