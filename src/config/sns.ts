@@ -1,7 +1,7 @@
 export const snsAccounts = {
   twitter: {
-    url: "https://twitter.com/litwill_garden",
-    handle: "@litwill_garden",
+    url: "https://x.com/litwillgarden",
+    handle: "@litwillgarden",
     label: "X",
   },
   youtube: {
