@@ -20,7 +20,7 @@ export const snsAccounts = {
     label: "YouTube",
   },
   line: {
-    url: "",
+    url: "https://line.me/R/ti/p/@273dznzg",
     label: "LINE公式アカウント",
   },
   note: {
