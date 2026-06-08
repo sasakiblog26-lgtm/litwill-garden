@@ -19,7 +19,7 @@ export const snsAccounts = {
     label: "LINE公式アカウント",
   },
   note: {
-    url: "https://note.com/litwill_garden",
+    url: "https://note.com/litwillgarden",
     label: "note",
   },
 } as const;

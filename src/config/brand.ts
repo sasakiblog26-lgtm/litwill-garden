@@ -18,6 +18,7 @@ export const brand = {
   socials: [
     "https://x.com/litwillgarden",
     "https://www.threads.net/@litwillgarden",
+    "https://note.com/litwillgarden",
   ] as string[],
   // サイトが扱う専門領域。Organization.knowsAbout に反映しトピック関連性を示す。
   expertise: [
