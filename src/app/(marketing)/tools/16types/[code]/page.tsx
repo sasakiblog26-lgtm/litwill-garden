@@ -40,6 +40,25 @@ const sectionStyle: CSSProperties = {
 const h2Style: CSSProperties = { color: "#c084fc", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem" };
 const bodyStyle: CSSProperties = { color: "#ddd6fe", fontSize: "0.92rem", lineHeight: 1.9, margin: 0 };
 
+// 文中の （XXXX） タイプコードを、そのタイプの詳細ページへのリンクに変換する
+function LinkifyCodes({ text }: { text: string }) {
+  const parts = text.split(/（([A-Z]{4})）/);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (i % 2 === 1) {
+          return TYPES[part] ? (
+            <Link key={i} href={`/tools/16types/${part}`} className="text-purple-300 underline underline-offset-2 hover:text-purple-200">（{part}）</Link>
+          ) : (
+            <span key={i}>（{part}）</span>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export default async function TypeDetailPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
   const t = TYPES[code];
@@ -105,9 +124,9 @@ export default async function TypeDetailPage({ params }: { params: Promise<{ cod
         <section style={sectionStyle}>
           <h2 style={h2Style}>🤝 相性</h2>
           <p style={bodyStyle}>
-            相性のいいタイプ：<strong className="text-white">{t.match}</strong>
+            相性のいいタイプ：<strong className="text-white"><LinkifyCodes text={t.match} /></strong>
             <br />
-            すれ違いやすいタイプ：{t.worst}
+            すれ違いやすいタイプ：<LinkifyCodes text={t.worst} />
           </p>
         </section>
 

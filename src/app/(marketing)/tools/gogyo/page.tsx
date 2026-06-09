@@ -3,100 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { snsAccounts } from "@/config/sns";
-
-// ---------------------------------------------------------------------------
-// 五行（四柱推命の年干より）
-//   生まれ年の十干 → 五行を判定
-//   甲乙=木 / 丙丁=火 / 戊己=土 / 庚辛=金 / 壬癸=水
-//   ※ 西暦の下1桁: 4,5→木 / 6,7→火 / 8,9→土 / 0,1→金 / 2,3→水
-// ---------------------------------------------------------------------------
-
-type Element = "木" | "火" | "土" | "金" | "水";
-
-function yearToElement(year: number): Element {
-  const d = year % 10;
-  if (d === 4 || d === 5) return "木";
-  if (d === 6 || d === 7) return "火";
-  if (d === 8 || d === 9) return "土";
-  if (d === 0 || d === 1) return "金";
-  return "水"; // 2,3
-}
-
-interface ElementData {
-  icon: string;
-  catch: string;
-  desc: string;
-  strengths: string[];
-  love: string;
-  work: string;
-  match: string;
-  color: string;
-  crystal: string;
-  fortune2026: string;
-}
-
-const DATA: Record<Element, ElementData> = {
-  木: {
-    icon: "🌳",
-    catch: "上へ上へと伸びていく、成長と向上の人",
-    desc: "好奇心旺盛で、まっすぐに目標へ向かって成長していくタイプ。面倒見がよく、人を育てる力にも長けています。",
-    strengths: ["向上心", "行動力", "面倒見のよさ", "発展性"],
-    love: "一途で誠実。相手と一緒に成長していける関係を大切にします。",
-    work: "教育・企画・起業・クリエイティブ",
-    match: "水タイプ（あなたを育てる）／ 火タイプ（あなたが活かす）",
-    color: "グリーン・青緑",
-    crystal: "アベンチュリン（成長と発展を後押し）",
-    fortune2026: "新しい挑戦の芽が出る一年。種まきと人脈づくりが吉。",
-  },
-  火: {
-    icon: "🔥",
-    catch: "場を明るく照らす、情熱と華やかさの人",
-    desc: "明るく社交的で、人を惹きつける華のあるタイプ。情熱的でスピード感があり、その場を盛り上げる存在です。",
-    strengths: ["情熱", "社交性", "表現力", "瞬発力"],
-    love: "ドラマチックで情熱的。ときめきと刺激を大切にします。",
-    work: "発信業・接客・エンタメ・営業",
-    match: "木タイプ（あなたを燃やす）／ 土タイプ（あなたが実らせる）",
-    color: "レッド・パープル",
-    crystal: "ガーネット（情熱と魅力を高める）",
-    fortune2026: "注目を集めやすい飛躍の年。発信と人前での活動が追い風に。",
-  },
-  土: {
-    icon: "⛰️",
-    catch: "どっしりと人を受け止める、安定と包容の人",
-    desc: "面倒見がよく信頼される、安定感のあるタイプ。誠実で現実的、周囲に安心感を与える縁の下の支え役です。",
-    strengths: ["安定感", "包容力", "誠実さ", "忍耐力"],
-    love: "穏やかで安定志向。じっくり信頼を育む長続きタイプ。",
-    work: "管理・サポート・不動産・医療/福祉",
-    match: "火タイプ（あなたを豊かにする）／ 金タイプ（あなたが生み出す）",
-    color: "イエロー・ブラウン",
-    crystal: "タイガーアイ（安定と金運を支える）",
-    fortune2026: "基盤固めに最適な年。信頼関係と土台づくりが実を結びます。",
-  },
-  金: {
-    icon: "💎",
-    catch: "凛とした意志と美意識を持つ、洗練の人",
-    desc: "意志が強く、こだわりと美意識を持つ洗練されたタイプ。けじめを大切にし、質の高いものを見極める力があります。",
-    strengths: ["意志の強さ", "美意識", "判断力", "けじめ"],
-    love: "プライドが高く一途。心を許した相手には深い愛情を注ぎます。",
-    work: "専門職・金融・デザイン・コンサル",
-    match: "土タイプ（あなたを生む）／ 水タイプ（あなたが潤す）",
-    color: "ホワイト・ゴールド",
-    crystal: "クリアクォーツ（意志と直感を研ぎ澄ます）",
-    fortune2026: "実りと収穫の年。これまでの努力が形になり評価されます。",
-  },
-  水: {
-    icon: "🌊",
-    catch: "しなやかに形を変える、知性と柔軟の人",
-    desc: "知的で柔軟、状況に応じて自在に対応できるタイプ。聞き上手で人の心を読む力に優れ、深い思考を持ちます。",
-    strengths: ["知性", "柔軟性", "共感力", "適応力"],
-    love: "ミステリアスで情が深い。心の通い合う関係を求めます。",
-    work: "研究・企画・カウンセラー・流通",
-    match: "金タイプ（あなたを潤す）／ 木タイプ（あなたが育てる）",
-    color: "ブラック・ネイビー",
-    crystal: "ソーダライト（知性と直感を高める）",
-    fortune2026: "流れを読んで動くと吉の年。学びと人とのご縁が広がります。",
-  },
-};
+import { ELEMENT_DATA, yearToElement } from "./data";
 
 const PAGE_BG = "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)";
 const CARD_BG = "rgba(91, 33, 182, 0.12)";
@@ -162,7 +69,7 @@ function InputView({ onSubmit }: { onSubmit: (year: number) => void }) {
 
 function ResultView({ year, onReset }: { year: number; onReset: () => void }) {
   const element = yearToElement(year);
-  const d = DATA[element];
+  const d = ELEMENT_DATA[element];
 
   const share = (platform: "x" | "line") => {
     const url = typeof window !== "undefined" ? window.location.href : "";
@@ -218,6 +125,14 @@ function ResultView({ year, onReset }: { year: number; onReset: () => void }) {
         <p style={labelStyle}>🌟 2026年の運気</p>
         <p style={bodyStyle}>{d.fortune2026}</p>
       </div>
+
+      {/* deep dive */}
+      <Link href={`/tools/gogyo/${d.slug}`} className="block mb-10">
+        <div style={{ background: "rgba(124, 58, 237, 0.22)", border: "1px solid rgba(167, 139, 250, 0.45)", borderRadius: "1rem", padding: "1.1rem 1.4rem", textAlign: "left" }} className="hover:bg-purple-700/30 transition-colors">
+          <p className="text-white font-bold text-sm mb-1">▶ 「{element}タイプ」をもっと詳しく読む</p>
+          <p className="text-purple-300 text-xs">詳しい性格・弱み・恋愛・適職・相生相剋の相性・開運アドバイスをチェック</p>
+        </div>
+      </Link>
 
       <p className="text-purple-300 text-sm mt-8 mb-3">結果をシェアする</p>
       <div className="flex justify-center gap-3 mb-10">
