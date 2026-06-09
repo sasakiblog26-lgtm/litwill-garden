@@ -22,7 +22,7 @@
 - [x] インド占星術 ダシャー（運勢の時期）の読み方 | slug: dasha-period | カテゴリ: 占星術 | 段階: S2
 - [x] インド占星術で相性を見る | slug: indo-astrology-aishou | カテゴリ: 占星術 | 段階: S3
 - [x] 四柱推命 通変星10種の意味 | slug: tsuhensei | カテゴリ: 四柱推命 | 段階: S2
-- [ ] タロットのスプレッド一覧（ケルト十字ほか） | slug: tarot-spread | カテゴリ: タロット | 段階: S2
+- [x] タロットのスプレッド一覧（ケルト十字ほか） | slug: tarot-spread | カテゴリ: タロット | 段階: S2
 - [ ] 相性の良い星座ランキング・早見表 | slug: seiza-aishou-ranking | カテゴリ: 占星術 | 段階: S3
 - [ ] 12ハウスの意味（西洋占星術） | slug: western-houses | カテゴリ: 占星術 | 段階: S2
 - [ ] アスペクトの基本（西洋占星術） | slug: western-aspects | カテゴリ: 占星術 | 段階: S2
