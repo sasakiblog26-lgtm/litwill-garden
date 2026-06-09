@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { snsAccounts } from "@/config/sns";
 import { CARDS, findCard } from "../data";
 import RelatedArticles from "@/components/diagnosis/related-articles";
+import { JsonLd, breadcrumbJsonLd, pageArticleJsonLd } from "@/components/seo/json-ld";
 
 export const dynamicParams = false;
 
@@ -38,8 +39,20 @@ export default async function TarotCardPage({ params }: { params: Promise<{ card
   const prev = findCard(c.no - 1);
   const next = findCard(c.no + 1);
 
+  const path = `/tools/tarot/${c.no}`;
+
   return (
     <div style={{ background: PAGE_BG, minHeight: "100vh" }} className="py-16 px-4">
+      <JsonLd data={breadcrumbJsonLd([
+        { name: "診断ツール", path: "/tools" },
+        { name: "タロット1枚引き", path: "/tools/tarot" },
+        { name: c.name, path },
+      ])} />
+      <JsonLd data={pageArticleJsonLd({
+        title: `タロット「${c.name}」の意味｜正位置・逆位置・恋愛・仕事`,
+        description: c.overview,
+        path,
+      })} />
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Link href="/tools/tarot" className="text-purple-400 text-sm hover:text-purple-300">← タロット1枚引きにもどる</Link>

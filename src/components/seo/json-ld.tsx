@@ -94,6 +94,46 @@ export function articleJsonLd({
   };
 }
 
+/** 任意パスのパンくず構造化データ（BreadcrumbList）。診断ページなど /articles 以外でも使う。 */
+export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [{ name: "ホーム", path: "/" }, ...items].map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: `${brand.url}${it.path}`,
+    })),
+  };
+}
+
+/** 記事以外のコンテンツページ（診断の深掘り等）用の Article 構造化データ。 */
+export function pageArticleJsonLd({
+  title,
+  description,
+  path,
+}: {
+  title: string;
+  description: string;
+  path: string;
+}) {
+  const url = `${brand.url}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    inLanguage: "ja-JP",
+    image: `${brand.url}/opengraph-image`,
+    isPartOf: { "@id": WEBSITE_ID },
+    author: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+  };
+}
+
 /** FAQページの構造化データを生成 */
 export function faqJsonLd(
   faqs: { question: string; answer: string }[]

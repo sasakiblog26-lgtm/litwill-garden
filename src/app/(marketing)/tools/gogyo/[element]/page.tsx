@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { snsAccounts } from "@/config/sns";
 import { ELEMENTS_LIST, findBySlug } from "../data";
 import RelatedArticles from "@/components/diagnosis/related-articles";
+import { JsonLd, breadcrumbJsonLd, pageArticleJsonLd } from "@/components/seo/json-ld";
 
 export const dynamicParams = false;
 
@@ -36,8 +37,20 @@ export default async function GogyoElementPage({ params }: { params: Promise<{ e
 
   const others = ELEMENTS_LIST.filter((e) => e.slug !== d.slug);
 
+  const path = `/tools/gogyo/${d.slug}`;
+
   return (
     <div style={{ background: PAGE_BG, minHeight: "100vh" }} className="py-16 px-4">
+      <JsonLd data={breadcrumbJsonLd([
+        { name: "診断ツール", path: "/tools" },
+        { name: "五行タイプ診断", path: "/tools/gogyo" },
+        { name: `${d.element}タイプ`, path },
+      ])} />
+      <JsonLd data={pageArticleJsonLd({
+        title: `五行「${d.element}」タイプの性格・恋愛・仕事・相性`,
+        description: `${d.catch}。${d.desc}`,
+        path,
+      })} />
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Link href="/tools/gogyo" className="text-purple-400 text-sm hover:text-purple-300">← 五行タイプ診断にもどる</Link>

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { snsAccounts } from "@/config/sns";
 import { ELEMENTS, TYPES, TYPE_CODES, type Pole } from "../data";
 import RelatedArticles from "@/components/diagnosis/related-articles";
+import { JsonLd, breadcrumbJsonLd, pageArticleJsonLd } from "@/components/seo/json-ld";
 
 // 既知の16コードのみ静的生成。それ以外は404。
 export const dynamicParams = false;
@@ -68,8 +69,20 @@ export default async function TypeDetailPage({ params }: { params: Promise<{ cod
   const poles = code.split("") as Pole[];
   const others = TYPE_CODES.filter((c) => c !== code);
 
+  const path = `/tools/16types/${code}`;
+
   return (
     <div style={{ background: PAGE_BG, minHeight: "100vh" }} className="py-16 px-4">
+      <JsonLd data={breadcrumbJsonLd([
+        { name: "診断ツール", path: "/tools" },
+        { name: "16タイプ占い性格診断", path: "/tools/16types" },
+        { name: `${t.name}タイプ`, path },
+      ])} />
+      <JsonLd data={pageArticleJsonLd({
+        title: `${t.name}タイプの性格・恋愛・仕事・相性`,
+        description: `${t.catch}。${t.desc}`,
+        path,
+      })} />
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Link href="/tools/16types" className="text-purple-400 text-sm hover:text-purple-300">← 16タイプ診断にもどる</Link>
