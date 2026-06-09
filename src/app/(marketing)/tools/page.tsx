@@ -3,10 +3,31 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "診断・計算ツール一覧",
-  description: "数秘術計算機・星座判定・相性診断・MBTI解説など、自分を深く知るための無料ツール集。",
+  description: "16タイプ性格診断・数秘術計算機・星座判定・相性診断・MBTI解説など、自分を深く知るための無料ツール集。",
 };
 
 const tools = [
+  {
+    href: "/tools/16types",
+    icon: "🔮",
+    title: "16タイプ占い性格診断",
+    desc: "占星術の4エレメント×心理学で、あなたの本質を16タイプで診断。全12問・約2分、生年月日不要。",
+    tag: "12問で診断",
+  },
+  {
+    href: "/tools/tarot",
+    icon: "🎴",
+    title: "タロット1枚引き",
+    desc: "大アルカナ22枚から1枚を引いて、今日のあなたへのメッセージを受け取る無料タロット。毎日引けます。",
+    tag: "今日の1枚",
+  },
+  {
+    href: "/tools/gogyo",
+    icon: "🌳",
+    title: "五行タイプ診断",
+    desc: "四柱推命の五行（木・火・土・金・水）であなたの本質を診断。性格・相性・開運カラー・2026年の運気まで。",
+    tag: "生まれ年で診断",
+  },
   {
     href: "/tools/numerology",
     icon: "✨",
