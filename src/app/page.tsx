@@ -43,8 +43,23 @@ const READINGS = [
 ];
 
 // お客様の声：実際にいただいた声のみを掲載する（架空のレビューは景表法違反のため掲載しない）。
-// 本物のテキストが入るまで配列は空にしておき、セクション自体を非表示にする。
-const TESTIMONIALS: { name: string; meta: string; body: string }[] = [];
+const TESTIMONIALS: { meta: string; headline: string; body: string }[] = [
+  {
+    meta: "30代女性／恋愛リーディング",
+    headline: "彼の気持ちが知れて、前向きになりました！",
+    body: "先生の言葉に勇気をもらって、彼との関係が好転しました。鑑定がとても丁寧で、また相談したいです。",
+  },
+  {
+    meta: "20代女性／転職リーディング",
+    headline: "転職の迷いが消えて、理想の働き方が見えました",
+    body: "自分でも気づかなかった強みを教えてもらい、自信をもって転職活動ができました！",
+  },
+  {
+    meta: "40代女性／人生リーディング",
+    headline: "人生の流れが分かって、心が軽くなりました",
+    body: "モヤモヤしていた将来の不安がスッと消えました。定期的にみていただいています。",
+  },
+];
 
 const REASONS = [
   {
@@ -202,7 +217,7 @@ export default function Home() {
             >
               {TESTIMONIALS.map((t) => (
                 <div
-                  key={t.name}
+                  key={t.headline}
                   style={{
                     background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
@@ -213,11 +228,14 @@ export default function Home() {
                     gap: 12,
                   }}
                 >
+                  <span style={{ fontSize: 20, color: "#D4C090", lineHeight: 1 }} aria-hidden="true">★★★★★</span>
+                  <h3 style={{ fontFamily: "var(--lg-font-heading)", fontWeight: 600, fontSize: 16, color: "var(--text-primary)", margin: 0, lineHeight: 1.5 }}>
+                    {t.headline}
+                  </h3>
                   <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85, margin: 0, flex: "1 1 auto" }}>
-                    「{t.body}」
+                    {t.body}
                   </p>
-                  <p style={{ fontSize: 13, color: "#9B8BBF", margin: 0, fontWeight: 600 }}>{t.name}</p>
-                  <p style={{ fontSize: 12, color: "var(--text-secondary)", margin: 0 }}>{t.meta}</p>
+                  <p style={{ fontSize: 12.5, color: "#9B8BBF", margin: 0, fontWeight: 600 }}>{t.meta}</p>
                 </div>
               ))}
             </div>
