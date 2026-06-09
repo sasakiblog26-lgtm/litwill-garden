@@ -16,34 +16,34 @@ export const metadata: Metadata = { title: "鑑定メニュー" };
 
 const READINGS = [
   {
-    eyebrow: "Soul Reading",
-    title: "魂のテーマリーディング",
+    eyebrow: "Light",
+    title: "お試しプラン",
     description:
-      "あなたが今世で体験したいテーマ、魂レベルの強み・課題を総合的にリーディング。",
-    tags: ["占星術", "数秘術"],
-    price: "¥3,300",
+      "気になることをひとつ、気軽に。はじめての方におすすめのミニ鑑定レポートです。",
+    tags: ["10分相当", "1テーマ"],
+    price: "¥1,000",
     gold: false,
-    href: "/readings/apply?plan=soul",
+    href: "/readings/apply?plan=otameshi",
   },
   {
-    eyebrow: "Love Reading",
-    title: "恋愛リーディング",
+    eyebrow: "Standard",
+    title: "スタンダードプラン",
     description:
-      "恋愛パターン、理想のパートナー像、今の恋の流れを読み解きます。",
-    tags: ["タロット", "恋愛"],
-    price: "¥3,300",
-    gold: false,
-    href: "/readings/apply?plan=love",
-  },
-  {
-    eyebrow: "Premium Reading",
-    title: "✦ 人生の星図 フル鑑定",
-    description:
-      "魂のテーマ、恋愛、仕事、人間関係、運気サイクルまで — 美しい星図にまとめてお届け。",
-    tags: ["占星術", "タロット", "心理学", "クリスタル"],
-    price: "¥11,000",
+      "ひとつのテーマをじっくり読み解く、いちばん人気のプラン。恋愛・仕事などの相談に。",
+    tags: ["20分相当", "じっくり"],
+    price: "¥2,500",
     gold: true,
-    href: "/readings/apply?plan=premium",
+    href: "/readings/apply?plan=standard",
+  },
+  {
+    eyebrow: "Full",
+    title: "しっかりプラン",
+    description:
+      "複数の悩みや人生全体まで、深く見つめ直したい方へ。読み応えのある詳細レポート。",
+    tags: ["30分相当", "詳細"],
+    price: "¥3,500",
+    gold: false,
+    href: "/readings/apply?plan=shikkari",
   },
 ];
 

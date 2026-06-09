@@ -19,24 +19,28 @@ const THEMES = [
     title: "恋愛・結婚",
     description: "片思い・復縁・結婚のタイミング、相手の気持ちなど、恋の悩みをていねいに読み解きます。",
     tags: ["占星術", "タロット"],
+    href: "/readings/apply?theme=love",
   },
   {
     eyebrow: "Work & Career",
     title: "仕事・転職",
     description: "転職の時期、適職、職場の人間関係、これからの働き方を見つめ直すお手伝いをします。",
     tags: ["四柱推命", "占星術"],
+    href: "/readings/apply?theme=work",
   },
   {
     eyebrow: "Life & Fortune",
     title: "人生・運勢",
     description: "今の運気の流れ、これからのテーマ、人生の転機を3つの占術で読み解きます。",
     tags: ["インド占星術", "四柱推命"],
+    href: "/readings/apply?theme=life",
   },
   {
     eyebrow: "Tarot",
     title: "タロット占い",
     description: "今いちばん知りたいひとつの問いに、タロットからのメッセージをお届けします。",
     tags: ["タロット"],
+    href: "/readings/apply?theme=tarot",
   },
 ];
 
@@ -108,25 +112,28 @@ const STEPS = [
 const PLANS = [
   {
     name: "お試しプラン",
-    duration: "10分",
+    duration: "10分相当",
     price: "¥1,000",
     points: ["はじめての方に", "気になることをひとつ気軽に", "占いを試してみたい方へ"],
+    href: "/readings/apply?plan=otameshi",
     gold: false,
     recommended: false,
   },
   {
     name: "スタンダードプラン",
-    duration: "20分",
+    duration: "20分相当",
     price: "¥2,500",
     points: ["ひとつのテーマをじっくり", "いちばん人気の目安", "恋愛・仕事などの相談に"],
+    href: "/readings/apply?plan=standard",
     gold: true,
     recommended: true,
   },
   {
     name: "しっかりプラン",
-    duration: "30分",
+    duration: "30分相当",
     price: "¥3,500",
-    points: ["複数の悩みも相談できる", "深く見つめ直したい方に", "じっくり話したい方へ"],
+    points: ["複数の悩みも相談できる", "深く見つめ直したい方に", "じっくり読みたい方へ"],
+    href: "/readings/apply?plan=shikkari",
     gold: false,
     recommended: false,
   },
@@ -200,9 +207,11 @@ export default function Home() {
               style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16, marginTop: 40 }}
             >
               {THEMES.map((t) => (
-                <div
+                <Link
                   key={t.eyebrow}
+                  href={t.href}
                   style={{
+                    textDecoration: "none",
                     background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
                     borderRadius: 20,
@@ -215,12 +224,13 @@ export default function Home() {
                   <p style={{ fontFamily: "var(--lg-font-display)", fontStyle: "italic", fontSize: 12, color: "#9B8BBF", letterSpacing: "0.08em", margin: 0 }}>{t.eyebrow}</p>
                   <h3 style={{ fontFamily: "var(--lg-font-heading)", fontWeight: 600, fontSize: 19, color: "var(--text-primary)", margin: 0 }}>{t.title}</h3>
                   <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75, margin: 0, flex: "1 1 auto" }}>{t.description}</p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
                     {t.tags.map((tag) => (
                       <span key={tag} style={{ fontSize: 11, color: "#9B8BBF", border: "1px solid var(--border-card)", borderRadius: 999, padding: "3px 10px" }}>{tag}</span>
                     ))}
+                    <span style={{ fontSize: 13, color: "#9B8BBF", marginLeft: "auto" }}>相談する →</span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -378,14 +388,14 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                  <Button variant={p.gold ? "gold" : "primary"} size="md" href="/contact" fullWidth>
-                    予約・相談する
+                  <Button variant={p.gold ? "gold" : "primary"} size="md" href={p.href} fullWidth>
+                    申し込む
                   </Button>
                 </div>
               ))}
             </div>
             <p style={{ textAlign: "center", fontSize: 13, color: "var(--text-secondary)", marginTop: 24, lineHeight: 1.7 }}>
-              ※新しい時間制プランは現在準備中です。ご予約・お問い合わせは上のボタンよりお気軽にどうぞ。
+              ※鑑定レポートはメールにてお届けします（お申し込み後3〜5営業日以内）。
             </p>
           </div>
         </ConstellationField>

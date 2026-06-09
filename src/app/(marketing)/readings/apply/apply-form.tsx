@@ -5,12 +5,21 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const PLANS = {
-  soul: { label: "魂のテーマリーディング", price: "¥3,300" },
-  love: { label: "恋愛リーディング", price: "¥3,300" },
-  premium: { label: "人生の星図 フル鑑定", price: "¥11,000" },
+  otameshi: { label: "お試しプラン", price: "¥1,000", note: "気になることをひとつ" },
+  standard: { label: "スタンダードプラン", price: "¥2,500", note: "ひとつのテーマをじっくり（人気）" },
+  shikkari: { label: "しっかりプラン", price: "¥3,500", note: "複数の悩みを詳しく" },
 } as const;
 
 type PlanKey = keyof typeof PLANS;
+
+const THEMES = {
+  love: "恋愛・結婚",
+  work: "仕事・転職",
+  life: "人生・運勢",
+  tarot: "タロット占い",
+} as const;
+
+type ThemeKey = keyof typeof THEMES;
 
 const prefectures = [
   "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
@@ -25,10 +34,13 @@ const prefectures = [
 export default function ApplyForm() {
   const searchParams = useSearchParams();
   const planParam = searchParams.get("plan") as PlanKey | null;
-  const validPlan = planParam && planParam in PLANS ? planParam : "soul";
+  const validPlan = planParam && planParam in PLANS ? planParam : "standard";
+  const themeParam = searchParams.get("theme") as ThemeKey | null;
+  const validTheme = themeParam && themeParam in THEMES ? themeParam : "love";
 
   const [form, setForm] = useState({
     plan: validPlan,
+    theme: validTheme,
     name: "",
     email: "",
     birthdate: "",
@@ -88,9 +100,43 @@ export default function ApplyForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {/* Theme selector */}
+      <div>
+        <p style={{ ...labelCss, marginBottom: "8px" } as React.CSSProperties}>鑑定テーマ</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+          {(Object.entries(THEMES) as [ThemeKey, string][]).map(([key, label]) => (
+            <label
+              key={key}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "14px 16px",
+                borderRadius: "12px",
+                border: `1.5px solid ${form.theme === key ? "var(--color-gold)" : "var(--border-card)"}`,
+                background: form.theme === key ? "rgba(212,192,144,0.06)" : "transparent",
+                cursor: "pointer",
+              }}
+            >
+              <input
+                type="radio"
+                name="theme"
+                value={key}
+                checked={form.theme === key}
+                onChange={handleChange}
+                style={{ accentColor: "var(--color-gold)" }}
+              />
+              <span style={{ fontFamily: "var(--lg-font-body)", fontSize: "14px", color: "var(--text-primary)" }}>
+                {label}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
       {/* Plan selector */}
       <div>
-        <p style={{ ...labelCss, marginBottom: "8px" } as React.CSSProperties}>鑑定メニュー</p>
+        <p style={{ ...labelCss, marginBottom: "8px" } as React.CSSProperties}>料金プラン</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {(Object.entries(PLANS) as [PlanKey, (typeof PLANS)[PlanKey]][]).map(([key, val]) => (
             <label
@@ -114,8 +160,13 @@ export default function ApplyForm() {
                 onChange={handleChange}
                 style={{ accentColor: "var(--color-gold)" }}
               />
-              <span style={{ flex: 1, fontFamily: "var(--lg-font-body)", fontSize: "15px", color: "var(--text-primary)" }}>
-                {val.label}
+              <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontFamily: "var(--lg-font-body)", fontSize: "15px", color: "var(--text-primary)" }}>
+                  {val.label}
+                </span>
+                <span style={{ fontFamily: "var(--lg-font-body)", fontSize: "12px", color: "var(--text-muted)" }}>
+                  {val.note}
+                </span>
               </span>
               <span style={{ fontFamily: "var(--lg-font-body)", fontSize: "15px", color: "var(--color-gold)", fontWeight: 600 }}>
                 {val.price}
@@ -187,7 +238,7 @@ export default function ApplyForm() {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ fontFamily: "var(--lg-font-body)", fontSize: "14px", color: "var(--text-secondary)" }}>
-            {plan.label}
+            {THEMES[form.theme as ThemeKey]}・{plan.label}
           </span>
           <span style={{ fontFamily: "var(--lg-font-body)", fontSize: "20px", color: "var(--color-gold)", fontWeight: 700 }}>
             {plan.price}（税込）

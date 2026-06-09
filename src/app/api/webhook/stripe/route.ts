@@ -20,9 +20,16 @@ function getResend() {
 const MAIL_FROM = process.env.MAIL_FROM ?? "Litwill Garden <noreply@litwillgarden.com>";
 
 const PLAN_LABELS: Record<string, string> = {
-  soul: "魂のテーマリーディング",
-  love: "恋愛リーディング",
-  premium: "人生の星図 フル鑑定",
+  otameshi: "お試しプラン",
+  standard: "スタンダードプラン",
+  shikkari: "しっかりプラン",
+};
+
+const THEME_LABELS: Record<string, string> = {
+  love: "恋愛・結婚",
+  work: "仕事・転職",
+  life: "人生・運勢",
+  tarot: "タロット占い",
 };
 
 export async function POST(req: NextRequest) {
@@ -42,9 +49,11 @@ export async function POST(req: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    const { plan, name, birthdate, birthtime, birthplace, concern } = session.metadata ?? {};
+    const { plan, theme, name, birthdate, birthtime, birthplace, concern } = session.metadata ?? {};
     const email = session.customer_email ?? "";
     const planLabel = PLAN_LABELS[plan ?? ""] ?? plan;
+    const themeLabel = THEME_LABELS[theme ?? ""] ?? "";
+    const planThemeLabel = themeLabel ? `${themeLabel}（${planLabel}）` : planLabel;
     // JPY はゼロ十進通貨なので amount_total は既に「円」単位（/100 不要）
     const amount = (session.amount_total ?? 0).toLocaleString("ja-JP");
 
@@ -54,11 +63,11 @@ export async function POST(req: NextRequest) {
       resend.emails.send({
         from: MAIL_FROM,
         to: process.env.OWNER_EMAIL!,
-        subject: `【新規申し込み】${planLabel} — ${name} 様`,
+        subject: `【新規申し込み】${planThemeLabel} — ${name} 様`,
         html: `
           <h2>新規鑑定申し込みがありました</h2>
           <table style="border-collapse:collapse;width:100%">
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">プラン</td><td style="padding:8px;border:1px solid #ddd">${planLabel}（¥${amount}）</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">プラン</td><td style="padding:8px;border:1px solid #ddd">${planThemeLabel}（¥${amount}）</td></tr>
             <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">お名前</td><td style="padding:8px;border:1px solid #ddd">${name}</td></tr>
             <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">メール</td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
             <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">生年月日</td><td style="padding:8px;border:1px solid #ddd">${birthdate}</td></tr>
@@ -81,10 +90,10 @@ export async function POST(req: NextRequest) {
               <h1 style="font-size:22px;font-weight:700;margin:16px 0 0">お申し込みありがとうございます</h1>
             </div>
             <p style="line-height:1.8">${name} 様<br><br>
-            <strong>${planLabel}</strong> のご申し込みを受け付けました。<br>
+            <strong>${planThemeLabel}</strong> のご申し込みを受け付けました。<br>
             通常 <strong>3〜5営業日以内</strong> にこのメールアドレスへ鑑定レポートをお届けします。</p>
             <table style="border-collapse:collapse;width:100%;margin:24px 0">
-              <tr><td style="padding:10px;border:1px solid #e0e0e0;font-weight:bold;background:#f9f9f9;width:40%">ご購入プラン</td><td style="padding:10px;border:1px solid #e0e0e0">${planLabel}</td></tr>
+              <tr><td style="padding:10px;border:1px solid #e0e0e0;font-weight:bold;background:#f9f9f9;width:40%">ご購入プラン</td><td style="padding:10px;border:1px solid #e0e0e0">${planThemeLabel}</td></tr>
               <tr><td style="padding:10px;border:1px solid #e0e0e0;font-weight:bold;background:#f9f9f9">お支払い金額</td><td style="padding:10px;border:1px solid #e0e0e0">¥${amount}（税込）</td></tr>
             </table>
             <p style="line-height:1.8;font-size:13px;color:#666">
