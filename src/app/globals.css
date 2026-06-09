@@ -84,22 +84,22 @@
   --shadow-glow-gold: 0 0 16px rgba(212, 192, 144, 0.30);
 }
 
-/* Dark theme */
+/* Dark theme — 診断・計算ツールの濃紫コスミック配色に統一 */
 .theme-dark {
-  --bg-main: #1A1428;
-  --bg-card: #241E36;
-  --bg-card-hover: #2D2448;
-  --bg-hero: linear-gradient(180deg, #1A1428 0%, #241E36 30%, #2D2448 60%, #1A1428 100%);
-  --bg-cream-band: linear-gradient(180deg, #1E1832 0%, #221C38 100%);
-  --bg-lavender-band: linear-gradient(180deg, #1A1428 0%, #201A32 100%);
-  --bg-header: rgba(26, 20, 40, 0.92);
-  --text-primary: #F0EAF8;
-  --text-secondary: #C0B3DC;
-  --text-muted: #9A95B4;
-  --border-light: rgba(155, 139, 191, 0.15);
-  --border-card: rgba(155, 139, 191, 0.20);
-  --shadow-card: 0 0 24px rgba(0, 0, 0, 0.3);
-  --shadow-glow-lavender: 0 0 20px rgba(155, 139, 191, 0.4);
+  --bg-main: #0f0720;
+  --bg-card: #1a1033;
+  --bg-card-hover: #241640;
+  --bg-hero: linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%);
+  --bg-cream-band: linear-gradient(180deg, #140a2a 0%, #1a0a3d 100%);
+  --bg-lavender-band: linear-gradient(180deg, #12082a 0%, #1a0a3d 100%);
+  --bg-header: rgba(15, 7, 32, 0.92);
+  --text-primary: #F3EEFF;
+  --text-secondary: #C9BCEC;
+  --text-muted: #9D90C6;
+  --border-light: rgba(167, 139, 250, 0.18);
+  --border-card: rgba(167, 139, 250, 0.22);
+  --shadow-card: 0 0 24px rgba(0, 0, 0, 0.35);
+  --shadow-glow-lavender: 0 0 22px rgba(167, 139, 250, 0.40);
   --shadow-glow-gold: 0 0 16px rgba(212, 192, 144, 0.45);
 }
 
@@ -128,8 +128,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::selection {
-  background: rgba(155, 139, 191, 0.3);
-  color: #2D2448;
+  background: rgba(167, 139, 250, 0.45);
+  color: #0f0720;
 }
 
 a {
@@ -144,17 +144,17 @@ a {
 .glow-gold      { box-shadow: var(--lg-glow-gold); }
 
 .celestial-panel {
-  border: 1px solid var(--lg-border);
-  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,234,248,0.70));
-  box-shadow: 0 8px 32px rgba(155, 139, 191, 0.12);
+  border: 1px solid var(--border-card);
+  background: rgba(124, 58, 237, 0.10);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(16px);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #F8F5FC; }
-::-webkit-scrollbar-thumb { background: #C0B3DC; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #9B8BBF; }
+::-webkit-scrollbar-track { background: #0f0720; }
+::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #7c5cc0; }
 
 /* ScrollReveal */
 .sr-hidden {

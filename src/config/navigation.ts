@@ -8,6 +8,7 @@ export const mainNavigation: NavItem[] = [
   { label: "占いコラム", href: "/articles" },
   { label: "鑑定メニュー", href: "/readings" },
   { label: "無料診断", href: "/diagnosis" },
+  { label: "診断・計算ツール", href: "/tools" },
   { label: "クリスタル", href: "/crystals" },
   { label: "占い師紹介", href: "/readers" },
 ];
