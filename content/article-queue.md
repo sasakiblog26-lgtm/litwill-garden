@@ -23,12 +23,12 @@
 - [x] インド占星術で相性を見る | slug: indo-astrology-aishou | カテゴリ: 占星術 | 段階: S3
 - [x] 四柱推命 通変星10種の意味 | slug: tsuhensei | カテゴリ: 四柱推命 | 段階: S2
 - [x] タロットのスプレッド一覧（ケルト十字ほか） | slug: tarot-spread | カテゴリ: タロット | 段階: S2
-- [ ] 相性の良い星座ランキング・早見表 | slug: seiza-aishou-ranking | カテゴリ: 占星術 | 段階: S3
-- [ ] 12ハウスの意味（西洋占星術） | slug: western-houses | カテゴリ: 占星術 | 段階: S2
-- [ ] アスペクトの基本（西洋占星術） | slug: western-aspects | カテゴリ: 占星術 | 段階: S2
-- [ ] 火星星座・水星星座でみる自分 | slug: kasei-suisei-seiza | カテゴリ: 占星術 | 段階: S2
-- [ ] 数秘術の相性 | slug: suchi-aishou | カテゴリ: 数秘術 | 段階: S3
-- [ ] マスターナンバー11/22/33の意味 | slug: master-number | カテゴリ: 数秘術 | 段階: S2
-- [ ] エンジェルナンバー一覧と意味 | slug: angel-number | カテゴリ: 占い | 段階: S2
-- [ ] 誕生日でわかる性格占い | slug: tanjyobi-uranai | カテゴリ: 占い | 段階: S2
-- [ ] 四柱推命でみる2026年 | slug: shichu-2026 | カテゴリ: 四柱推命 | 段階: S2
+- [x] 相性の良い星座ランキング・早見表 | slug: seiza-aishou-ranking | カテゴリ: 占星術 | 段階: S3
+- [x] 12ハウスの意味（西洋占星術） | slug: western-houses | カテゴリ: 占星術 | 段階: S2
+- [x] アスペクトの基本（西洋占星術） | slug: western-aspects | カテゴリ: 占星術 | 段階: S2
+- [x] 火星星座・水星星座でみる自分 | slug: kasei-suisei-seiza | カテゴリ: 占星術 | 段階: S2
+- [x] 数秘術の相性 | slug: suchi-aishou | カテゴリ: 数秘術 | 段階: S3
+- [x] マスターナンバー11/22/33の意味 | slug: master-number | カテゴリ: 数秘術 | 段階: S2
+- [x] エンジェルナンバー一覧と意味 | slug: angel-number | カテゴリ: 占い | 段階: S2
+- [x] 誕生日でわかる性格占い | slug: tanjyobi-uranai | カテゴリ: 占い | 段階: S2
+- [x] 四柱推命でみる2026年 | slug: shichu-2026 | カテゴリ: 四柱推命 | 段階: S2
