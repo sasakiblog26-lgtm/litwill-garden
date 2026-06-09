@@ -21,6 +21,24 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+/** 記事カテゴリに応じて、最も関連の深い無料診断へのCTAを返す（記事→診断の内部リンク） */
+function diagnosisCtaFor(category: string): { text: string; href: string; label: string } {
+  switch (category) {
+    case "タロット":
+      return { text: "今日のあなたへのメッセージは？カードを1枚引いてみましょう。", href: "/tools/tarot", label: "✦ 無料でタロットを引く" };
+    case "四柱推命":
+      return { text: "あなたの生まれ持った五行タイプを調べてみませんか？", href: "/tools/gogyo", label: "✦ 無料で五行タイプ診断" };
+    case "心理学":
+    case "心理テスト":
+    case "診断":
+      return { text: "占星術×心理学であなたの本質を診断。あなたは16タイプのどれ？", href: "/tools/16types", label: "✦ 無料で16タイプ性格診断" };
+    case "数秘術":
+      return { text: "生年月日からあなたの数字を計算してみませんか？", href: "/tools/numerology", label: "✦ 無料で数秘術を計算" };
+    default:
+      return { text: "あなたの星座が映し出すメッセージを受け取りませんか？", href: "/diagnosis", label: "✦ 無料で星座診断する" };
+  }
+}
+
 export async function generateStaticParams() {
   return getAllArticleSlugs().map((slug) => ({ slug }));
 }
@@ -113,6 +131,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   const related = getRelatedArticles(slug, 3);
   const popular = getPopularArticles(5).filter((a) => a.slug !== slug);
   const faqs = article.faq ?? [];
+  const diagCta = diagnosisCtaFor(article.category);
 
   return (
     <div style={outerStyle} className="article-paper">
@@ -218,11 +237,11 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         style={{ margin: "32px 0" }}
       />
 
-      {/* CTA */}
+      {/* CTA — 記事カテゴリに応じた診断へ送客（内部リンク） */}
       <div style={ctaStyle}>
-        <p style={ctaTextStyle}>あなたの星座が映し出すメッセージを受け取りませんか？</p>
-        <Button variant="primary" href="/diagnosis">
-          ✦ 無料で星座診断する
+        <p style={ctaTextStyle}>{diagCta.text}</p>
+        <Button variant="primary" href={diagCta.href}>
+          {diagCta.label}
         </Button>
       </div>
 
