@@ -22,21 +22,22 @@ interface VariantStyle {
   glowColor: string;
 }
 
+// 配色は診断・計算ツールの濃紫コスミックに統一
 const variantStyles: Record<Variant, VariantStyle> = {
   primary: {
-    background: "#9B8BBF",
+    background: "linear-gradient(135deg, #7c3aed, #6366f1)",
     color: "#ffffff",
-    glowColor: "rgba(155,139,191,0.4)",
+    glowColor: "rgba(124,58,237,0.5)",
   },
   secondary: {
-    background: "#C8D8F0",
-    color: "#2D2448",
-    glowColor: "rgba(200,216,240,0.5)",
+    background: "#a78bfa",
+    color: "#1a0633",
+    glowColor: "rgba(167,139,250,0.5)",
   },
   accent: {
-    background: "#E8D0E0",
-    color: "#5E4D8A",
-    glowColor: "rgba(232,208,224,0.5)",
+    background: "#c084fc",
+    color: "#1a0633",
+    glowColor: "rgba(192,132,252,0.5)",
   },
   gold: {
     background: "linear-gradient(135deg, #D4C090, #E8D8B0)",
@@ -45,14 +46,14 @@ const variantStyles: Record<Variant, VariantStyle> = {
   },
   outline: {
     background: "transparent",
-    color: "#9B8BBF",
-    border: "1.5px solid #C0B3DC",
-    glowColor: "rgba(155,139,191,0.25)",
+    color: "#c4b5fd",
+    border: "1.5px solid rgba(167,139,250,0.5)",
+    glowColor: "rgba(124,58,237,0.3)",
   },
   ghost: {
     background: "transparent",
-    color: "#5E4D8A",
-    glowColor: "rgba(155,139,191,0.15)",
+    color: "#c4b5fd",
+    glowColor: "rgba(124,58,237,0.2)",
   },
 };
 
