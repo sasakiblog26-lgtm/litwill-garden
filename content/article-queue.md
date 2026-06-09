@@ -32,3 +32,26 @@
 - [x] エンジェルナンバー一覧と意味 | slug: angel-number | カテゴリ: 占い | 段階: S2
 - [x] 誕生日でわかる性格占い | slug: tanjyobi-uranai | カテゴリ: 占い | 段階: S2
 - [x] 四柱推命でみる2026年 | slug: shichu-2026 | カテゴリ: 四柱推命 | 段階: S2
+- [x] タロットのコートカード（人物札）の意味 | slug: tarot-court-cards | カテゴリ: タロット | 段階: S2
+
+## 次バッチ（S3/S4優先・2026-06-09補充）
+
+> SEO戦略の最大の伸びしろ＝S3(比較・選び方)/S4(申込準備)に振る。S4は鑑定`/readings`へ直結、S3は無料診断→鑑定の橋渡し。CVはS2の5〜10倍が見込めるため**上位＝S4から消化**する。
+
+### S4（申込準備・/readings 直結）
+- [ ] 占い鑑定でわかること｜初めての方へ | slug: kantei-de-wakaru-koto | カテゴリ: 占い | 段階: S4
+- [ ] 当たるオンライン占い師の選び方 | slug: online-uranaishi-erabikata | カテゴリ: 占い | 段階: S4
+- [ ] 恋愛の悩みを占いに相談するメリットと選び方 | slug: renai-uranai-soudan | カテゴリ: 占い | 段階: S4
+- [ ] 相性鑑定でわかること・受け方の流れ | slug: aishou-kantei | カテゴリ: 占い | 段階: S4
+- [ ] 四柱推命の鑑定でわかること | slug: shichu-kantei | カテゴリ: 四柱推命 | 段階: S4
+- [ ] インド占星術の鑑定でわかること | slug: indo-kantei | カテゴリ: 占星術 | 段階: S4
+
+### S3（解決策の比較・選び方＋FAQ）
+- [ ] 無料占いと有料鑑定の違い｜後悔しない選び方 | slug: muryo-yuryo-uranai | カテゴリ: 占い | 段階: S3
+- [ ] 占いの種類一覧｜自分に合う占術の選び方 | slug: uranai-shurui-erabikata | カテゴリ: 占い | 段階: S3
+- [ ] タロットと占星術の違い・使い分け | slug: tarot-vs-astrology | カテゴリ: タロット | 段階: S3
+- [ ] 結婚の相性を占うなら｜占術の選び方 | slug: kekkon-aishou-uranai | カテゴリ: 占い | 段階: S3
+- [ ] 片思いを占いで進める｜相手の気持ちと進め方 | slug: kataomoi-uranai | カテゴリ: 占い | 段階: S3
+- [ ] 仕事・転職の悩みを占いで整理する | slug: shigoto-uranai | カテゴリ: 占い | 段階: S3
+- [ ] ソウルメイトの特徴と見分け方 | slug: soulmate-tokuchou | カテゴリ: 占い | 段階: S3
+- [ ] 当たる四柱推命｜無料サイトと本格鑑定の違い | slug: shichu-muryo-kantei | カテゴリ: 四柱推命 | 段階: S3
