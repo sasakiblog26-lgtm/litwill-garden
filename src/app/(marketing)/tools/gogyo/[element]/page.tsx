@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { snsAccounts } from "@/config/sns";
 import { ELEMENTS_LIST, findBySlug } from "../data";
+import RelatedArticles from "@/components/diagnosis/related-articles";
 
 export const dynamicParams = false;
 
@@ -135,6 +136,9 @@ export default async function GogyoElementPage({ params }: { params: Promise<{ e
             </button>
           </Link>
         </div>
+
+        {/* 関連コラム */}
+        <RelatedArticles categories={["四柱推命", "占い"]} title="四柱推命をもっと知る関連コラム" />
 
         {/* other elements 内部リンク */}
         <div style={sectionStyle}>

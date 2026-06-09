@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { snsAccounts } from "@/config/sns";
 import { ELEMENTS, TYPES, TYPE_CODES, type Pole } from "../data";
+import RelatedArticles from "@/components/diagnosis/related-articles";
 
 // 既知の16コードのみ静的生成。それ以外は404。
 export const dynamicParams = false;
@@ -173,6 +174,13 @@ export default async function TypeDetailPage({ params }: { params: Promise<{ cod
             </button>
           </Link>
         </div>
+
+        {/* 関連コラム */}
+        <RelatedArticles
+          categories={["診断", "心理テスト", "心理学", "占い"]}
+          tags={["自己理解", "性格診断"]}
+          title="自分をもっと知る関連コラム"
+        />
 
         {/* other types — 内部リンク */}
         <div style={{ ...sectionStyle, textAlign: "left" }}>

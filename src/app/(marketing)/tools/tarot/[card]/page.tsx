@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { snsAccounts } from "@/config/sns";
 import { CARDS, findCard } from "../data";
+import RelatedArticles from "@/components/diagnosis/related-articles";
 
 export const dynamicParams = false;
 
@@ -125,6 +126,9 @@ export default async function TarotCardPage({ params }: { params: Promise<{ card
             </button>
           </a>
         </div>
+
+        {/* 関連コラム */}
+        <RelatedArticles categories={["タロット"]} title="タロットをもっと知る関連コラム" />
 
         {/* all cards 内部リンク */}
         <div style={sectionStyle}>
