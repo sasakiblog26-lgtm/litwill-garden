@@ -3,7 +3,6 @@ import Link from "next/link";
 import Hero from "@/components/sections/hero";
 import SectionHeader from "@/components/sections/section-header";
 import ArticleCard from "@/components/sections/article-card";
-import ReadingCard from "@/components/sections/reading-card";
 import { Button } from "@/components/ui/button";
 import ConstellationField from "@/components/visual/constellation-field";
 import { GarlandDivider, OrnamentDivider } from "@/components/visual/ornaments";
@@ -14,31 +13,30 @@ import { getAllArticles } from "@/lib/markdown";
 // Data
 // ---------------------------------------------------------------------------
 
-const READINGS = [
+const THEMES = [
   {
-    eyebrow: "Soul Reading",
-    title: "魂のテーマリーディング",
-    description: "あなたが今世で体験したいテーマ、魂レベルの強み・課題を総合的にリーディング。",
-    tags: ["占星術", "数秘術"],
-    price: "¥3,300",
-    href: "/readings/apply?plan=soul",
+    eyebrow: "Love & Marriage",
+    title: "恋愛・結婚",
+    description: "片思い・復縁・結婚のタイミング、相手の気持ちなど、恋の悩みをていねいに読み解きます。",
+    tags: ["占星術", "タロット"],
   },
   {
-    eyebrow: "Love Reading",
-    title: "恋愛リーディング",
-    description: "恋愛パターン、理想のパートナー像、今の恋の流れを読み解きます。",
-    tags: ["タロット", "恋愛"],
-    price: "¥3,300",
-    href: "/readings/apply?plan=love",
+    eyebrow: "Work & Career",
+    title: "仕事・転職",
+    description: "転職の時期、適職、職場の人間関係、これからの働き方を見つめ直すお手伝いをします。",
+    tags: ["四柱推命", "占星術"],
   },
   {
-    eyebrow: "Premium Reading",
-    title: "✦ 人生の星図 フル鑑定",
-    description: "魂のテーマ、恋愛、仕事、人間関係、運気サイクルまで — 美しい星図にまとめてお届け。",
-    tags: ["占星術", "タロット", "心理学", "クリスタル"],
-    price: "¥11,000",
-    gold: true,
-    href: "/readings/apply?plan=premium",
+    eyebrow: "Life & Fortune",
+    title: "人生・運勢",
+    description: "今の運気の流れ、これからのテーマ、人生の転機を3つの占術で読み解きます。",
+    tags: ["インド占星術", "四柱推命"],
+  },
+  {
+    eyebrow: "Tarot",
+    title: "タロット占い",
+    description: "今いちばん知りたいひとつの問いに、タロットからのメッセージをお届けします。",
+    tags: ["タロット"],
   },
 ];
 
@@ -109,25 +107,28 @@ const STEPS = [
 
 const PLANS = [
   {
-    name: "魂のテーマリーディング",
-    price: "¥3,300",
-    points: ["占星術・数秘術で読み解く", "今世のテーマ・強み・課題", "自己理解を深めたい方へ"],
-    href: "/readings/apply?plan=soul",
+    name: "お試しプラン",
+    duration: "10分",
+    price: "¥1,000",
+    points: ["はじめての方に", "気になることをひとつ気軽に", "占いを試してみたい方へ"],
     gold: false,
+    recommended: false,
   },
   {
-    name: "恋愛リーディング",
-    price: "¥3,300",
-    points: ["タロット・占星術で読み解く", "恋愛パターン・理想の相手・恋の流れ", "恋の悩みに寄り添います"],
-    href: "/readings/apply?plan=love",
-    gold: false,
-  },
-  {
-    name: "✦ 人生の星図 フル鑑定",
-    price: "¥11,000",
-    points: ["3占術 × 心理学 × クリスタル", "恋愛・仕事・人間関係・運気まで網羅", "あなただけの星図にまとめてお届け"],
-    href: "/readings/apply?plan=premium",
+    name: "スタンダードプラン",
+    duration: "20分",
+    price: "¥2,500",
+    points: ["ひとつのテーマをじっくり", "いちばん人気の目安", "恋愛・仕事などの相談に"],
     gold: true,
+    recommended: true,
+  },
+  {
+    name: "しっかりプラン",
+    duration: "30分",
+    price: "¥3,500",
+    points: ["複数の悩みも相談できる", "深く見つめ直したい方に", "じっくり話したい方へ"],
+    gold: false,
+    recommended: false,
   },
 ];
 
@@ -192,14 +193,34 @@ export default function Home() {
             <SectionHeader
               eyebrow="Readings"
               title="鑑定メニュー"
-              sub="西洋占星術・インド占星術・四柱推命を融合した独自メソッドで、あなたの魂が求める答えをリーディングします。"
+              sub="西洋占星術・インド占星術・四柱推命を融合した独自メソッドで、あなたの悩みに寄り添います。気になるテーマからご相談ください。"
             />
             <div
-              className="resp-grid-3"
-              style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 40 }}
+              className="resp-grid-2"
+              style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16, marginTop: 40 }}
             >
-              {READINGS.map((reading) => (
-                <ReadingCard key={reading.eyebrow} {...reading} />
+              {THEMES.map((t) => (
+                <div
+                  key={t.eyebrow}
+                  style={{
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border-card)",
+                    borderRadius: 20,
+                    padding: 28,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                  }}
+                >
+                  <p style={{ fontFamily: "var(--lg-font-display)", fontStyle: "italic", fontSize: 12, color: "#9B8BBF", letterSpacing: "0.08em", margin: 0 }}>{t.eyebrow}</p>
+                  <h3 style={{ fontFamily: "var(--lg-font-heading)", fontWeight: 600, fontSize: 19, color: "var(--text-primary)", margin: 0 }}>{t.title}</h3>
+                  <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75, margin: 0, flex: "1 1 auto" }}>{t.description}</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    {t.tags.map((tag) => (
+                      <span key={tag} style={{ fontSize: 11, color: "#9B8BBF", border: "1px solid var(--border-card)", borderRadius: 999, padding: "3px 10px" }}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -320,7 +341,7 @@ export default function Home() {
       <section style={{ background: "var(--bg-main)" }}>
         <ConstellationField density="sparse">
           <div style={containerStyle}>
-            <SectionHeader eyebrow="Pricing" title="料金プラン" sub="すべて税込価格です。気になるメニューからお気軽にどうぞ。" />
+            <SectionHeader eyebrow="Pricing" title="料金プラン" sub="すべて税込価格です。お試しから、じっくりまで。ご相談内容に合わせてお選びいただけます。" />
             <div
               className="resp-grid-3"
               style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 40 }}
@@ -329,17 +350,26 @@ export default function Home() {
                 <div
                   key={p.name}
                   style={{
+                    position: "relative",
                     background: "var(--bg-card)",
-                    border: p.gold ? "1px solid rgba(212,192,144,0.4)" : "1px solid var(--border-card)",
+                    border: p.gold ? "1.5px solid rgba(212,192,144,0.55)" : "1px solid var(--border-card)",
                     borderRadius: 20,
                     padding: 28,
                     display: "flex",
                     flexDirection: "column",
-                    gap: 16,
+                    gap: 14,
                   }}
                 >
+                  {p.recommended && (
+                    <span style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, #D4C090, #E8D8B0)", color: "#2D2448", fontSize: 11, fontWeight: 700, padding: "4px 14px", borderRadius: 999, whiteSpace: "nowrap" }}>
+                      いちばん人気
+                    </span>
+                  )}
                   <h3 style={{ fontFamily: "var(--lg-font-heading)", fontWeight: 600, fontSize: 17, color: "var(--text-primary)", margin: 0, lineHeight: 1.4 }}>{p.name}</h3>
-                  <p style={{ fontFamily: "var(--lg-font-heading)", fontWeight: 700, fontSize: 26, color: p.gold ? "#D4C090" : "var(--text-primary)", margin: 0 }}>{p.price}</p>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                    <span style={{ fontFamily: "var(--lg-font-heading)", fontWeight: 700, fontSize: 28, color: p.gold ? "#D4C090" : "var(--text-primary)" }}>{p.price}</span>
+                    <span style={{ fontSize: 14, color: "var(--text-secondary)" }}>/ {p.duration}</span>
+                  </div>
                   <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8, flex: "1 1 auto" }}>
                     {p.points.map((pt) => (
                       <li key={pt} style={{ fontSize: 13.5, color: "var(--text-secondary)", lineHeight: 1.6, display: "flex", gap: 8 }}>
@@ -348,12 +378,15 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                  <Button variant={p.gold ? "gold" : "primary"} size="md" href={p.href} fullWidth>
-                    申し込む
+                  <Button variant={p.gold ? "gold" : "primary"} size="md" href="/contact" fullWidth>
+                    予約・相談する
                   </Button>
                 </div>
               ))}
             </div>
+            <p style={{ textAlign: "center", fontSize: 13, color: "var(--text-secondary)", marginTop: 24, lineHeight: 1.7 }}>
+              ※新しい時間制プランは現在準備中です。ご予約・お問い合わせは上のボタンよりお気軽にどうぞ。
+            </p>
           </div>
         </ConstellationField>
       </section>
