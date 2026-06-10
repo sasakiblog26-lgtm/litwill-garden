@@ -6,7 +6,12 @@ import { brand } from "@/config/brand";
 import { JsonLd, websiteJsonLd, organizationJsonLd } from "@/components/seo/json-ld";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { AdSenseScript } from "@/components/ads/adsense-script";
+import { FloatingDock } from "@/components/ux/floating-dock";
+import { OnboardingGuide } from "@/components/ux/onboarding-guide";
 import "./globals.css";
+
+// 保存済みの表示設定（文字サイズ/コントラスト/動き軽減）を描画前に適用しちらつきを防ぐ
+const displayBootScript = `(function(){try{var s=JSON.parse(localStorage.getItem('litwill-display')||'{}');var c=document.documentElement.classList;if(s.font==='l')c.add('ux-font-l');if(s.font==='xl')c.add('ux-font-xl');if(s.contrast)c.add('ux-contrast');if(s.reduce)c.add('ux-reduce-motion');}catch(e){}})();`;
 
 export const metadata: Metadata = {
   title: {
@@ -56,14 +61,19 @@ export default function RootLayout({
         />
         <GoogleAnalytics />
         <AdSenseScript />
+        <script dangerouslySetInnerHTML={{ __html: displayBootScript }} />
       </head>
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }}>
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
-        <AmbientMotifs />
+        <div className="ux-ambient-layer">
+          <AmbientMotifs />
+        </div>
         <Header />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer />
+        <FloatingDock />
+        <OnboardingGuide />
       </body>
     </html>
   );
