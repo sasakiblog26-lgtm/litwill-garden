@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AmbientMotifs } from "@/components/visual/ambient-motifs";
@@ -6,6 +6,8 @@ import { brand } from "@/config/brand";
 import { JsonLd, websiteJsonLd, organizationJsonLd } from "@/components/seo/json-ld";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { AdSenseScript } from "@/components/ads/adsense-script";
+import { RegisterSW } from "@/components/pwa/register-sw";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -34,6 +36,24 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
+  // PWA: マニフェスト＋iOSホーム画面アプリ対応
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Litwill",
+  },
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0f0720",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -64,6 +84,8 @@ export default function RootLayout({
         <Header />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer />
+        <RegisterSW />
+        <InstallPrompt />
       </body>
     </html>
   );
