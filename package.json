@@ -12,12 +12,10 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.87.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
     "gray-matter": "^4.0.3",
     "next": "16.2.1",
-    "next-sitemap": "^4.2.3",
     "postgres": "^3.4.8",
     "react": "19.2.4",
     "react-dom": "19.2.4",

@@ -32,6 +32,8 @@ function apply(s: Settings) {
 export function DisplayPanel({ onClose }: { onClose: () => void }) {
   const [s, setS] = useState<Settings>(DEFAULTS);
 
+  // マウント後にlocalStorageを読む正当なパターン（SSR/hydration安全）
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setS(read()), []);
 
   const update = (patch: Partial<Settings>) => {

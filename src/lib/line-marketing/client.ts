@@ -49,7 +49,7 @@ export const TOKUSHOHO_FOOTER =
   "■ 配信解除について\n" +
   "このアカウントをブロックすると配信が停止されます。\n" +
   "メニューの「設定」＞「ブロック」からいつでも解除できます。\n" +
-  "運営: Litwill Garden（https://litwill-garden.com/tokushoho）";
+  "運営: Litwill Garden（https://www.litwillgarden.com/tokushoho）";
 
 // ---------------------------------------------------------------------------
 // Internal helpers

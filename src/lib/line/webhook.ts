@@ -6,10 +6,8 @@
  */
 
 import crypto from "crypto";
-import { sendStepMessage, sendSegmentQuestion } from "./messaging";
-import { welcomeMessage, getStepMessages } from "./step-delivery";
-import { type LineSegment } from "./segments";
 import { notifySlack } from "@/lib/notifications/slack";
+import { type LineSegment } from "./segments";
 
 /** LINE Webhookイベント型 */
 export type LineWebhookEvent = {
@@ -104,12 +102,7 @@ async function handleFollow(
   onNewSubscriber?: (userId: string) => Promise<void>
 ): Promise<void> {
   const userId = event.source.userId;
-
-  // ウェルカムメッセージ送信
-  await sendStepMessage(userId, welcomeMessage);
-
-  // セグメント質問を送信
-  await sendSegmentQuestion(userId);
+  console.log(`[LINE Webhook] 新規フォロー: ${userId}`);
 
   // コールバック（DB登録など）
   if (onNewSubscriber) {
@@ -133,20 +126,6 @@ async function handlePostback(
   const segmentMatch = data.match(/^segment=(\w+)$/);
   if (segmentMatch) {
     const segment = segmentMatch[1] as LineSegment;
-
-    // Day 1メッセージを取得して送信予約（実際にはDBでスケジュール管理）
-    const steps = getStepMessages(segment);
-    const day1Message = steps.find((s) => s.dayOffset === 1);
-    if (day1Message) {
-      // Day1は翌日に自動送信されるので、ここでは確認メッセージのみ
-      await sendStepMessage(userId, {
-        dayOffset: 0,
-        title: "セグメント設定完了",
-        body: `ランク設定ありがとうございます！\nあなたに合った攻略情報を配信していきます。\n\n明日から毎日、上達に役立つ情報をお届けしますのでお楽しみに！`,
-        segment: null,
-      });
-    }
-
     if (onSegmentSelected) {
       await onSegmentSelected(userId, segment);
     }
@@ -158,29 +137,6 @@ async function handlePostback(
  */
 async function handleMessage(event: LineWebhookEvent): Promise<void> {
   if (!event.message?.text) return;
-
-  const text = event.message.text;
-  const userId = event.source.userId;
-
-  // 「無料ガイドが欲しい」へのリッチメニュー応答
-  if (text.includes("無料ガイド")) {
-    await sendStepMessage(userId, {
-      dayOffset: 0,
-      title: "無料ガイド",
-      body: `📖 無料ガイドはこちらからダウンロードできます！\n\n「Apex初心者スタートダッシュガイド」\n✅ 最初にやるべき設定5つ\n✅ 初心者おすすめキャラ3選\n✅ 射撃訓練場の15分練習メニュー`,
-      ctaUrl: "https://litwill-garden.com/guides/starter-pdf",
-      ctaLabel: "無料PDFをダウンロード",
-      segment: null,
-    });
-  }
-
-  // コーチング希望
-  if (text.includes("コーチング希望")) {
-    await sendStepMessage(userId, {
-      dayOffset: 0,
-      title: "コーチング申し込み",
-      body: `コーチングにご興味いただきありがとうございます！\n\n現在サービス準備中です。開始時に優先的にご案内いたします。\n\nしばらくお待ちください。`,
-      segment: null,
-    });
-  }
+  // メッセージ応答ロジックはアプリケーション層で実装
+  console.log(`[LINE Webhook] メッセージ受信: ${event.source.userId}`);
 }

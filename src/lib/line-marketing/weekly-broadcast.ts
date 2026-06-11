@@ -132,7 +132,7 @@ export async function sendWeeklyBroadcast(
         action: {
           type: "uri" as const,
           label: "読む",
-          uri: `https://litwill-garden.com/articles/${article.slug}`,
+          uri: `https://www.litwillgarden.com/articles/${article.slug}`,
         },
         style: "link" as const,
         height: "sm" as const,
@@ -174,7 +174,7 @@ export async function sendWeeklyBroadcast(
           action: {
             type: "uri",
             label: "すべての記事を見る",
-            uri: "https://litwill-garden.com/guides",
+            uri: "https://www.litwillgarden.com/articles",
           },
           style: "primary",
         },

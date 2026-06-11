@@ -8,10 +8,13 @@ type Head = { id: string; text: string; level: 2 | 3 };
 export function TocPanel({ onClose }: { onClose: () => void }) {
   const [heads, setHeads] = useState<Head[]>([]);
 
+  // マウント後にDOMを走査して目次を生成する正当なパターン（SSR/hydration安全）
   useEffect(() => {
     const nodes = Array.from(
       document.querySelectorAll<HTMLElement>("main h2[id], main h3[id]")
     );
+    // マウント直後のDOM読み取り後のsetState。useState初期化関数では取れないためこのパターンが正しい
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeads(
       nodes.map((n) => ({
         id: n.id,

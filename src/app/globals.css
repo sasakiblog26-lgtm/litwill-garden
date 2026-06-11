@@ -23,6 +23,29 @@
   --font-display: "Cormorant Garamond", serif;
   --font-heading: "Shippori Mincho", serif;
   --font-body: "Noto Sans JP", sans-serif;
+
+  /* ── Semantic color tokens (Tailwind クラス用) ──
+     article-card / article-layout / table-of-contents / youtube-cta / line-cta /
+     note-cta / breadcrumb / ranking/page / guides/page で使用する
+     :root / .theme-dark の CSS 変数を Tailwind トークンとして登録する。
+     :root の変数値は一切変更しない。                                         */
+
+  /* テキスト */
+  --color-text: var(--text-primary);           /* text-text */
+  --color-text-muted: var(--text-muted);       /* text-text-muted */
+  --color-text-dim: var(--text-muted);         /* text-text-dim（mutedより薄めの用途で同変数を参照） */
+  --color-text-on-dark: #F3EEFF;              /* text-text-on-dark（ダーク背景上の固定白系） */
+
+  /* ブランドカラー */
+  --color-primary: var(--lg-primary);          /* text-primary / bg-primary */
+  --color-secondary: var(--lg-secondary);      /* text-secondary / bg-secondary */
+  --color-accent: var(--lg-accent);            /* text-accent / bg-accent */
+  --color-accent-dark: var(--lg-accent-deep);  /* bg-accent-dark */
+
+  /* 背景 */
+  --color-bg-card: var(--bg-card);            /* bg-bg-card */
+  --color-bg-elevated: var(--bg-card);        /* border-bg-elevated（bg-cardより深みが必要な枠線に同変数を参照） */
+  --color-bg-deep: #1a1033;                   /* bg-bg-deep（youtube-ctaのダーク固定セクション） */
 }
 
 /* CSS Design Tokens */

@@ -1,8 +1,9 @@
 /**
  * LINE subscriber segment management for Litwill Garden.
  *
- * Segments subscribers based on their Apex Legends rank into three tiers,
- * enabling targeted step-delivery and content recommendations.
+ * Segments subscribers based on their area of interest (occupation, self-understanding,
+ * love & relationships, or life purpose), enabling targeted step-delivery and
+ * content recommendations.
  *
  * @module line-marketing/segments
  */
@@ -18,11 +19,11 @@ import type { LineMessage } from "./client";
 // ---------------------------------------------------------------------------
 
 /**
- * Subscriber segment derived from the user's self-reported Apex rank.
+ * Subscriber segment derived from the user's self-reported area of interest.
  *
- * - `"beginner"` – ルーキー〜ブロンズ
- * - `"silver-gold"` – シルバー〜ゴールド
- * - `"platinum-above"` – プラチナ以上
+ * - `"beginner"` – 占い・心理学に興味を持ち始めた方
+ * - `"silver-gold"` – 恋愛・人間関係を深く知りたい方
+ * - `"platinum-above"` – 自分の使命や人生テーマを探りたい方
  */
 export type Segment = "beginner" | "silver-gold" | "platinum-above";
 
@@ -46,12 +47,12 @@ export type Subscriber = {
 // ---------------------------------------------------------------------------
 
 /**
- * Maps rank choice text (as sent by the user via quick-reply) to a segment.
+ * Maps interest choice text (as sent by the user via quick-reply) to a segment.
  */
 export const SEGMENT_CONFIG: Record<string, Segment> = {
-  "ルーキー〜ブロンズ": "beginner",
-  "シルバー〜ゴールド": "silver-gold",
-  "プラチナ以上": "platinum-above",
+  "占い・心理学に興味を持ち始めた": "beginner",
+  "恋愛・人間関係を深く知りたい": "silver-gold",
+  "自分の使命や人生テーマを探りたい": "platinum-above",
 };
 
 // ---------------------------------------------------------------------------
@@ -59,25 +60,25 @@ export const SEGMENT_CONFIG: Record<string, Segment> = {
 // ---------------------------------------------------------------------------
 
 /**
- * Assigns a segment to a subscriber based on their rank choice.
+ * Assigns a segment to a subscriber based on their interest choice.
  *
- * Updates the `segment` and `rankTier` columns in the `lineSubscribers`
- * table and schedules the first step delivery for the next day.
+ * Updates the `segment` column in the `lineSubscribers` table and schedules
+ * the first step delivery for the next day.
  *
- * @param db         - Drizzle ORM database instance.
- * @param userId     - LINE user ID.
- * @param rankChoice - The rank text the user selected (e.g. "ルーキー〜ブロンズ").
+ * @param db           - Drizzle ORM database instance.
+ * @param userId       - LINE user ID.
+ * @param interestChoice - The interest text the user selected.
  * @returns The resolved `Segment`.
- * @throws If `rankChoice` does not match any known segment.
+ * @throws If `interestChoice` does not match any known segment.
  */
 export async function assignSegment(
   db: AppDb,
   userId: string,
-  rankChoice: string,
+  interestChoice: string,
 ): Promise<Segment> {
-  const segment = SEGMENT_CONFIG[rankChoice];
+  const segment = SEGMENT_CONFIG[interestChoice];
   if (!segment) {
-    throw new Error(`Unknown rank choice: "${rankChoice}"`);
+    throw new Error(`Unknown interest choice: "${interestChoice}"`);
   }
 
   const now = new Date();
@@ -87,7 +88,7 @@ export async function assignSegment(
     .update(lineSubscribers)
     .set({
       segment,
-      rankTier: rankChoice,
+      rankTier: interestChoice,
       step: 0,
       nextDeliveryAt: nextDelivery,
     })
@@ -123,20 +124,14 @@ export async function getSubscribersBySegment(
 }
 
 /**
- * Creates a LINE quick-reply message asking the user for their current rank.
- *
- * The three choices map directly to the segments defined in
- * {@link SEGMENT_CONFIG}.
+ * Creates a LINE quick-reply message asking the user for their area of interest.
  *
  * @returns A `LineMessage` with type `"text"` and quick-reply actions.
  */
-export function createRankQuestionMessage(): LineMessage {
+export function createInterestQuestionMessage(): LineMessage {
   return {
     type: "text" as const,
-    text: "あなたの現在のランクは？\n以下から選んでください👇",
-    // NOTE: The quick-reply payload is attached as a top-level property.
-    // LINE SDK expects `quickReply` alongside `type`/`text`, which is
-    // compatible with our `LineMessage` type via structural typing.
+    text: "あなたの一番の関心事を教えてください✨\n以下から選んでください👇",
     ...({
       quickReply: {
         items: Object.keys(SEGMENT_CONFIG).map((label) => ({

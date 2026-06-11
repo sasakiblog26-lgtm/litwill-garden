@@ -1,48 +1,90 @@
-name: Deploy to Vercel
+name: Promote to Production
+
+# mainへのpush時、Vercel Git連携が作るビルドの完了を待って本番ドメインへ昇格する。
+# 旧方式（vercel build + deploy --prebuilt）は無料プランのアップロード上限
+# (api-upload-free: 5000ファイル/24h) に毎回かかって失敗していたため廃止。
+# ※ daily-article.yml のボットpushはGITHUB_TOKEN経由のためこのワークフローを起動しない
+#   （ボット側が自前でpromoteする）。
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+concurrency:
+  group: promote-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
-  deploy:
+  promote:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      SITE_URL: https://www.litwillgarden.com
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-
-      - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy to Production
-        id: deploy
+      - name: Vercelビルド完了を待機（Git連携ビルド）
+        id: vercel
         run: |
-          URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          SHA="${{ github.sha }}"
+          echo "コミット $SHA のVercelデプロイを待機します"
+          URL=""
+          for i in $(seq 1 40); do
+            RESP=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+              "https://api.vercel.com/v6/deployments?projectId=${VERCEL_PROJECT_ID}&teamId=${VERCEL_ORG_ID}&limit=20")
+            URL=$(echo "$RESP" | jq -r --arg sha "$SHA" \
+              '[.deployments[] | select(.meta.githubCommitSha==$sha and .readyState=="READY")][0].url // empty')
+            FAILED=$(echo "$RESP" | jq -r --arg sha "$SHA" \
+              '[.deployments[] | select(.meta.githubCommitSha==$sha and (.readyState=="ERROR" or .readyState=="CANCELED"))][0].url // empty')
+            if [ -n "$URL" ]; then break; fi
+            if [ -n "$FAILED" ]; then
+              echo "::error::Vercelビルドが失敗しました: https://$FAILED"
+              exit 1
+            fi
+            echo "($i/40) まだReadyではありません。30秒待機..."
+            sleep 30
+          done
+          if [ -z "$URL" ]; then
+            echo "::error::Vercelデプロイ待機がタイムアウトしました（20分）"
+            exit 1
+          fi
+          echo "Ready: https://$URL"
+          echo "url=https://$URL" >> "$GITHUB_OUTPUT"
 
-      - name: Notify Discord
+      - name: 本番昇格（promote）
+        run: |
+          npm install -g vercel@latest
+          vercel promote "${{ steps.vercel.outputs.url }}" --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 本番200確認
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "${SITE_URL}/")
+            echo "($i/10) ${SITE_URL}/ -> $CODE"
+            if [ "$CODE" = "200" ]; then
+              echo "本番反映を確認しました"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::本番トップが200になりません"
+          exit 1
+
+      - name: Discord通知
         if: always()
         run: |
           if [ -n "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" ]; then
             STATUS="${{ job.status }}"
             if [ "$STATUS" = "success" ]; then
-              EMOJI="✅"
-              MSG="デプロイ成功"
+              MSG="✅ 本番昇格完了: ${{ github.sha }}"
             else
-              EMOJI="❌"
-              MSG="デプロイ失敗"
+              MSG="❌ 本番昇格失敗（${STATUS}）\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             fi
             curl -s -H "Content-Type: application/json" \
-              -d "{\"content\": \"${EMOJI} **litwill-garden** ${MSG}\nURL: ${{ steps.deploy.outputs.url }}\"}" \
+              -d "{\"content\": \"**Litwill Garden** ${MSG}\"}" \
               "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" || true
           fi
