@@ -1,8 +1,8 @@
 /**
  * LINE step delivery (ステップ配信) for Litwill Garden.
  *
- * Manages automated drip sequences that send targeted Apex Legends
- * content to subscribers over multiple days based on their segment.
+ * Manages automated drip sequences that send targeted content
+ * to subscribers over multiple days based on their segment.
  *
  * @module line-marketing/step-delivery
  */
@@ -40,25 +40,10 @@ export type StepScenario = {
 // ---------------------------------------------------------------------------
 
 /**
- * PDF lead-magnet content outline.
- *
- * Used as a teaser in step 0 to promote the free guide download.
- */
-export const PDF_CONTENT_OUTLINE = {
-  title: "【無料】ランクアップ完全ガイド PDF",
-  sections: [
-    "第1章: 設定の最適化（感度・キー配置・映像設定）",
-    "第2章: 立ち回りの基本原則",
-    "第3章: エイム練習ロードマップ",
-    "第4章: キャラ選びのフレームワーク",
-    "第5章: ランクマッチの勝率を上げる5つの習慣",
-  ],
-} as const;
-
-/**
  * Pre-defined step delivery scenarios per segment.
  *
  * Each scenario contains 5 messages delivered on consecutive days.
+ * トーン: 温かみがあり専門性を感じさせる文体。
  */
 export const STEP_SCENARIOS: StepScenario[] = [
   {
@@ -68,134 +53,134 @@ export const STEP_SCENARIOS: StepScenario[] = [
       {
         step: 0,
         segment: "beginner",
-        subject: "ようこそ！まずはこの設定から",
-        body: "Apex Legendsを最大限楽しむために、まず最初にやるべき設定を解説します。\n\n詳しくはこちら👇",
-        ctaUrl: "https://litwill-garden.com/guides/beginner-settings",
-        ctaLabel: "設定ガイドを読む",
+        subject: "ようこそ！まずは自分の星を知ることから",
+        body: "占い・心理学の世界へようこそ。まず最初に、あなたの太陽星座と基本的な性質を知ってみましょう✨",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "記事を読む",
       },
       {
         step: 1,
         segment: "beginner",
-        subject: "初心者が最初に使うべきキャラ3選",
-        body: "最初のキャラ選びで迷っていませんか？初心者におすすめのキャラクターを紹介します。",
-        ctaUrl: "https://litwill-garden.com/characters",
-        ctaLabel: "キャラ一覧を見る",
+        subject: "西洋占星術の基本とホロスコープの見方",
+        body: "ホロスコープは12星座×12ハウスで成り立っています。まずは太陽・月・ASCの3つを押さえるだけで自己理解が深まります。",
+        ctaUrl: "https://www.litwillgarden.com/tools",
+        ctaLabel: "無料ツールを試す",
       },
       {
         step: 2,
         segment: "beginner",
-        subject: "エイム練習を始めよう",
-        body: "毎日15分の練習で確実に上達します。おすすめの練習メニューを紹介！",
-        ctaUrl: "https://litwill-garden.com/guides/aim-training",
-        ctaLabel: "練習ガイドを読む",
+        subject: "心理学から見る「気質」のパターン",
+        body: "16タイプ性格診断（MBTI）は、自分の思考・感情パターンを知る入口です。まず自分のタイプを知ってみましょう。",
+        ctaUrl: "https://www.litwillgarden.com/tools/16types",
+        ctaLabel: "タイプを調べる",
       },
       {
         step: 3,
         segment: "beginner",
-        subject: "立ち回りの基本を覚えよう",
-        body: "撃ち合い以前に、ポジション取りで勝負は決まります。基本の立ち回りを解説。",
-        ctaUrl: "https://litwill-garden.com/guides/positioning",
-        ctaLabel: "立ち回りガイドを読む",
+        subject: "占いを「当たる・外れる」だけで判断しないために",
+        body: "占いの本質は予言ではなく、自分の傾向や選択肢を可視化するツールです。この視点が変わると、占いがぐっと深くなります。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "コラムを読む",
       },
       {
         step: 4,
         segment: "beginner",
-        subject: "無料PDFガイドをプレゼント！",
-        body: `ここまで読んでくれたあなたに、ランクアップ完全ガイドPDFを無料プレゼント！\n\n【収録内容】\n${PDF_CONTENT_OUTLINE.sections.map((s) => `・${s}`).join("\n")}`,
-        ctaUrl: "https://litwill-garden.com/guides/pdf-download",
-        ctaLabel: "無料ダウンロード",
+        subject: "あなただけの鑑定で、もっと深く知る",
+        body: "西洋占星術・インド占星術・四柱推命の3軸で、あなたの持ち味と人生のテーマを丁寧に読み解きます。",
+        ctaUrl: "https://www.litwillgarden.com/readings",
+        ctaLabel: "鑑定を詳しく見る",
       },
     ],
   },
   {
-    name: "silver-gold-rankup",
+    name: "love-relationship",
     segment: "silver-gold",
     messages: [
       {
         step: 0,
         segment: "silver-gold",
-        subject: "ゴールド突破のカギは「判断速度」",
-        body: "シルバー〜ゴールド帯で伸び悩む最大の原因と、その解決法を解説します。",
-        ctaUrl: "https://litwill-garden.com/guides/gold-breakthrough",
-        ctaLabel: "攻略記事を読む",
+        subject: "相性を知ることで、関係はもっと楽になる",
+        body: "恋愛や人間関係の悩みの多くは「タイプの違い」への理解不足から生まれます。星と心理学の両面から、相性の本質に迫ります。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "記事を読む",
       },
       {
         step: 1,
         segment: "silver-gold",
-        subject: "中距離戦を制する武器選び",
-        body: "ゴールド帯以上で必須となる中距離戦の武器選びと立ち回りを解説。",
-        ctaUrl: "https://litwill-garden.com/weapons",
-        ctaLabel: "武器ランキングを見る",
+        subject: "星座×月星座で「愛し方の癖」を知る",
+        body: "恋愛パターンは太陽星座だけでは分かりません。月星座は「感情的な欲求」を示し、パートナーとのすれ違いの鍵を握っています。",
+        ctaUrl: "https://www.litwillgarden.com/tools",
+        ctaLabel: "ツールを試す",
       },
       {
         step: 2,
         segment: "silver-gold",
-        subject: "味方との連携を強化する3つのコツ",
-        body: "野良ランクでもチームワークを発揮するためのコミュニケーション術。",
-        ctaUrl: "https://litwill-garden.com/guides/teamwork",
-        ctaLabel: "連携ガイドを読む",
+        subject: "なぜ同じパターンの恋愛を繰り返すのか",
+        body: "繰り返される恋愛パターンには、心理学でいう「アタッチメントスタイル」が関係しています。自分のスタイルを知ることが変化の第一歩。",
+        ctaUrl: "https://www.litwillgarden.com/diagnosis",
+        ctaLabel: "診断を受ける",
       },
       {
         step: 3,
         segment: "silver-gold",
-        subject: "今シーズンのメタを理解しよう",
-        body: "最新シーズンの環境分析とおすすめ構成を紹介します。",
-        ctaUrl: "https://litwill-garden.com/tier-list",
-        ctaLabel: "ティアリストを見る",
+        subject: "相手の「愛情表現の言語」を知っていますか？",
+        body: "愛情の伝え方には5つの言語があります（言葉・時間・贈り物・奉仕・スキンシップ）。すれ違いのほとんどは、この言語の違いから来ています。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "コラムを読む",
       },
       {
         step: 4,
         segment: "silver-gold",
-        subject: "プラチナを目指すあなたへ",
-        body: "さらに上を目指すための有料コンテンツと、プロの設定集をご用意しています。",
-        ctaUrl: "https://note.com/litwill_garden",
-        ctaLabel: "有料コンテンツを見る",
+        subject: "相性鑑定で、関係のテーマを読み解く",
+        body: "二人のホロスコープを重ね合わせることで、この関係が持つ意味と課題が見えてきます。深く知りたい方は鑑定をどうぞ。",
+        ctaUrl: "https://www.litwillgarden.com/readings",
+        ctaLabel: "相性鑑定を見る",
       },
     ],
   },
   {
-    name: "platinum-advanced",
+    name: "life-purpose",
     segment: "platinum-above",
     messages: [
       {
         step: 0,
         segment: "platinum-above",
-        subject: "プラチナ以上の世界へようこそ",
-        body: "上位帯で勝ち抜くために必要な知識と戦略をお届けします。",
-        ctaUrl: "https://litwill-garden.com/guides/platinum-guide",
-        ctaLabel: "上級ガイドを読む",
+        subject: "あなたが何度も引き寄せられるテーマは何ですか？",
+        body: "人生のテーマは、繰り返し現れる経験や問いの中にあります。占星術ではノード軸、四柱推命では大運がそのヒントを与えてくれます。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "記事を読む",
       },
       {
         step: 1,
         segment: "platinum-above",
-        subject: "プロ選手の設定を徹底分析",
-        body: "トッププレイヤーの感度・キー配置・映像設定を完全網羅。",
-        ctaUrl: "https://litwill-garden.com/guides/pro-settings",
-        ctaLabel: "プロ設定を見る",
+        subject: "インド占星術が示す「魂の方向性」",
+        body: "インド占星術（ジョーティシュ）は、個人の魂の目的や前世からのカルマを読む体系です。西洋占星術とは異なる視点が、深い自己理解をもたらします。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "コラムを読む",
       },
       {
         step: 2,
         segment: "platinum-above",
-        subject: "終盤の立ち回り完全マニュアル",
-        body: "ファイナルリング攻略、ポジション取りの極意を解説。",
-        ctaUrl: "https://litwill-garden.com/guides/endgame",
-        ctaLabel: "終盤攻略を読む",
+        subject: "四柱推命と「天命」の読み方",
+        body: "四柱推命は生年月日時の4柱から、その人の本質・才能・人生の流れを読みます。天命という概念は、あなたの強みとつながっています。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "コラムを読む",
       },
       {
         step: 3,
         segment: "platinum-above",
-        subject: "VODレビューのやり方",
-        body: "自分のプレイを振り返って改善するための具体的な手順を紹介。",
-        ctaUrl: "https://litwill-garden.com/guides/vod-review",
-        ctaLabel: "VODレビューガイド",
+        subject: "ユング心理学と個性化のプロセス",
+        body: "ユングの「個性化」とは、影（シャドウ）を統合しながら本来の自己へと成長していくプロセスです。占いはその地図になります。",
+        ctaUrl: "https://www.litwillgarden.com/articles",
+        ctaLabel: "コラムを読む",
       },
       {
         step: 4,
         segment: "platinum-above",
-        subject: "限定コミュニティのご案内",
-        body: "上位帯プレイヤー向けの情報交換コミュニティをご用意しています。",
-        ctaUrl: "https://note.com/litwill_garden",
-        ctaLabel: "詳細を見る",
+        subject: "3軸の鑑定で、人生の地図を手に入れる",
+        body: "西洋占星術・インド占星術・四柱推命の3軸から読む鑑定は、あなたの魂の地図を描きます。人生のテーマを深く探りたい方へ。",
+        ctaUrl: "https://www.litwillgarden.com/readings",
+        ctaLabel: "鑑定を詳しく見る",
       },
     ],
   },

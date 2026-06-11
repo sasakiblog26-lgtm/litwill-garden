@@ -1,7 +1,7 @@
 /**
  * LINEセグメント定義
  *
- * ランクベースのユーザーセグメントと配信シナリオを管理する。
+ * ユーザーの悩み・関心カテゴリに基づくセグメントを管理する。
  */
 
 /** LINEセグメント */
@@ -11,7 +11,7 @@ export type LineSegment = "beginner" | "intermediate" | "advanced";
 export type SegmentDefinition = {
   id: LineSegment;
   label: string;
-  rankRange: string;
+  concernType: string;
   description: string;
 };
 
@@ -19,55 +19,57 @@ export type SegmentDefinition = {
 export const segments: SegmentDefinition[] = [
   {
     id: "beginner",
-    label: "初心者（ルーキー〜ブロンズ）",
-    rankRange: "ルーキー〜ブロンズ",
-    description: "Apexを始めたばかりで基本操作やゲームの仕組みを理解中",
+    label: "占い・心理学に興味を持ち始めた",
+    concernType: "占い入門・自己理解",
+    description: "占星術や心理学に初めて触れる方。自分を知るきっかけを探している",
   },
   {
     id: "intermediate",
-    label: "シルバー〜ゴールド",
-    rankRange: "シルバー〜ゴールド",
-    description: "基本は理解しているが、ランクが伸び悩んでいる",
+    label: "恋愛・人間関係を深く知りたい",
+    concernType: "恋愛・対人関係",
+    description: "パートナーシップや人間関係のパターンをより深く理解したい",
   },
   {
     id: "advanced",
-    label: "プラチナ以上",
-    rankRange: "プラチナ〜",
-    description: "ある程度のスキルがあり、さらなる高みを目指している",
+    label: "自分の使命や人生テーマを探りたい",
+    concernType: "ライフパーパス・魂の目的",
+    description: "ライフパーパスや深い自己理解、スピリチュアルな探求に関心がある",
   },
 ];
 
-/** ランクセグメント質問の選択肢 */
+/**
+ * ランクセグメント質問の選択肢
+ *
+ * @deprecated `concernType` ベースの選択肢へ移行中。
+ * フィールド名は後方互換のため維持。
+ */
 export const rankSegmentQuestion = {
-  text: "あなたの現在のランクは？",
+  text: "あなたの一番の関心事は？",
   options: [
-    { label: "ルーキー〜ブロンズ", value: "beginner" as LineSegment },
-    { label: "シルバー〜ゴールド", value: "intermediate" as LineSegment },
-    { label: "プラチナ以上", value: "advanced" as LineSegment },
+    { label: "占い・心理学に興味を持ち始めた", value: "beginner" as LineSegment },
+    { label: "恋愛・人間関係を深く知りたい", value: "intermediate" as LineSegment },
+    { label: "自分の使命や人生テーマを探りたい", value: "advanced" as LineSegment },
   ],
 } as const;
 
 /**
- * ランク名からセグメントを判定する
+ * 選択テキストからセグメントを判定する
  *
- * @param rank - ランク名（日本語）
+ * @param choice - ユーザーが選択した選択肢テキスト
  * @returns セグメントID
  */
-export function determineSegment(rank: string): LineSegment {
-  const lowerRank = rank.toLowerCase();
+export function determineSegment(choice: string): LineSegment {
   if (
-    lowerRank.includes("ルーキー") ||
-    lowerRank.includes("ブロンズ") ||
-    lowerRank.includes("rookie") ||
-    lowerRank.includes("bronze")
+    choice.includes("興味を持ち") ||
+    choice.includes("入門") ||
+    choice.includes("beginner")
   ) {
     return "beginner";
   }
   if (
-    lowerRank.includes("シルバー") ||
-    lowerRank.includes("ゴールド") ||
-    lowerRank.includes("silver") ||
-    lowerRank.includes("gold")
+    choice.includes("恋愛") ||
+    choice.includes("人間関係") ||
+    choice.includes("intermediate")
   ) {
     return "intermediate";
   }
