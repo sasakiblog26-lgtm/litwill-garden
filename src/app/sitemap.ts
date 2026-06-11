@@ -30,8 +30,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/fortune", priority: 0.7, changefreq: "weekly" },
     { path: "/fortune/reading", priority: 0.6, changefreq: "monthly" },
     { path: "/crystals", priority: 0.6, changefreq: "monthly" },
-    { path: "/ranking", priority: 0.6, changefreq: "weekly" },
-    { path: "/guides", priority: 0.6, changefreq: "monthly" },
     { path: "/faq", priority: 0.5, changefreq: "monthly" },
     { path: "/contact", priority: 0.4, changefreq: "yearly" },
     { path: "/articles", priority: 0.8, changefreq: "daily" },
