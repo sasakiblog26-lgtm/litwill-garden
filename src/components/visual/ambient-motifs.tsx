@@ -30,7 +30,89 @@ function pseudoRandom(seed: number, max: number): number {
   return ((x - Math.floor(x)) * max);
 }
 
+// ── Module-level constants ───────────────────────────────────────────────────
+
+/** 粒子カラーパレット（useMemo依存から外すためモジュール定数化） */
+const PARTICLE_COLORS = ["#C8D8F0", "#E8D0E0", "#D4C090"];
+
 // ── Sub-components ───────────────────────────────────────────────────────────
+
+/** Layer 4 / VineSVG: アールヌーヴォー蔦のSVG本体（レンダー外で定義） */
+function VineSvg({ vineStyle }: { vineStyle: React.CSSProperties }) {
+  return (
+    <svg
+      viewBox="0 0 80 300"
+      width="80"
+      height="300"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {/* メイン蔓 */}
+      <path
+        d="M 40 0 Q 20 50 35 100 Q 55 150 30 200 Q 10 250 40 300"
+        stroke="#C8B8E0"
+        strokeWidth="1.5"
+        fill="none"
+        style={vineStyle}
+      />
+      {/* 枝葉1 */}
+      <path
+        d="M 32 70 Q 15 60 10 45 Q 18 55 32 70"
+        stroke="#C8B8E0"
+        strokeWidth="1"
+        fill="none"
+        style={{ ...vineStyle, animationDelay: "0.5s" }}
+      />
+      {/* 枝葉2 */}
+      <path
+        d="M 42 120 Q 62 108 68 92 Q 58 105 42 120"
+        stroke="#C8B8E0"
+        strokeWidth="1"
+        fill="none"
+        style={{ ...vineStyle, animationDelay: "1s" }}
+      />
+      {/* 枝葉3 */}
+      <path
+        d="M 33 175 Q 14 165 8 148 Q 16 160 33 175"
+        stroke="#C8B8E0"
+        strokeWidth="1"
+        fill="none"
+        style={{ ...vineStyle, animationDelay: "1.5s" }}
+      />
+      {/* 小花1 */}
+      <circle
+        cx="9"
+        cy="44"
+        r="3"
+        stroke="#C8B8E0"
+        strokeWidth="1"
+        fill="none"
+        style={{ ...vineStyle, animationDelay: "0.8s" }}
+      />
+      {/* 小花2 */}
+      <circle
+        cx="69"
+        cy="91"
+        r="3"
+        stroke="#C8B8E0"
+        strokeWidth="1"
+        fill="none"
+        style={{ ...vineStyle, animationDelay: "1.3s" }}
+      />
+      {/* 小花3 */}
+      <circle
+        cx="7"
+        cy="147"
+        r="2.5"
+        stroke="#C8B8E0"
+        strokeWidth="1"
+        fill="none"
+        style={{ ...vineStyle, animationDelay: "1.8s" }}
+      />
+    </svg>
+  );
+}
 
 /** Layer 1: オーロラグラデーション */
 function AuroraGradient({ dark }: { dark: boolean }) {
@@ -57,8 +139,6 @@ function AuroraGradient({ dark }: { dark: boolean }) {
 
 /** Layer 2: 浮遊光粒子（25個・決定論的） */
 function LightParticles() {
-  const COLORS = ["#C8D8F0", "#E8D0E0", "#D4C090"];
-
   const particles = useMemo<ParticleData[]>(() => {
     return Array.from({ length: 25 }, (_, i) => ({
       id: i,
@@ -66,7 +146,7 @@ function LightParticles() {
       top: `${pseudoRandom(i * 13, 100).toFixed(1)}%`,
       width: `${(2 + pseudoRandom(i * 3, 2)).toFixed(1)}px`,
       height: `${(2 + pseudoRandom(i * 3, 2)).toFixed(1)}px`,
-      color: COLORS[Math.floor(pseudoRandom(i * 5, COLORS.length))],
+      color: PARTICLE_COLORS[Math.floor(pseudoRandom(i * 5, PARTICLE_COLORS.length))],
       duration: `${(8 + pseudoRandom(i * 11, 7)).toFixed(1)}s`,
       delay: `${(pseudoRandom(i * 17, 10)).toFixed(1)}s`,
       dx: `${(-20 + pseudoRandom(i * 19, 40)).toFixed(1)}px`,
@@ -147,80 +227,6 @@ function ArtNouveauVines({ dark }: { dark: boolean }) {
     strokeDashoffset: dashLen,
   };
 
-  const VineSvg = () => (
-    <svg
-      viewBox="0 0 80 300"
-      width="80"
-      height="300"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* メイン蔓 */}
-      <path
-        d="M 40 0 Q 20 50 35 100 Q 55 150 30 200 Q 10 250 40 300"
-        stroke="#C8B8E0"
-        strokeWidth="1.5"
-        fill="none"
-        style={vineStyle}
-      />
-      {/* 枝葉1 */}
-      <path
-        d="M 32 70 Q 15 60 10 45 Q 18 55 32 70"
-        stroke="#C8B8E0"
-        strokeWidth="1"
-        fill="none"
-        style={{ ...vineStyle, animationDelay: "0.5s" }}
-      />
-      {/* 枝葉2 */}
-      <path
-        d="M 42 120 Q 62 108 68 92 Q 58 105 42 120"
-        stroke="#C8B8E0"
-        strokeWidth="1"
-        fill="none"
-        style={{ ...vineStyle, animationDelay: "1s" }}
-      />
-      {/* 枝葉3 */}
-      <path
-        d="M 33 175 Q 14 165 8 148 Q 16 160 33 175"
-        stroke="#C8B8E0"
-        strokeWidth="1"
-        fill="none"
-        style={{ ...vineStyle, animationDelay: "1.5s" }}
-      />
-      {/* 小花1 */}
-      <circle
-        cx="9"
-        cy="44"
-        r="3"
-        stroke="#C8B8E0"
-        strokeWidth="1"
-        fill="none"
-        style={{ ...vineStyle, animationDelay: "0.8s" }}
-      />
-      {/* 小花2 */}
-      <circle
-        cx="69"
-        cy="91"
-        r="3"
-        stroke="#C8B8E0"
-        strokeWidth="1"
-        fill="none"
-        style={{ ...vineStyle, animationDelay: "1.3s" }}
-      />
-      {/* 小花3 */}
-      <circle
-        cx="7"
-        cy="147"
-        r="2.5"
-        stroke="#C8B8E0"
-        strokeWidth="1"
-        fill="none"
-        style={{ ...vineStyle, animationDelay: "1.8s" }}
-      />
-    </svg>
-  );
-
   return (
     <>
       {/* 左側 */}
@@ -234,7 +240,7 @@ function ArtNouveauVines({ dark }: { dark: boolean }) {
         }}
         aria-hidden="true"
       >
-        <VineSvg />
+        <VineSvg vineStyle={vineStyle} />
       </div>
 
       {/* 右側（水平反転） */}
@@ -249,7 +255,7 @@ function ArtNouveauVines({ dark }: { dark: boolean }) {
         }}
         aria-hidden="true"
       >
-        <VineSvg />
+        <VineSvg vineStyle={vineStyle} />
       </div>
     </>
   );

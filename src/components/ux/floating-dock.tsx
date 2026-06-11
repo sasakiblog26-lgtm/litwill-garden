@@ -36,6 +36,8 @@ export function FloatingDock() {
   const [panel, setPanel] = useState<Panel>("none");
   const [expanded, setExpanded] = useState(false);
   const [showTop, setShowTop] = useState(false);
+  // ルート変更を検知するためのprevPathname（レンダー中state調整パターン）
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
   // 記事詳細ページ（/articles/<slug>）のみ目次ボタンを出す
   const isArticle = /^\/articles\/[^/]+$/.test(pathname);
@@ -47,11 +49,12 @@ export function FloatingDock() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ルート変更でパネル・展開を閉じる
-  useEffect(() => {
+  // ルート変更でパネル・展開を閉じる（レンダー中の前回値比較によるstate調整パターン）
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setPanel("none");
     setExpanded(false);
-  }, [pathname]);
+  }
 
   // 案内ボットからの「検索を開く」イベント
   useEffect(() => {
