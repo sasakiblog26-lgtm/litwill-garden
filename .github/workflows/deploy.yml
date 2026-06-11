@@ -58,7 +58,7 @@ jobs:
       - name: 本番昇格（promote）
         run: |
           npm install -g vercel@latest
-          vercel promote "${{ steps.vercel.outputs.url }}" --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel promote "${{ steps.vercel.outputs.url }}" --yes --scope="${VERCEL_ORG_ID}" --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: 本番200確認
         run: |
