@@ -1,0 +1,145 @@
+name: Daily Article Bot
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 毎日 UTC 0:00 = JST 9:00
+  workflow_dispatch:
+
+concurrency:
+  group: daily-article
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  write-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      SITE_URL: https://www.litwillgarden.com
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 今日の日付（JST）を取得
+        id: today
+        run: echo "date=$(TZ=Asia/Tokyo date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: 記事を執筆（Claude Code）
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: |
+            --model claude-sonnet-4-6
+            --allowedTools "Read,Write,Edit,Glob,Grep"
+          prompt: |
+            あなたはLitwill Garden（占い×心理学メディア）のデイリー記事ボットです。
+            今日の日付は ${{ steps.today.outputs.date }} です。記事を1本だけ書いてください。
+
+            ## トピック選定
+            1. content/article-queue.md の未チェック `[ ]` の先頭1件を選ぶ。
+               その slug が既に content/articles/ に存在する場合は、その行を `[x]` にして次の未チェック行へ進む。
+            2. キューに未チェックが無ければ、content/articles/ の既存記事と被らないトピックを
+               自分で選定する（S3比較検討/S4申込準備の段階を優先。S4は鑑定 /readings へ直結するもの）。
+
+            ## 執筆ルール
+            - .claude/CLAUDE.md の Writing Rules に必ず従う
+              （PREP法・専門用語は初出時に説明・薬機法/景表法遵守・占いはエンターテインメントとして明記・他サイトのコピー絶対禁止）。
+            - 保存先: content/articles/<slug>.md
+            - フロントマター: title / date（"${{ steps.today.outputs.date }}"）/ category / excerpt / tags
+            - 本文 2,000〜3,000字。H2見出しにキーワードを自然に含める。
+            - 内部リンク: 関連する既存記事へ2本以上 ＋ /diagnosis（無料診断）または /readings（鑑定）への導線を入れる
+              （S3/S4トピックは /readings を優先）。
+
+            ## 仕上げ
+            - 書いたらキューの該当行を `[x]` に更新する（自動選定の場合はキューに `[x]` 行として追記する）。
+            - git 操作・ビルド・push は一切しないこと（後続のステップが実行する）。
+
+      - name: 新規記事を検証
+        id: verify
+        run: |
+          NEW_FILE=$(git status --porcelain content/articles/ | grep '^??' | head -1 | awk '{print $2}')
+          if [ -z "$NEW_FILE" ]; then
+            echo "::error::新規記事が生成されていません"
+            git status --porcelain
+            exit 1
+          fi
+          SLUG=$(basename "$NEW_FILE" .md)
+          echo "生成された記事: $NEW_FILE"
+          head -20 "$NEW_FILE"
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+
+      - name: コミット & プッシュ
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/articles/ content/article-queue.md
+          git commit -m "content: add article - ${{ steps.verify.outputs.slug }} (daily bot)"
+          git push origin HEAD:main
+
+      - name: Vercelビルド完了を待機（Git連携ビルド）
+        id: vercel
+        run: |
+          SHA=$(git rev-parse HEAD)
+          echo "コミット $SHA のVercelデプロイを待機します"
+          URL=""
+          for i in $(seq 1 40); do
+            RESP=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+              "https://api.vercel.com/v6/deployments?projectId=${VERCEL_PROJECT_ID}&teamId=${VERCEL_ORG_ID}&limit=20")
+            URL=$(echo "$RESP" | jq -r --arg sha "$SHA" \
+              '[.deployments[] | select(.meta.githubCommitSha==$sha and .readyState=="READY")][0].url // empty')
+            FAILED=$(echo "$RESP" | jq -r --arg sha "$SHA" \
+              '[.deployments[] | select(.meta.githubCommitSha==$sha and (.readyState=="ERROR" or .readyState=="CANCELED"))][0].url // empty')
+            if [ -n "$URL" ]; then break; fi
+            if [ -n "$FAILED" ]; then
+              echo "::error::Vercelビルドが失敗しました: https://$FAILED"
+              exit 1
+            fi
+            echo "($i/40) まだReadyではありません。30秒待機..."
+            sleep 30
+          done
+          if [ -z "$URL" ]; then
+            echo "::error::Vercelデプロイ待機がタイムアウトしました（20分）"
+            exit 1
+          fi
+          echo "Ready: https://$URL"
+          echo "url=https://$URL" >> "$GITHUB_OUTPUT"
+
+      - name: 本番昇格（promote）
+        run: |
+          npm install -g vercel@latest
+          vercel promote "${{ steps.vercel.outputs.url }}" --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 本番200確認
+        run: |
+          SLUG="${{ steps.verify.outputs.slug }}"
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "${SITE_URL}/articles/${SLUG}")
+            echo "($i/10) ${SITE_URL}/articles/${SLUG} -> $CODE"
+            if [ "$CODE" = "200" ]; then
+              echo "本番公開を確認しました"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::本番で記事が200になりません"
+          exit 1
+
+      - name: Discord通知
+        if: always()
+        run: |
+          if [ -n "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" ]; then
+            STATUS="${{ job.status }}"
+            if [ "$STATUS" = "success" ]; then
+              MSG="✅ デイリー記事公開: ${{ steps.verify.outputs.slug }}\n${SITE_URL}/articles/${{ steps.verify.outputs.slug }}"
+            else
+              MSG="❌ デイリー記事ボット失敗（${STATUS}）\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            fi
+            curl -s -H "Content-Type: application/json" \
+              -d "{\"content\": \"**Litwill Garden** ${MSG}\"}" \
+              "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" || true
+          fi
