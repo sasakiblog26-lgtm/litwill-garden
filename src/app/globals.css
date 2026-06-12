@@ -567,6 +567,30 @@ a {
 }
 
 /* ════════════════════════════════════════════════════════════════
+   トップLP（feat/lp-redesign）— レスポンシブ調整
+   既存 :root トークンは変更しない。LP専用クラスのみ定義。
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .lp-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  /* ヒーロー: 横並び → 縦積み・中央寄せ */
+  .lp-hero-inner { flex-direction: column !important; text-align: center !important; gap: 36px !important; }
+  .lp-hero-inner p { margin-left: auto !important; margin-right: auto !important; }
+  .lp-hero-inner > div:first-child { display: flex !important; flex-direction: column !important; align-items: center !important; }
+  /* 流れ: 矢印を縦向きに */
+  .lp-flow-row { flex-direction: column !important; }
+  .lp-flow-arrow { transform: rotate(90deg) !important; }
+}
+@media (max-width: 600px) {
+  .lp-grid-2,
+  .lp-grid-3,
+  .lp-grid-4 { grid-template-columns: 1fr !important; }
+  /* 料金中央カードのせり上がりを解除 */
+  .lp-pricing-highlight { transform: none !important; }
+  /* 最終CTA: バッジを下に回す */
+  .lp-cta-inner { flex-direction: column !important; }
+}
+
+/* ════════════════════════════════════════════════════════════════
    UX 機能（表示設定・フローティングドック・パネル）  feat/ux
    ════════════════════════════════════════════════════════════════ */
 
