@@ -40,7 +40,7 @@
 
 ### S4（申込準備・/readings 直結）
 - [x] 占い鑑定でわかること｜初めての方へ | slug: kantei-de-wakaru-koto | カテゴリ: 占い | 段階: S4
-- [ ] 当たるオンライン占い師の選び方 | slug: online-uranaishi-erabikata | カテゴリ: 占い | 段階: S4
+- [x] 当たるオンライン占い師の選び方 | slug: online-uranaishi-erabikata | カテゴリ: 占い | 段階: S4
 - [ ] 恋愛の悩みを占いに相談するメリットと選び方 | slug: renai-uranai-soudan | カテゴリ: 占い | 段階: S4
 - [ ] 相性鑑定でわかること・受け方の流れ | slug: aishou-kantei | カテゴリ: 占い | 段階: S4
 - [ ] 四柱推命の鑑定でわかること | slug: shichu-kantei | カテゴリ: 四柱推命 | 段階: S4
