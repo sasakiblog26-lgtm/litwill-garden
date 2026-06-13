@@ -1,0 +1,36 @@
+name: LINE Weekly Broadcast (no API/no DB)
+
+# 毎週日曜10:00 JST、content/articles/ の最新記事ダイジェストをLINE公式の
+# 全友だちへ一斉配信する。LINEの broadcast API を使うため購読者DBは不要。
+# Claude/APIクレジットも不要。公開リポなのでGitHub Actions実行枠は無料。
+# 必要なシークレット: LINE_CHANNEL_ACCESS_TOKEN（未設定ならDRY-RUNでプレビューのみ）。
+
+on:
+  schedule:
+    - cron: "0 1 * * 0" # 日曜 UTC 1:00 = JST 10:00
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: LINE週次配信
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        run: node scripts/line-weekly-broadcast.mjs
+      - name: Discord通知
+        if: always()
+        run: |
+          if [ -n "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" ]; then
+            STATUS="${{ job.status }}"
+            MSG="📱 LINE週次配信: ${STATUS}"
+            curl -s -H "Content-Type: application/json" -d "{\"content\": \"${MSG}\"}" "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" || true
+          fi
