@@ -53,5 +53,5 @@
 - [x] 結婚の相性を占うなら｜占術の選び方 | slug: kekkon-aishou-uranai | カテゴリ: 占い | 段階: S3
 - [x] 片思いを占いで進める｜相手の気持ちと進め方 | slug: kataomoi-uranai | カテゴリ: 占い | 段階: S3
 - [x] 仕事・転職の悩みを占いで整理する | slug: shigoto-uranai | カテゴリ: 占い | 段階: S3
-- [ ] ソウルメイトの特徴と見分け方 | slug: soulmate-tokuchou | カテゴリ: 占い | 段階: S3
+- [x] ソウルメイトの特徴と見分け方 | slug: soulmate-tokuchou | カテゴリ: 占い | 段階: S3
 - [ ] 当たる四柱推命｜無料サイトと本格鑑定の違い | slug: shichu-muryo-kantei | カテゴリ: 四柱推命 | 段階: S3
