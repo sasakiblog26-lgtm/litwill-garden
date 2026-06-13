@@ -41,26 +41,39 @@ export default function Home() {
     // theme-light: トップLPは白ベース。サイト全体は <html class="theme-dark"> のため、
     // ここで CSS 変数を明色に上書きしてLP内の共有部品（記事カード等）も白基調に統一する。
     <div className="theme-light" style={{ background: "#FFFFFF" }}>
-      {/* 2. ヒーロー */}
+      {/* 2. ヒーロー（自前の登場アニメ・スクロール監視の対象外） */}
       <LpHero />
 
+      {/* 各セクションはスクロールで一度だけフェードアップ（控えめ・上品） */}
       {/* 3. 鑑定メニュー */}
-      <LpMenuCards />
+      <ScrollReveal>
+        <LpMenuCards />
+      </ScrollReveal>
 
       {/* 4. お悩み共感 */}
-      <LpWorries />
+      <ScrollReveal>
+        <LpWorries />
+      </ScrollReveal>
 
       {/* 5. 選ばれる理由 */}
-      <LpReasons />
+      <ScrollReveal>
+        <LpReasons />
+      </ScrollReveal>
 
       {/* 6. 鑑定までの流れ */}
-      <LpFlow />
+      <ScrollReveal>
+        <LpFlow />
+      </ScrollReveal>
 
       {/* 7. 料金プラン */}
-      <LpPricing />
+      <ScrollReveal>
+        <LpPricing />
+      </ScrollReveal>
 
       {/* 8. よくあるご質問 */}
-      <LpFaq />
+      <ScrollReveal>
+        <LpFaq />
+      </ScrollReveal>
 
       {/* 占いコラム（最新3件・実データ） */}
       <section style={columnsSection}>
@@ -89,7 +102,9 @@ export default function Home() {
       </section>
 
       {/* 9. 最終CTA帯 */}
-      <LpFinalCta />
+      <ScrollReveal>
+        <LpFinalCta />
+      </ScrollReveal>
     </div>
   );
 }

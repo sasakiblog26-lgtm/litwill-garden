@@ -15,7 +15,7 @@ function StarField() {
       preserveAspectRatio="xMidYMid slice"
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.7 }}
     >
-      <g fill="#E8DEF7">
+      <g fill="#E8DEF7" className="lp-stars">
         {[
           [80, 60, 1.4], [200, 120, 1], [320, 50, 1.2], [460, 90, 1.6], [560, 40, 1],
           [700, 110, 1.2], [840, 60, 1], [960, 130, 1.4], [1080, 70, 1.1], [1140, 160, 1],
@@ -24,7 +24,7 @@ function StarField() {
           <circle key={i} cx={x} cy={y} r={r} opacity={0.8} />
         ))}
       </g>
-      <g fill="#D4C090">
+      <g fill="#D4C090" className="lp-sparkle">
         <path d="M260 200 l2 7 7 2 -7 2 -2 7 -2 -7 -7 -2 7 -2 z" />
         <path d="M980 90 l1.8 6 6 1.8 -6 1.8 -1.8 6 -1.8 -6 -6 -1.8 6 -1.8 z" />
       </g>
@@ -115,7 +115,7 @@ export default function LpFinalCta() {
           <p style={{ fontSize: 15, color: "#C9BBE8", lineHeight: 1.9, margin: "0 0 32px" }}>
             一人で悩まず、まずは3分の無料診断から始めてみませんか？
           </p>
-          <Link href="/diagnosis" style={pill}>
+          <Link href="/diagnosis" style={pill} className="lp-cta-pill">
             無料診断をうけてみる →
           </Link>
         </div>

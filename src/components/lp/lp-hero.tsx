@@ -66,7 +66,7 @@ function HeroVisual() {
       </g>
 
       {/* 散らばる星 */}
-      <g fill="#E8DEF7">
+      <g fill="#E8DEF7" className="lp-stars">
         {[
           [70, 200, 1.4], [110, 230, 1], [210, 90, 1.2], [232, 150, 1.6],
           [200, 210, 1], [250, 200, 1.3], [90, 150, 1], [180, 60, 1.1],
@@ -75,7 +75,7 @@ function HeroVisual() {
         ))}
       </g>
       {/* 金色のきらめき（✦） */}
-      <g fill="#D4C090">
+      <g fill="#D4C090" className="lp-sparkle">
         <path d="M214 168 l2 7 7 2 -7 2 -2 7 -2 -7 -7 -2 7 -2 z" />
         <path d="M104 188 l1.4 5 5 1.4 -5 1.4 -1.4 5 -1.4 -5 -5 -1.4 5 -1.4 z" />
       </g>
@@ -218,17 +218,17 @@ export default function LpHero() {
       <div style={inner} className="lp-hero-inner">
         {/* 左: テキスト */}
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
-          <h1 style={titleStyle} className="lp-hero-title">
+          <h1 style={titleStyle} className="lp-hero-title lp-rise">
             迷いが晴れて、
             <br />
             <span style={gradientText}>明日の私が輝き出す</span>
           </h1>
 
-          <p style={sub}>
+          <p style={sub} className="lp-rise lp-rise-2">
             あなたの心に寄り添う、西洋占星術×心理学の本格鑑定。
           </p>
 
-          <div style={badgeRow}>
+          <div style={badgeRow} className="lp-rise lp-rise-3">
             {BADGES.map((b) => (
               <span key={b.label} style={badge}>
                 <span style={{ color: "#B0A0CF" }} aria-hidden="true">{b.icon}</span>
@@ -237,7 +237,7 @@ export default function LpHero() {
             ))}
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
+          <div className="lp-rise lp-rise-4" style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
             <Link href="/readings" style={cta} className="lp-hero-cta">
               今すぐ占いを受けてみる →
             </Link>

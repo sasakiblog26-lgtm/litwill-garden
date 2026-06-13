@@ -152,7 +152,7 @@ export default function LpPricing() {
                     </li>
                   ))}
                 </ul>
-                <Link href={p.href} style={dark ? whitePill : gradPill}>
+                <Link href={p.href} style={dark ? whitePill : gradPill} className="lp-pricing-btn">
                   このプランで占う →
                 </Link>
               </div>
