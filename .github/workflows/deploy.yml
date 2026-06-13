@@ -55,10 +55,18 @@ jobs:
           echo "Ready: https://$URL"
           echo "url=https://$URL" >> "$GITHUB_OUTPUT"
 
-      - name: 本番昇格（promote）
+      - name: 本番昇格（promote・冪等）
         run: |
           npm install -g vercel@latest
-          vercel promote "${{ steps.vercel.outputs.url }}" --yes --scope="${VERCEL_ORG_ID}" --token=${{ secrets.VERCEL_TOKEN }}
+          set +e
+          OUT=$(vercel promote "${{ steps.vercel.outputs.url }}" --yes --scope="${VERCEL_ORG_ID}" --token=${{ secrets.VERCEL_TOKEN }} 2>&1)
+          CODE=$?
+          echo "$OUT"
+          # Vercel Git連携が先に本番昇格済みの場合は409「already the current production deployment」→正常扱い
+          if [ $CODE -ne 0 ] && ! echo "$OUT" | grep -qi "already the current production deployment"; then
+            echo "::error::promote失敗"; exit 1
+          fi
+          echo "本番昇格OK（既に本番ならVercel Git連携の自動昇格を採用）"
 
       - name: 本番200確認
         run: |
