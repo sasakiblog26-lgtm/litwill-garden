@@ -1,0 +1,35 @@
+name: Social Announce (Threads)
+
+# 毎朝9:40 JST、ドリップ公開された最新記事をThreadsへ自動告知（テキスト＋リンク）。
+# Meta Threads APIを使用。Claude/APIクレジット不要。公開リポで実行枠無料。
+# シークレット: THREADS_USER_ID / THREADS_ACCESS_TOKEN（未設定ならDRY-RUNでプレビューのみ）。
+# ※Instagramは画像必須のため別途（next）。
+
+on:
+  schedule:
+    - cron: "40 0 * * *" # 毎日 UTC 0:40 = JST 9:40（記事ドリップ9:00の後）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Threads投稿
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: node scripts/threads-post.mjs
+      - name: Discord通知
+        if: always()
+        run: |
+          if [ -n "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" ]; then
+            curl -s -H "Content-Type: application/json" -d "{\"content\": \"🧵 Threads自動告知: ${{ job.status }}\"}" "${{ secrets.DISCORD_WEBHOOK_CONTENT }}" || true
+          fi
