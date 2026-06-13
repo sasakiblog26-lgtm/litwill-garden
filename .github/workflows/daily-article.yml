@@ -1,8 +1,9 @@
-name: Daily Article Bot
+name: Daily Article Bot (retired - manual only)
 
+# ⚠️ 退役：このボットはclaude-code-action＝APIクレジットが必要なため常用しない。
+# 毎朝の自動公開は drip-publish.yml（API不要・無料）が担当。
+# このワークフローはAPIクレジット/OAuthトークンを用意した場合の手動生成用に残置（schedule無効化）。
 on:
-  schedule:
-    - cron: "0 0 * * *" # 毎日 UTC 0:00 = JST 9:00
   workflow_dispatch:
 
 concurrency:
