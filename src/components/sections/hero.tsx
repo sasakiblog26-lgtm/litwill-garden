@@ -92,14 +92,14 @@ export default function Hero() {
       <div style={innerStyle} className="resp-hero-inner">
         {/* 左: テキストコンテンツ */}
         <div style={textColStyle}>
-          <span style={eyebrowStyle}>ASTROLOGY × PSYCHOLOGY</span>
+          <span style={eyebrowStyle}>AI × ASTROLOGY × PSYCHOLOGY</span>
 
           <h1 style={titleStyle} className="resp-hero-title">
             あなたの魂が描く、人生の星図
           </h1>
 
           <p style={subStyle}>
-            西洋占星術・インド占星術・四柱推命を融合した独自メソッドで、あなたの悩みを深く読み解きます。
+            AIが西洋占星術・インド占星術・四柱推命・心理学の4つの視点を統合し、ブレない一貫性と誠実さで、あなたの悩みを深く読み解きます。
           </p>
 
           <div style={buttonRowStyle} className="resp-hero-buttons">
