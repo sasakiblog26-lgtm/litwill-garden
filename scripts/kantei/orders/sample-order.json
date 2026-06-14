@@ -1,0 +1,11 @@
+{
+  "id": "sample-001",
+  "name": "サンプル花子",
+  "email": "test@example.com",
+  "birth_date": "1993-08-25",
+  "birth_time": "10:15",
+  "birth_place": "大阪府",
+  "theme": "work",
+  "theme_detail": "今の仕事を続けるか、転職すべきか迷っている",
+  "psych_type": "unknown"
+}

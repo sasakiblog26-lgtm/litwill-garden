@@ -1,0 +1,6 @@
+# 生成物・個人情報を含む実行時アーティファクトはコミットしない
+work/
+drafts/
+outbox/
+orders/*.json
+!orders/sample-order.json
