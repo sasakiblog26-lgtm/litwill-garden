@@ -30,6 +30,30 @@ const values = [
   },
 ];
 
+const characters = [
+  {
+    img: "/images/characters/luna.png",
+    name: "ルナ",
+    en: "LUNA / キツネ",
+    desc: "月の光のようにやさしくみんなを照らす女の子。ちょっぴりミステリアスだけど、とっても思いやり屋さん。ひとりの時間も大切にする、静かな努力家です。",
+    word: "自分らしく、ゆっくり進もうね。",
+  },
+  {
+    img: "/images/characters/sol.png",
+    name: "ソル",
+    en: "SOL / フクロウ",
+    desc: "おっとりしていて、いつもまわりをよく見ている男の子。みんなの相談役で、誰よりも優しい心の持ち主。ふんわりした見た目に、実はしっかり者。",
+    word: "大丈夫、きみならできるよ。",
+  },
+  {
+    img: "/images/characters/noa.png",
+    name: "ノア",
+    en: "NOA / ウサギ",
+    desc: "元気いっぱいで、好奇心旺盛な女の子。新しいことやワクワクすることが大好き！その明るさで、みんなに元気をくれます。",
+    word: "今日も、たのしいを見つけにいこう！",
+  },
+];
+
 export default function AboutPage() {
   return (
     <div
@@ -80,6 +104,49 @@ export default function AboutPage() {
             <br />
             すべての人が自分らしく輝ける世界へ
           </p>
+        </div>
+
+        {/* Characters */}
+        <div className="mb-16">
+          <p className="text-purple-300 text-xs tracking-[0.3em] uppercase text-center mb-3">✦ CHARACTERS ✦</p>
+          <h2 className="text-center text-white text-2xl font-black mb-2">庭の仲間たち</h2>
+          <p className="text-center text-purple-200 text-sm mb-8">
+            みんなの&ldquo;好き&rdquo;が、そっと育つ庭。
+            <br />
+            3人の仲間が、あなたの&ldquo;自分を知る&rdquo;旅にそっと寄り添います。
+          </p>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {characters.map((c) => (
+              <div
+                key={c.name}
+                style={{
+                  background: "rgba(91,33,182,0.12)",
+                  border: "1px solid rgba(167,139,250,0.2)",
+                  borderRadius: "1rem",
+                  padding: "1.5rem",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <div
+                  style={{
+                    background: "radial-gradient(circle at 50% 40%, rgba(200,216,240,0.20), rgba(155,139,191,0.08))",
+                    borderRadius: "0.9rem",
+                    padding: "0.5rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={c.img} alt={`${c.name}（${c.en}）`} loading="lazy" style={{ width: "100%", height: "auto", display: "block" }} />
+                </div>
+                <h3 className="text-white font-black text-lg">{c.name}</h3>
+                <p className="text-purple-300 text-xs tracking-widest mb-3">{c.en}</p>
+                <p className="text-purple-200 text-xs leading-relaxed mb-4" style={{ flex: "1 1 auto" }}>{c.desc}</p>
+                <p style={{ color: "#D4C090", fontSize: "13px", fontWeight: 700 }}>「{c.word}」</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Values */}
