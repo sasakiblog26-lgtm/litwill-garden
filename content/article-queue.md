@@ -54,4 +54,29 @@
 - [x] 片思いを占いで進める｜相手の気持ちと進め方 | slug: kataomoi-uranai | カテゴリ: 占い | 段階: S3
 - [x] 仕事・転職の悩みを占いで整理する | slug: shigoto-uranai | カテゴリ: 占い | 段階: S3
 - [x] ソウルメイトの特徴と見分け方 | slug: soulmate-tokuchou | カテゴリ: 占い | 段階: S3
-- [ ] 当たる四柱推命｜無料サイトと本格鑑定の違い | slug: shichu-muryo-kantei | カテゴリ: 四柱推命 | 段階: S3
+- [x] 当たる四柱推命｜無料サイトと本格鑑定の違い | slug: shichu-muryo-kantei | カテゴリ: 四柱推命 | 段階: S3
+
+## 次バッチ（コンテンツギャップ分析・2026-06-14補充／Day2スプリント）
+
+> 既存66記事との重複を避け、CV直結のS4鑑定ページ群・旬コンテンツ・S3比較を補充。
+> 優先消化順：①旬（新月/水星逆行＝公開タイミング依存）→ ②S4（/readings直結）→ ③S3。
+
+### 旬・時事（公開タイミング依存・最優先）
+- [ ] 新月の願い事の書き方｜叶うコツと例文（双子座新月対応） | slug: shingetsu-negaigoto | カテゴリ: 占い | 段階: S3
+- [ ] 水星逆行の過ごし方｜やってはいけないこと・おすすめ | slug: suisei-gyakkou-sugoshikata | カテゴリ: 占星術 | 段階: S2
+
+### S4（鑑定でわかること・/readings 直結）
+- [ ] タロット鑑定でわかること・受け方の流れ | slug: tarot-kantei | カテゴリ: タロット | 段階: S4
+- [ ] 西洋占星術の鑑定でわかること | slug: seiyou-kantei | カテゴリ: 占星術 | 段階: S4
+- [ ] 数秘術の鑑定でわかること | slug: suchijutsu-kantei | カテゴリ: 数秘術 | 段階: S4
+- [ ] 恋愛相性鑑定の受け方｜当たる占い師の選び方 | slug: renai-aishou-kantei | カテゴリ: 占い | 段階: S4
+
+### S3（比較・選び方・FAQ・信頼性）
+- [ ] 電話占い・チャット占い・対面占いの違いと選び方 | slug: uranai-houhou-hikaku | カテゴリ: 占い | 段階: S3
+- [ ] 結婚時期を占う方法｜占術別の見方 | slug: kekkon-jiki-uranai | カテゴリ: 占い | 段階: S3
+- [ ] 転職の時期を占いで見る｜タイミングの掴み方 | slug: tenshoku-jiki-uranai | カテゴリ: 占い | 段階: S3
+- [ ] 占いとの上手な付き合い方｜依存しない活用法 | slug: uranai-tsukiaikata | カテゴリ: 占い | 段階: S3
+
+### S2（トピッククラスタ補強）
+- [ ] 太陽星座・月星座・アセンダントの違い | slug: san-seiza-chigai | カテゴリ: 占星術 | 段階: S2
+- [ ] ホロスコープの作り方｜無料で出す手順 | slug: horoscope-tsukurikata | カテゴリ: 占星術 | 段階: S2
