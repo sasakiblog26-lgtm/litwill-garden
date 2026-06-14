@@ -32,8 +32,14 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          # .gitkeep を除く最小ファイル名（NNN-昇順）を1本取得
-          mapfile -t FILES < <(ls content/drafts/*.md 2>/dev/null | sort)
+          # NNN-<slug>.md 形式のストックのみ対象（昇順）。
+          # ※ glob を ls に渡すと nullglob で空展開され ls が引数なし＝
+          #   リポジトリ直下を列挙してしまう事故（AGENTS.md 誤公開）を起こすため、
+          #   bash 配列glob で直接受ける。マッチ無しなら配列は空。
+          FILES=(content/drafts/[0-9]*-*.md)
+          if [ ${#FILES[@]} -gt 0 ]; then
+            IFS=$'\n' FILES=($(printf '%s\n' "${FILES[@]}" | sort)); unset IFS
+          fi
           if [ ${#FILES[@]} -eq 0 ]; then
             echo "stock=empty" >> "$GITHUB_OUTPUT"
             echo "ストックが空です（drafts/ に記事がありません）。スキップ。"
