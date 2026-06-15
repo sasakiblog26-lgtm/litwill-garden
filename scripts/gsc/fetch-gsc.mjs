@@ -6,7 +6,8 @@
 //   GSC_SA_KEY  … サービスアカウントのJSONキー全文
 //   GSC_SITE_URL … 例 "https://www.litwillgarden.com/"（URLプレフィックス型）
 //                  or "sc-domain:litwillgarden.com"（ドメインプロパティ型）
-//   DISCORD_WEBHOOK_CONTENT … （任意）未設定なら標準出力のみ
+//   SLACK_WEBHOOK_URL … （任意）Slack Incoming Webhook。優先して使う
+//   DISCORD_WEBHOOK_CONTENT … （任意）Slack未設定時のフォールバック。両方無ければ標準出力のみ
 
 import crypto from "node:crypto";
 
@@ -53,21 +54,35 @@ async function queryGSC(token, siteUrl, body) {
   return (await res.json()).rows ?? [];
 }
 
-async function postDiscord(content) {
-  const hook = process.env.DISCORD_WEBHOOK_CONTENT;
-  if (!hook) {
-    console.log("[Discord未設定] 以下を表示のみ:\n" + content);
+async function notify(content) {
+  const slack = process.env.SLACK_WEBHOOK_URL;
+  const discord = process.env.DISCORD_WEBHOOK_CONTENT;
+
+  if (slack) {
+    // SlackのmrkdwnはボールドがアスタリスクひとつなのでDiscord記法を変換
+    const text = content.replace(/\*\*/g, "*");
+    const chunks = text.match(/[\s\S]{1,2900}/g) ?? [text];
+    for (const c of chunks) {
+      await fetch(slack, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: c }),
+      });
+    }
     return;
   }
-  // Discordは1メッセージ2000字まで。超える場合は分割。
-  const chunks = content.match(/[\s\S]{1,1900}/g) ?? [content];
-  for (const c of chunks) {
-    await fetch(hook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: c }),
-    });
+  if (discord) {
+    const chunks = content.match(/[\s\S]{1,1900}/g) ?? [content];
+    for (const c of chunks) {
+      await fetch(discord, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: c }),
+      });
+    }
+    return;
   }
+  console.log("[通知先未設定] 以下を表示のみ:\n" + content);
 }
 
 async function main() {
@@ -94,7 +109,7 @@ async function main() {
   });
 
   if (rows.length === 0) {
-    await postDiscord(
+    await notify(
       `🔍 **GSC週次レポート**（${ymd(start)}〜${ymd(end)}）\nまだ検索データがほとんどありません（インデックス/流入の立ち上がり前）。来週また確認します。`,
     );
     console.log("rows=0");
@@ -124,7 +139,7 @@ async function main() {
   msg += `\n\n📈 **表示回数トップ5**\n` + top.map(fmt).join("\n");
   if (goldmine.length) msg += `\n\n→ /seo-goldmine で上位の記事タイトル等を最適化すると1ページ目に上げやすいです。`;
 
-  await postDiscord(msg);
+  await notify(msg);
   console.log(msg);
 }
 

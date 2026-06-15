@@ -26,4 +26,5 @@ jobs:
         env:
           GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
           GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           DISCORD_WEBHOOK_CONTENT: ${{ secrets.DISCORD_WEBHOOK_CONTENT }}
