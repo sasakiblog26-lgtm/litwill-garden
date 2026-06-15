@@ -1,35 +1,36 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
-import NatalChart from "@/components/visual/natal-chart";
 import { CornerFrame } from "@/components/visual/ornaments";
+import NatalChart from "@/components/visual/natal-chart";
 import { Button } from "@/components/ui/button";
 
 // ---------------------------------------------------------------------------
-// Result data
+// 型（/api/diagnosis のレスポンス）
 // ---------------------------------------------------------------------------
 
-const RESULT_SECTIONS = [
-  {
-    label: "魂のテーマ",
-    content:
-      "あなたの魂は「調和と癒し」を今世のテーマとして選んでいます。人々の心をつなぎ、傷ついたものを癒す力が宿っています。",
-  },
-  {
-    label: "自然な性格",
-    content:
-      "感受性が豊かで、場の空気を敏感に読み取る力があります。直感と論理の両方を活かすことができる、バランス型の内省者です。",
-  },
-  {
-    label: "強み",
-    content:
-      "共感力・創造性・洞察力。あなたの言葉には温かさと深みがあり、周囲の人を自然と引きつけます。",
-  },
-  {
-    label: "おすすめクリスタル",
-    content:
-      "アメジスト（直感を高める）、ローズクォーツ（愛を引き寄せる）、ムーンストーン（感情を安定させる）。",
-  },
+interface ReadingSection {
+  label: string;
+  body: string;
+}
+interface BasicReading {
+  headline: string;
+  birthLabel: string;
+  summary: string;
+  sections: ReadingSection[];
+  dashaPeriod: string;
+  timeKnown: boolean;
+  lockedTeaser: string[];
+}
+
+const prefectures = [
+  "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
+  "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
+  "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県",
+  "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県",
+  "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県",
+  "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県",
+  "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県", "海外",
 ];
 
 // ---------------------------------------------------------------------------
@@ -37,153 +38,90 @@ const RESULT_SECTIONS = [
 // ---------------------------------------------------------------------------
 
 interface InputFormProps {
-  onSubmit: (year: string, month: string, day: string) => void;
+  onSubmit: (birthdate: string, birthtime: string, birthplace: string) => void;
+  loading: boolean;
+  error: string;
 }
 
-function InputForm({ onSubmit }: InputFormProps) {
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
-  const [day, setDay] = useState("");
+function InputForm({ onSubmit, loading, error }: InputFormProps) {
+  const [birthdate, setBirthdate] = useState("");
+  const [birthtime, setBirthtime] = useState("");
+  const [birthplace, setBirthplace] = useState("");
 
-  const wrapStyle: CSSProperties = {
-    maxWidth: 560,
-    margin: "0 auto",
-    padding: "80px 24px",
-    textAlign: "center",
-  };
-
+  const wrapStyle: CSSProperties = { maxWidth: 560, margin: "0 auto", padding: "80px 24px", textAlign: "center" };
   const eyebrowStyle: CSSProperties = {
-    display: "block",
-    fontFamily: "var(--lg-font-display)",
-    fontStyle: "italic",
-    fontSize: "13px",
-    color: "#9B8BBF",
-    letterSpacing: "0.12em",
-    marginBottom: "16px",
+    display: "block", fontFamily: "var(--lg-font-display)", fontStyle: "italic",
+    fontSize: "13px", color: "#9B8BBF", letterSpacing: "0.12em", marginBottom: "16px",
   };
-
   const titleStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-heading)",
-    fontWeight: 700,
-    fontSize: "32px",
-    color: "var(--text-primary)",
-    letterSpacing: "0.03em",
-    margin: "0 0 12px",
-    lineHeight: 1.3,
+    fontFamily: "var(--lg-font-heading)", fontWeight: 700, fontSize: "32px",
+    color: "var(--text-primary)", letterSpacing: "0.03em", margin: "0 0 12px", lineHeight: 1.3,
   };
-
-  const descStyle: CSSProperties = {
-    fontSize: "15px",
-    color: "var(--text-secondary)",
-    lineHeight: 1.8,
-    margin: "0 0 32px",
-  };
-
+  const descStyle: CSSProperties = { fontSize: "15px", color: "var(--text-secondary)", lineHeight: 1.8, margin: "0 0 32px" };
   const cardStyle: CSSProperties = {
-    background: "var(--bg-card)",
-    borderRadius: 24,
-    border: "1px solid var(--border-card)",
-    padding: "32px",
+    background: "var(--bg-card)", borderRadius: 24, border: "1px solid var(--border-card)",
+    padding: "32px", textAlign: "left",
   };
-
   const labelStyle: CSSProperties = {
-    display: "block",
-    fontFamily: "var(--lg-font-body)",
-    fontSize: "14px",
-    color: "var(--text-secondary)",
-    marginBottom: "16px",
-    fontWeight: 600,
+    display: "block", fontFamily: "var(--lg-font-body)", fontSize: "14px",
+    color: "var(--text-secondary)", marginBottom: "8px", fontWeight: 600,
   };
-
-  const inputRowStyle: CSSProperties = {
-    display: "flex",
-    gap: "12px",
-    justifyContent: "center",
-    marginBottom: "24px",
-  };
-
   const inputStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-body)",
-    fontSize: 16,
-    border: "1.5px solid var(--border-card)",
-    borderRadius: 12,
-    padding: "12px 16px",
-    textAlign: "center",
-    outline: "none",
-    color: "var(--text-primary)",
-    background: "var(--bg-main)",
-    width: "80px",
+    fontFamily: "var(--lg-font-body)", fontSize: 16, border: "1.5px solid var(--border-card)",
+    borderRadius: 12, padding: "12px 16px", outline: "none", color: "var(--text-primary)",
+    background: "var(--bg-main)", width: "100%", boxSizing: "border-box", marginBottom: "20px",
   };
-
-  const noteStyle: CSSProperties = {
-    fontSize: 11,
-    color: "#B8B4CC",
-    marginTop: "16px",
-    lineHeight: 1.6,
-  };
+  const noteStyle: CSSProperties = { fontSize: 11, color: "#B8B4CC", marginTop: "8px", lineHeight: 1.6 };
 
   const handleSubmit = () => {
-    if (year && month && day) {
-      onSubmit(year, month, day);
-    }
+    if (birthdate && birthplace) onSubmit(birthdate, birthtime, birthplace);
   };
 
   return (
     <div style={wrapStyle}>
       <span style={eyebrowStyle}>FREE READING</span>
-      <h1 style={titleStyle}>あなたの魂のテーマを知る</h1>
+      <h1 style={titleStyle}>あなたの星と運命を、無料で読み解く</h1>
       <p style={descStyle}>
-        生年月日を入力するだけで、西洋占星術・数秘術に基づいたリーディングが届きます。
+        西洋占星術・インド占星術・四柱推命の3つを統合した独自エンジンが、
+        <br />
+        あなたの生まれ持った素質と、今めぐる運気をその場で算出します。
       </p>
 
       <div style={cardStyle}>
-        <label style={labelStyle}>生年月日を入力してください</label>
+        <label style={labelStyle}>生年月日</label>
+        <input
+          type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)}
+          style={{ ...inputStyle, colorScheme: "light dark" }} required
+        />
 
-        <div style={inputRowStyle}>
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="1990"
-            maxLength={4}
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            style={{ ...inputStyle, width: "90px" }}
-            aria-label="年"
-          />
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="03"
-            maxLength={2}
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            style={inputStyle}
-            aria-label="月"
-          />
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="25"
-            maxLength={2}
-            value={day}
-            onChange={(e) => setDay(e.target.value)}
-            style={inputStyle}
-            aria-label="日"
-          />
-        </div>
+        <label style={labelStyle}>出生時刻（わかる範囲で・任意）</label>
+        <input
+          type="time" value={birthtime} onChange={(e) => setBirthtime(e.target.value)}
+          style={{ ...inputStyle, colorScheme: "light dark" }}
+        />
+
+        <label style={labelStyle}>出生地</label>
+        <select
+          value={birthplace} onChange={(e) => setBirthplace(e.target.value)}
+          style={{ ...inputStyle, marginBottom: 0 }} required
+        >
+          <option value="" disabled>都道府県を選択</option>
+          {prefectures.map((p) => <option key={p} value={p}>{p}</option>)}
+        </select>
+
+        {error && (
+          <p style={{ color: "#d9534f", fontSize: 13, marginTop: 16, marginBottom: 0 }}>{error}</p>
+        )}
 
         <Button
-          variant="primary"
-          size="lg"
-          style={{ width: "100%" }}
-          onClick={handleSubmit}
-          disabled={!year || !month || !day}
+          variant="primary" size="lg" style={{ width: "100%", marginTop: 24 }}
+          onClick={handleSubmit} disabled={!birthdate || !birthplace || loading}
         >
-          ✦ 診断する
+          {loading ? "✦ 星を読み解いています..." : "✦ 無料で診断する"}
         </Button>
 
         <p style={noteStyle}>
-          個人情報は保存されません。占星術・数秘術に基づいた結果を表示します。
+          ✦ 約3秒で結果が表示されます。実際の天体計算に基づいた、あなただけの結果です。
         </p>
       </div>
     </div>
@@ -191,146 +129,134 @@ function InputForm({ onSubmit }: InputFormProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Step 1 — 診断結果
+// Step 1 — 診断結果（無料・基礎）＋ ペイウォール
 // ---------------------------------------------------------------------------
 
 interface ResultProps {
-  year: string;
-  month: string;
-  day: string;
+  reading: BasicReading;
+  birthDate: string;
   onReset: () => void;
 }
 
-function Result({ year, month, day, onReset }: ResultProps) {
-  const birthDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-  const birthLabel = `${year}年${month}月${day}日`;
-
-  const wrapStyle: CSSProperties = {
-    maxWidth: 640,
-    margin: "0 auto",
-    padding: "64px 24px",
-    textAlign: "center",
-  };
-
+function Result({ reading, birthDate, onReset }: ResultProps) {
+  const wrapStyle: CSSProperties = { maxWidth: 680, margin: "0 auto", padding: "64px 24px" };
   const eyebrowStyle: CSSProperties = {
-    display: "block",
-    fontFamily: "var(--lg-font-display)",
-    fontStyle: "italic",
-    fontSize: "13px",
-    color: "#9B8BBF",
-    letterSpacing: "0.12em",
-    marginBottom: "16px",
+    display: "block", fontFamily: "var(--lg-font-display)", fontStyle: "italic", fontSize: "13px",
+    color: "#9B8BBF", letterSpacing: "0.12em", marginBottom: "16px", textAlign: "center",
   };
-
   const titleStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-heading)",
-    fontWeight: 700,
-    fontSize: "28px",
-    color: "var(--text-primary)",
-    letterSpacing: "0.03em",
-    margin: "0 0 8px",
-    lineHeight: 1.35,
+    fontFamily: "var(--lg-font-heading)", fontWeight: 700, fontSize: "28px", color: "var(--text-primary)",
+    letterSpacing: "0.03em", margin: "0 0 8px", lineHeight: 1.35, textAlign: "center",
   };
-
-  const birthLabelStyle: CSSProperties = {
-    fontSize: 13,
-    color: "#9A95B4",
-    marginBottom: "40px",
-  };
-
+  const birthLabelStyle: CSSProperties = { fontSize: 13, color: "#9A95B4", marginBottom: "32px", textAlign: "center" };
   const chartCardStyle: CSSProperties = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "var(--bg-card)",
-    borderRadius: 24,
-    border: "1px solid var(--border-card)",
-    padding: "32px",
-    marginBottom: "40px",
+    display: "inline-flex", alignItems: "center", justifyContent: "center", background: "var(--bg-card)",
+    borderRadius: 24, border: "1px solid var(--border-card)", padding: "32px", marginBottom: "32px",
   };
-
-  const resultGridStyle: CSSProperties = {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: 16,
-    marginBottom: 40,
-    textAlign: "left",
+  const summaryStyle: CSSProperties = {
+    fontFamily: "var(--lg-font-body)", fontSize: 15, color: "var(--text-secondary)", lineHeight: 1.9,
+    background: "var(--bg-card)", border: "1px solid var(--border-card)", borderRadius: 16,
+    padding: "20px 24px", marginBottom: 28,
   };
-
-  const resultCardStyle: CSSProperties = {
-    background: "var(--bg-card)",
-    borderRadius: 16,
-    border: "1px solid var(--border-card)",
-    padding: "20px",
+  const sectionCardStyle: CSSProperties = {
+    background: "var(--bg-card)", borderRadius: 16, border: "1px solid var(--border-card)",
+    padding: "20px 24px", marginBottom: 14,
   };
-
-  const resultLabelStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-heading)",
-    fontWeight: 700,
-    fontSize: "13px",
-    color: "#9B8BBF",
+  const sectionLabelStyle: CSSProperties = {
+    fontFamily: "var(--lg-font-heading)", fontWeight: 700, fontSize: "14px", color: "var(--text-primary)",
     marginBottom: "8px",
-    letterSpacing: "0.05em",
   };
-
-  const resultTextStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-body)",
-    fontSize: "14px",
-    color: "var(--text-secondary)",
-    lineHeight: 1.75,
-    margin: 0,
-  };
-
-  const quoteStyle: CSSProperties = {
-    fontFamily: "var(--lg-font-heading)",
-    fontSize: "15px",
-    color: "var(--text-secondary)",
-    lineHeight: 1.9,
-    fontStyle: "italic",
-    borderLeft: "3px solid #C8B8E0",
-    paddingLeft: "20px",
-    textAlign: "left",
-    marginBottom: 40,
-  };
-
-  const buttonRowStyle: CSSProperties = {
-    display: "flex",
-    gap: "16px",
-    justifyContent: "center",
-    flexWrap: "wrap",
+  const sectionBodyStyle: CSSProperties = {
+    fontFamily: "var(--lg-font-body)", fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.85, margin: 0,
   };
 
   return (
     <div style={wrapStyle}>
-      <span style={eyebrowStyle}>YOUR READING</span>
-      <h1 style={titleStyle}>光をやさしく届ける癒しの調和者</h1>
-      <p style={birthLabelStyle}>{birthLabel}生まれ</p>
+      <span style={eyebrowStyle}>YOUR READING — 基礎</span>
+      <h1 style={titleStyle}>{reading.headline}</h1>
+      <p style={birthLabelStyle}>{reading.birthLabel}</p>
 
-      <CornerFrame style={{ display: "inline-block" }}>
-        <div style={chartCardStyle}>
-          <NatalChart birthDate={birthDate} size={300} />
+      <div style={{ textAlign: "center" }}>
+        <CornerFrame style={{ display: "inline-block" }}>
+          <div style={chartCardStyle}>
+            <NatalChart birthDate={birthDate} size={280} />
+          </div>
+        </CornerFrame>
+      </div>
+
+      <p style={summaryStyle}>{reading.summary}</p>
+
+      {reading.sections.map((s) => (
+        <div key={s.label} style={sectionCardStyle}>
+          <p style={sectionLabelStyle}>{s.label}</p>
+          <p style={sectionBodyStyle}>{s.body}</p>
         </div>
-      </CornerFrame>
+      ))}
 
-      <div style={resultGridStyle} className="resp-grid-2">
-        {RESULT_SECTIONS.map((section) => (
-          <div key={section.label} style={resultCardStyle}>
-            <p style={resultLabelStyle}>{section.label}</p>
-            <p style={resultTextStyle}>{section.content}</p>
+      {!reading.timeKnown && (
+        <p style={{ fontSize: 12, color: "var(--text-muted)", textAlign: "center", margin: "8px 0 0" }}>
+          ※ 出生時刻が未入力のため、アセンダント等の精密な項目は省略しています。
+        </p>
+      )}
+
+      {/* ===== ペイウォール ===== */}
+      <Paywall teaser={reading.lockedTeaser} />
+
+      <div style={{ textAlign: "center", marginTop: 32 }}>
+        <Button variant="outline" size="md" onClick={onReset}>もう一度診断する</Button>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ペイウォール（有料・応用＋特典への導線）
+// ---------------------------------------------------------------------------
+
+function Paywall({ teaser }: { teaser: string[] }) {
+  const boxStyle: CSSProperties = {
+    position: "relative", marginTop: 36, borderRadius: 20,
+    border: "1.5px solid var(--color-gold)", background: "rgba(212,192,144,0.06)",
+    padding: "32px 28px", overflow: "hidden",
+  };
+  const eyebrowStyle: CSSProperties = {
+    fontFamily: "var(--lg-font-display)", fontStyle: "italic", fontSize: 13,
+    color: "var(--color-gold)", letterSpacing: "0.1em", textAlign: "center", display: "block", marginBottom: 8,
+  };
+  const titleStyle: CSSProperties = {
+    fontFamily: "var(--lg-font-heading)", fontWeight: 700, fontSize: 22, color: "var(--text-primary)",
+    textAlign: "center", margin: "0 0 6px",
+  };
+  const subStyle: CSSProperties = {
+    fontFamily: "var(--lg-font-body)", fontSize: 13.5, color: "var(--text-secondary)",
+    textAlign: "center", lineHeight: 1.8, margin: "0 0 24px",
+  };
+  const itemStyle: CSSProperties = {
+    display: "flex", alignItems: "flex-start", gap: 10, fontFamily: "var(--lg-font-body)",
+    fontSize: 14, color: "var(--text-primary)", lineHeight: 1.7, marginBottom: 12,
+  };
+
+  return (
+    <div style={boxStyle}>
+      <span style={eyebrowStyle}>APPLIED READING — 応用</span>
+      <h2 style={titleStyle}>ここから先は、あなたが「使える」鑑定へ</h2>
+      <p style={subStyle}>
+        基礎が「あなたを知る」なら、応用は<strong>「明日から動ける」</strong>鑑定です。<br />
+        買った翌日から、実際にあなたの資産になる内容をお届けします。
+      </p>
+
+      <div style={{ maxWidth: 440, margin: "0 auto 28px" }}>
+        {teaser.map((t) => (
+          <div key={t} style={itemStyle}>
+            <span style={{ color: "var(--color-gold)", flexShrink: 0 }}>🔒</span>
+            <span>{t}</span>
           </div>
         ))}
       </div>
 
-      <blockquote style={quoteStyle}>
-        「すべての経験は、あなたをより深く、美しく成長させるためのもの。自分を信じて、心の声に従って進んでください。」
-      </blockquote>
-
-      <div style={buttonRowStyle}>
-        <Button variant="primary" size="lg" href="/readings">
-          ✦ フル鑑定を申し込む
-        </Button>
-        <Button variant="outline" size="lg" onClick={onReset}>
-          もう一度診断する
+      <div style={{ textAlign: "center" }}>
+        <Button variant="gold" size="lg" href="/readings">
+          ✦ 応用鑑定を見る
         </Button>
       </div>
     </div>
@@ -342,35 +268,39 @@ function Result({ year, month, day, onReset }: ResultProps) {
 // ---------------------------------------------------------------------------
 
 export default function DiagnosisPage() {
-  const [step, setStep] = useState(0);
-  const [birthYear, setBirthYear] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthDay, setBirthDay] = useState("");
+  const [reading, setReading] = useState<BasicReading | null>(null);
+  const [birthDate, setBirthDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (year: string, month: string, day: string) => {
-    setBirthYear(year);
-    setBirthMonth(month);
-    setBirthDay(day);
-    setStep(1);
+  const handleSubmit = async (birthdate: string, birthtime: string, birthplace: string) => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/diagnosis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ birthdate, birthtime, birthplace }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "エラーが発生しました");
+      setBirthDate(birthdate);
+      setReading(data.reading as BasicReading);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "エラーが発生しました");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
-    setStep(0);
-    setBirthYear("");
-    setBirthMonth("");
-    setBirthDay("");
+    setReading(null);
+    setBirthDate("");
+    setError("");
   };
 
-  if (step === 1) {
-    return (
-      <Result
-        year={birthYear}
-        month={birthMonth}
-        day={birthDay}
-        onReset={handleReset}
-      />
-    );
+  if (reading) {
+    return <Result reading={reading} birthDate={birthDate} onReset={handleReset} />;
   }
-
-  return <InputForm onSubmit={handleSubmit} />;
+  return <InputForm onSubmit={handleSubmit} loading={loading} error={error} />;
 }
