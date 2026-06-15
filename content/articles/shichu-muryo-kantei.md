@@ -17,6 +17,14 @@ faq:
 
 ※占いはエンターテインメントとしてお楽しみください。鑑定結果は、自己理解と前向きな選択のヒントとしてご活用ください。
 
+<div class="lg-speech">
+  <div class="lg-speech-avatar lg-av-sol"></div>
+  <div>
+    <div class="lg-speech-name">ソル</div>
+    <div class="lg-speech-bubble"><p>無料と本格、どっちがいいか迷うよね。大丈夫、目的で選べばいいんだよ。</p></div>
+  </div>
+</div>
+
 ---
 
 ## 四柱推命とは｜まずやさしくおさらい
@@ -84,6 +92,15 @@ faq:
 - **今がどんな時期かを知り、行動を決めたい** → 本格鑑定で時期の流れを見てもらう
 
 占い師を選ぶときは、**料金が明確か・説明がわかりやすいか・不安を過度にあおらないか**を確認しましょう。「必ず当たる」「これをしないと不幸になる」といった断定的な表現には注意が必要です。
+
+<div class="lg-reading-cta">
+  <div class="lg-reading-cta-art lg-av-luna"></div>
+  <div class="lg-reading-cta-body">
+    <p class="lg-reading-cta-title">本格的に四柱推命で視てほしい方へ</p>
+    <p class="lg-reading-cta-text">AIが西洋占星術・インド占星術・四柱推命・心理学の4つの視点を統合し、あなたの命式と今の時期をていねいに読み解きます。占いはエンターテインメントとしてお楽しみください。</p>
+    <a class="lg-btn lg-btn-gold" href="/readings?utm_source=article&utm_medium=cta">鑑定メニューを見る</a>
+  </div>
+</div>
 
 ## まとめ｜目的に合わせて使い分けよう
 

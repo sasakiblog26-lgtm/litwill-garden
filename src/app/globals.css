@@ -367,6 +367,57 @@ a {
 .lg-speech-bubble > :last-child { margin-bottom: 0; }
 .lg-speech-right .lg-speech-bubble { background: #FBF6EF; border-color: #E7D8AE; }
 
+/* キャラ立ち絵アバター（実画像）。空divにクラスを足すだけで使える。
+   ルナ=キツネ / ソル=フクロウ / ノア=ウサギ */
+.lg-av-luna,
+.lg-av-sol,
+.lg-av-noa {
+  font-size: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.lg-av-luna { background-image: url("/images/characters/luna-avatar.png"); }
+.lg-av-sol  { background-image: url("/images/characters/sol-avatar.png"); }
+.lg-av-noa  { background-image: url("/images/characters/noa-avatar.png"); }
+
+/* 記事内 鑑定CTA（/readings 誘導＝収益動線。S3/S4記事に1つ置く） */
+.lg-reading-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 32px 0;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--lg-lavender-100), #ffffff);
+  border: 1px solid var(--lg-lavender-200);
+}
+.lg-reading-cta-art {
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background-color: var(--lg-lavender-100);
+  border: 1px solid var(--lg-lavender-200);
+}
+.lg-reading-cta-body { flex: 1 1 auto; }
+.lg-reading-cta-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 0 4px;
+  color: #2d2448;
+}
+.lg-reading-cta-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  margin: 0 0 12px;
+  color: #555555;
+}
+.lg-reading-cta .lg-btn { margin: 0; }
+@media (max-width: 560px) {
+  .lg-reading-cta { flex-direction: column; text-align: center; }
+}
+
 /* ステップ／タイムライン */
 .lg-steps {
   list-style: none;
