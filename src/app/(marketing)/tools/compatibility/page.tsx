@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "2人の数を導いています",
+  "運命のリズムを重ねています",
+  "相性を読み解いています",
+];
 
 function calcLifePath(birthdate: string): number {
   const digits = birthdate.replace(/-/g, "").split("").map(Number);
@@ -48,12 +55,15 @@ export default function CompatibilityPage() {
   const [birthdate1, setBirthdate1] = useState("");
   const [birthdate2, setBirthdate2] = useState("");
   const [result, setResult] = useState<{ a: number; b: number; data: ReturnType<typeof getCompatibility> } | null>(null);
+  const ritual = useReadingRitual();
 
   const calculate = () => {
     if (!birthdate1 || !birthdate2) return;
-    const a = calcLifePath(birthdate1);
-    const b = calcLifePath(birthdate2);
-    setResult({ a, b, data: getCompatibility(a, b) });
+    ritual.run(() => {
+      const a = calcLifePath(birthdate1);
+      const b = calcLifePath(birthdate2);
+      setResult({ a, b, data: getCompatibility(a, b) });
+    }, RITUAL_MESSAGES);
   };
 
   const cardStyle: React.CSSProperties = {
@@ -68,6 +78,7 @@ export default function CompatibilityPage() {
       style={{ background: "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)", minHeight: "100vh" }}
       className="py-16 px-4"
     >
+      <RitualOverlay state={ritual} />
       <div className="max-w-2xl mx-auto">
         <div className="mb-3">
           <Link href="/tools" className="text-purple-400 text-sm hover:text-purple-300">← ツール一覧</Link>
@@ -106,7 +117,7 @@ export default function CompatibilityPage() {
           </div>
           <button
             onClick={calculate}
-            disabled={!birthdate1 || !birthdate2}
+            disabled={!birthdate1 || !birthdate2 || ritual.running}
             style={{
               width: "100%",
               padding: "0.875rem",

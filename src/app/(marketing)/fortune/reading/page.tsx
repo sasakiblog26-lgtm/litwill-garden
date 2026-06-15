@@ -2,6 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "天体の位置を計算しています",
+  "四柱を立て、五行を観ています",
+  "3つの体系を照合しています",
+  "あなたの運命を読み解いています",
+];
 
 const prefectures = [
   "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
@@ -22,7 +30,7 @@ export default function ReadingPage() {
     birthplace: "",
     gender: "",
   });
-  const [loading, setLoading] = useState(false);
+  const ritual = useReadingRitual();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -30,8 +38,7 @@ export default function ReadingPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => router.push("/fortune/result"), 1800);
+    ritual.run(() => {}, RITUAL_MESSAGES, 2200).then(() => router.push("/fortune/result"));
   };
 
   const isValid = form.name && form.birthdate && form.birthplace && form.gender;
@@ -60,6 +67,7 @@ export default function ReadingPage() {
       style={{ background: "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)", minHeight: "100vh" }}
       className="py-16 px-4"
     >
+      <RitualOverlay state={ritual} />
       {/* Stars */}
       <div className="fixed inset-0 pointer-events-none select-none" aria-hidden="true">
         <span className="absolute top-16 left-1/4 text-purple-300/15 text-4xl">✦</span>
@@ -187,24 +195,24 @@ export default function ReadingPage() {
 
           <button
             type="submit"
-            disabled={!isValid || loading}
+            disabled={!isValid || ritual.running}
             style={{
               width: "100%",
               marginTop: "2rem",
               padding: "1rem",
               borderRadius: "9999px",
-              background: isValid && !loading
+              background: isValid && !ritual.running
                 ? "linear-gradient(135deg, #7c3aed, #6366f1)"
                 : "rgba(91, 33, 182, 0.3)",
-              color: isValid && !loading ? "white" : "rgba(167, 139, 250, 0.5)",
+              color: isValid && !ritual.running ? "white" : "rgba(167, 139, 250, 0.5)",
               fontWeight: "bold",
               fontSize: "1.1rem",
-              cursor: isValid && !loading ? "pointer" : "not-allowed",
+              cursor: isValid && !ritual.running ? "pointer" : "not-allowed",
               border: "none",
               transition: "all 0.2s",
             }}
           >
-            {loading ? "✦ 鑑定中... ✦" : "✦ 鑑定結果を見る ✦"}
+            {ritual.running ? "✦ 鑑定中... ✦" : "✦ 鑑定結果を見る ✦"}
           </button>
           <p className="text-purple-400 text-xs text-center mt-4">
             ✦ 無料 ✦ 約3分で完了

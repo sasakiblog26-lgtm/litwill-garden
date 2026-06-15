@@ -4,6 +4,13 @@ import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { snsAccounts } from "@/config/sns";
 import { CARDS, type Card } from "./data";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "カードを切っています",
+  "あなたの一枚を選んでいます",
+  "カードのメッセージを読み取っています",
+];
 
 const PAGE_BG = "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)";
 const CARD_BG = "rgba(91, 33, 182, 0.12)";
@@ -181,15 +188,19 @@ function ResultView({ draw, onReset }: { draw: Draw; onReset: () => void }) {
 
 export default function TarotPage() {
   const [draw, setDraw] = useState<Draw | null>(null);
+  const ritual = useReadingRitual();
 
   const handleDraw = () => {
-    const card = CARDS[Math.floor(Math.random() * CARDS.length)];
-    const reversed = Math.random() < 0.5;
-    setDraw({ card, reversed });
+    ritual.run(() => {
+      const card = CARDS[Math.floor(Math.random() * CARDS.length)];
+      const reversed = Math.random() < 0.5;
+      setDraw({ card, reversed });
+    }, RITUAL_MESSAGES);
   };
 
   return (
     <div style={{ background: PAGE_BG, minHeight: "100vh" }} className="py-16 px-4">
+      <RitualOverlay state={ritual} />
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <Link href="/tools" className="text-purple-400 text-sm hover:text-purple-300">← ツール一覧</Link>

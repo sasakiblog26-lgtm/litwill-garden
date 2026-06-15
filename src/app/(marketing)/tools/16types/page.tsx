@@ -4,6 +4,13 @@ import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { snsAccounts } from "@/config/sns";
 import { ELEMENTS, TYPES, type Pole } from "./data";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "回答を集計しています",
+  "4つのエレメントを照合しています",
+  "あなたのタイプを導いています",
+];
 
 // ---------------------------------------------------------------------------
 // 設問（4軸 × 3問 = 12問）
@@ -323,10 +330,13 @@ function ResultView({ code, onReset }: { code: string; onReset: () => void }) {
 export default function SixteenTypesPage() {
   const [step, setStep] = useState<"intro" | "quiz" | "result">("intro");
   const [code, setCode] = useState("");
+  const ritual = useReadingRitual();
 
   const handleComplete = (answers: Pole[]) => {
-    setCode(buildCode(answers));
-    setStep("result");
+    ritual.run(() => {
+      setCode(buildCode(answers));
+      setStep("result");
+    }, RITUAL_MESSAGES);
   };
 
   const reset = () => {
@@ -336,6 +346,7 @@ export default function SixteenTypesPage() {
 
   return (
     <div style={{ background: PAGE_BG, minHeight: "100vh" }} className="py-16 px-4">
+      <RitualOverlay state={ritual} />
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <Link href="/tools" className="text-purple-400 text-sm hover:text-purple-300">← ツール一覧</Link>

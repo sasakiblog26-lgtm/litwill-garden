@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "生年月日を数に還元しています",
+  "ライフパスナンバーを導いています",
+  "数の意味を読み解いています",
+];
 
 const lifePathDescriptions: Record<number, { title: string; desc: string; strengths: string[]; challenges: string[] }> = {
   1: {
@@ -97,10 +104,11 @@ const s: React.CSSProperties = {
 export default function NumerologyPage() {
   const [birthdate, setBirthdate] = useState("");
   const [result, setResult] = useState<number | null>(null);
+  const ritual = useReadingRitual();
 
   const calculate = () => {
     if (!birthdate) return;
-    setResult(calcLifePath(birthdate));
+    ritual.run(() => setResult(calcLifePath(birthdate)), RITUAL_MESSAGES);
   };
 
   const data = result !== null ? lifePathDescriptions[result] : null;
@@ -110,6 +118,7 @@ export default function NumerologyPage() {
       style={{ background: "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)", minHeight: "100vh" }}
       className="py-16 px-4"
     >
+      <RitualOverlay state={ritual} />
       <div className="max-w-2xl mx-auto">
         <div className="mb-3">
           <Link href="/tools" className="text-purple-400 text-sm hover:text-purple-300">
@@ -148,7 +157,7 @@ export default function NumerologyPage() {
           />
           <button
             onClick={calculate}
-            disabled={!birthdate}
+            disabled={!birthdate || ritual.running}
             style={{
               width: "100%",
               padding: "0.875rem",

@@ -4,6 +4,13 @@ import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { snsAccounts } from "@/config/sns";
 import { ELEMENT_DATA, yearToElement } from "./data";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "十干をひもといています",
+  "五行のバランスを観ています",
+  "あなたのタイプを読み解いています",
+];
 
 const PAGE_BG = "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)";
 const CARD_BG = "rgba(91, 33, 182, 0.12)";
@@ -179,14 +186,20 @@ function ResultView({ year, onReset }: { year: number; onReset: () => void }) {
 
 export default function GogyoPage() {
   const [year, setYear] = useState<number | null>(null);
+  const ritual = useReadingRitual();
+
+  const handleSubmit = (y: number) => {
+    ritual.run(() => setYear(y), RITUAL_MESSAGES);
+  };
 
   return (
     <div style={{ background: PAGE_BG, minHeight: "100vh" }} className="py-16 px-4">
+      <RitualOverlay state={ritual} />
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <Link href="/tools" className="text-purple-400 text-sm hover:text-purple-300">← ツール一覧</Link>
         </div>
-        {year === null ? <InputView onSubmit={setYear} /> : <ResultView year={year} onReset={() => setYear(null)} />}
+        {year === null ? <InputView onSubmit={handleSubmit} /> : <ResultView year={year} onReset={() => setYear(null)} />}
       </div>
     </div>
   );

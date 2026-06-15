@@ -4,6 +4,14 @@ import { useState, type CSSProperties } from "react";
 import { CornerFrame } from "@/components/visual/ornaments";
 import NatalChart from "@/components/visual/natal-chart";
 import { Button } from "@/components/ui/button";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "天体の位置を計算しています",
+  "四柱を立て、五行を観ています",
+  "3つの体系を照合しています",
+  "あなたの運命を読み解いています",
+];
 
 // ---------------------------------------------------------------------------
 // 型（/api/diagnosis のレスポンス）
@@ -270,27 +278,26 @@ function Paywall({ teaser }: { teaser: string[] }) {
 export default function DiagnosisPage() {
   const [reading, setReading] = useState<BasicReading | null>(null);
   const [birthDate, setBirthDate] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const ritual = useReadingRitual();
 
-  const handleSubmit = async (birthdate: string, birthtime: string, birthplace: string) => {
-    setLoading(true);
+  const handleSubmit = (birthdate: string, birthtime: string, birthplace: string) => {
     setError("");
-    try {
-      const res = await fetch("/api/diagnosis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ birthdate, birthtime, birthplace }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "エラーが発生しました");
-      setBirthDate(birthdate);
-      setReading(data.reading as BasicReading);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
-    } finally {
-      setLoading(false);
-    }
+    return ritual.run(async () => {
+      try {
+        const res = await fetch("/api/diagnosis", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ birthdate, birthtime, birthplace }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error ?? "エラーが発生しました");
+        setBirthDate(birthdate);
+        setReading(data.reading as BasicReading);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "エラーが発生しました");
+      }
+    }, RITUAL_MESSAGES);
   };
 
   const handleReset = () => {
@@ -299,8 +306,14 @@ export default function DiagnosisPage() {
     setError("");
   };
 
-  if (reading) {
-    return <Result reading={reading} birthDate={birthDate} onReset={handleReset} />;
-  }
-  return <InputForm onSubmit={handleSubmit} loading={loading} error={error} />;
+  return (
+    <>
+      <RitualOverlay state={ritual} />
+      {reading ? (
+        <Result reading={reading} birthDate={birthDate} onReset={handleReset} />
+      ) : (
+        <InputForm onSubmit={handleSubmit} loading={ritual.running} error={error} />
+      )}
+    </>
+  );
 }
