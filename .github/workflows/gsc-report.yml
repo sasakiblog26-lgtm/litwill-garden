@@ -1,0 +1,29 @@
+name: GSC週次レポート
+
+# Google Search Console のデータを毎週取得し、ページ2のゴールドマインをDiscordへ通知。
+# 依存ゼロ（Node標準のみ）・公開リポのため実行枠は無料。
+# 必要シークレット: GSC_SA_KEY（サービスアカウントJSON）/ GSC_SITE_URL / DISCORD_WEBHOOK_CONTENT
+# GSC_SA_KEY 未設定の間はスクリプトが安全にスキップする（赤くならない）。
+
+on:
+  schedule:
+    - cron: "0 23 * * 0" # 毎週月曜 08:00 JST（日曜23:00 UTC）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GSCレポート取得＋通知
+        run: node scripts/gsc/fetch-gsc.mjs
+        env:
+          GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+          DISCORD_WEBHOOK_CONTENT: ${{ secrets.DISCORD_WEBHOOK_CONTENT }}
