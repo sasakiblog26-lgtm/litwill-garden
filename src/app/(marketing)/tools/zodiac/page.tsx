@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useReadingRitual, RitualOverlay } from "@/components/ux/reading-ritual";
+
+const RITUAL_MESSAGES = [
+  "太陽の位置を計算しています",
+  "あなたの星座を特定しています",
+  "星のメッセージを読み解いています",
+];
 
 type ZodiacSign = {
   name: string;
@@ -57,10 +64,11 @@ const elementColors: Record<string, string> = {
 export default function ZodiacPage() {
   const [birthdate, setBirthdate] = useState("");
   const [sign, setSign] = useState<ZodiacSign | null>(null);
+  const ritual = useReadingRitual();
 
   const calculate = () => {
     if (!birthdate) return;
-    setSign(getSunSign(new Date(birthdate)));
+    ritual.run(() => setSign(getSunSign(new Date(birthdate))), RITUAL_MESSAGES);
   };
 
   const cardStyle: React.CSSProperties = {
@@ -75,6 +83,7 @@ export default function ZodiacPage() {
       style={{ background: "linear-gradient(160deg, #0f0720 0%, #1a0a3d 50%, #0d1127 100%)", minHeight: "100vh" }}
       className="py-16 px-4"
     >
+      <RitualOverlay state={ritual} />
       <div className="max-w-2xl mx-auto">
         <div className="mb-3">
           <Link href="/tools" className="text-purple-400 text-sm hover:text-purple-300">← ツール一覧</Link>
@@ -110,7 +119,7 @@ export default function ZodiacPage() {
           />
           <button
             onClick={calculate}
-            disabled={!birthdate}
+            disabled={!birthdate || ritual.running}
             style={{
               width: "100%",
               padding: "0.875rem",
