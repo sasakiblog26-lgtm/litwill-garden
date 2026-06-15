@@ -8,6 +8,13 @@ export const metadata: Metadata = {
 
 const tools = [
   {
+    href: "/tools/meishiki",
+    icon: "🀄",
+    title: "命式 無料計算（四柱推命）",
+    desc: "生年月日から四柱推命の命式（年柱・月柱・日柱・時柱）と日干・五行バランスを無料で自動計算。命式とはも解説。",
+    tag: "命式を出す",
+  },
+  {
     href: "/tools/16types",
     icon: "🔮",
     title: "16タイプ占い性格診断",
